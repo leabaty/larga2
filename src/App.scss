@@ -1,0 +1,241 @@
+:root {
+  --text: '#000000';
+  --background: '#FFFFFF';
+
+  --dark: '#001F36';
+  --light: '#FFFFFF';
+  --color1: '';
+  --color2: '';
+  --color3: '';
+  --color4: '';
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: var(--dark);
+}
+
+.page {
+  // display: flex;
+  // flex-direction: column;
+  // align-items: center;
+  max-width: 80%;
+  padding: 40px 0 0;
+  margin: 0 auto;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 500;
+}
+
+b,
+.bold {
+  font-weight: 500;
+}
+
+strong {
+  font-size: larger;
+}
+
+.spacey {
+  margin: 15px;
+}
+
+.center {
+  text-align: center;
+}
+
+.underlined {
+  text-decoration: underline;
+}
+
+hr {
+  width: 40%;
+  margin: 30px auto;
+  border: 1px dashed var(--dark);
+}
+
+// FADE IN ANIMATION
+
+.fade-in-from-bottom-section {
+  opacity: 0;
+  transform: translateY(20vh);
+  visibility: hidden;
+  transition: opacity 1200ms ease-out, transform 600ms ease-out, visibility 1200ms ease-out;
+  will-change: opacity, transform, visibility;
+}
+
+.fade-in-from-bottom-section.is-visible {
+  opacity: 1;
+  transform: none;
+  visibility: visible;
+}
+
+.fade-in-from-left-section {
+  opacity: 0;
+  transform: translateX(-20vw);
+  visibility: hidden;
+  transition: opacity 1200ms ease-out, transform 600ms ease-out, visibility 1200ms ease-out;
+  will-change: opacity, transform, visibility;
+}
+
+.fade-in-from-left-section.is-visible {
+  opacity: 1;
+  transform: none;
+  visibility: visible;
+}
+
+.fade-in-from-right-section {
+  opacity: 0;
+  transform: translateX(20vw);
+  visibility: hidden;
+  transition: opacity 1200ms ease-out, transform 600ms ease-out, visibility 1200ms ease-out;
+  will-change: opacity, transform, visibility;
+}
+
+.fade-in-from-right-section.is-visible {
+  opacity: 1;
+  transform: none;
+  visibility: visible;
+}
+
+.fade-in-from-top-section {
+  opacity: 0;
+  transform: translateY(-20vh);
+  visibility: hidden;
+  transition: opacity 1200ms ease-out, transform 600ms ease-out, visibility 1200ms ease-out;
+  will-change: opacity, transform, visibility;
+}
+
+.fade-in-from-top-section.is-visible {
+  opacity: 1;
+  transform: none;
+  visibility: visible;
+}
+
+.btn {
+  margin: 10px auto;
+  cursor: pointer;
+  border-radius: 5px;
+
+  &--full {
+    background-color: var(--dark);
+    border: var(--light) 2px solid;
+    color: var(--light);
+
+    &:hover {
+      border: var(--dark) 2px solid;
+      color: var(--dark);
+      background-size: cover;
+      background-position: center;
+    }
+  }
+
+  &--outlined {
+    background-color: var(--light);
+    background-size: cover;
+    background-position: center;
+    border: var(--dark) 2px solid;
+    color: var(--dark);
+
+    &:hover {
+      border: var(--dark) 2px solid;
+      color: var(--dark);
+      background-size: cover;
+      background-position: center;
+    }
+  }
+
+  &--handwritten {
+    font-family: 'Homemade Apple', cursive;
+  }
+
+  &--large {
+    padding: 1.2rem;
+    font-size: 1.3rem;
+  }
+
+  &--medium {
+    padding: 0.9rem;
+    font-size: 1.1rem;
+  }
+
+  &--small {
+    padding: 0.75rem;
+    font-size: 1rem;
+  }
+
+  &--nano {
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media screen and (max-width: 1250px) {
+  .heading {
+    font-size: 1.7em;
+  }
+
+  .heading--medium {
+    font-size: 1.8em;
+  }
+
+  .heading--small {
+    font-size: 1.4em;
+  }
+}
+
+@media screen and (max-width: 1060px) {
+  .btn {
+    &--large {
+      padding: 8px 25px;
+      font-size: 1.1rem;
+    }
+
+    &--medium {
+      padding: 6px 20px;
+      font-size: 1rem;
+    }
+
+    &--small {
+      padding: 4px 18px;
+      font-size: 0.8rem;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .page {
+    padding: 40px 0 0 0;
+    text-align: center;
+    margin-bottom: 80px;
+    max-width: 100%;
+    margin: 0;
+  }
+  .heading {
+    font-size: 1.5em;
+  }
+
+  .text {
+    font-size: 1.1rem;
+    margin: 15px 30px;
+  }
+}
+
+@media screen and (max-width: 430px) {
+  .btn {
+    &--large {
+      padding: 6px 20px;
+      font-size: 1rem;
+    }
+  }
+  p {
+    line-height: 1.5rem;
+  }
+}
