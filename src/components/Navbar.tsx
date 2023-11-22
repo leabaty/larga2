@@ -1,26 +1,21 @@
-import React, { useState } from 'react';
-
-import LocalizedStrings from 'react-localization';
+import React, { useState, useEffect } from 'react';
 import './Navbar.scss';
 import { Link } from 'react-router-dom';
-import LargaBlueLogo from '../images/larga2Blue';
-import homeLogo from '../images/home.svg';
-import aboutLogo from '../images/about.svg';
-import reservationLogo from '../images/reservation.svg';
-import galleryLogo from '../images/gallery.svg';
-import contactLogo from '../images/contact.svg';
-import { FaFacebook } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaTimes } from 'react-icons/fa';
+import { HiOutlineMenuAlt3 } from 'react-icons/hi';
+import { Logo, navbarItems, socialItems } from '../contents/Navbar';
+
+interface IconMap {
+  [key: string]: React.ComponentType;
+}
+const iconMap: IconMap = {
+  facebook: FaFacebook as React.ComponentType,
+  instagram: FaInstagram as React.ComponentType,
+};
 
 export default function Navbar() {
-  const navbarItems = [
-    { name: lang.home, link: '/', img: homeLogo },
-    { name: lang.about, link: '/about', img: aboutLogo },
-    { name: lang.reservation, link: '/reservation', img: reservationLogo },
-    { name: lang.gallery, link: '/gallery', img: galleryLogo },
-    { name: lang.contact, link: '/contact', img: contactLogo },
-  ];
-
   const [openedMobileMenu, setOpenMobileMenu] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   const handleClick = () => setOpenMobileMenu(!openedMobileMenu);
 
@@ -28,53 +23,74 @@ export default function Navbar() {
     setOpenMobileMenu(false);
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 880);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
   return (
     <div className='navbar'>
-      {/* <div className='mobilemenu__navbar'>
-        <div className='mobilemenu__logo'>
-          <Link to='/' className='navbar__title' onClick={closeMobileMenu}>
-            <FaPaw className='navbar__icon' alt='logo-lea-baty' />
-          </Link>
-        </div>
+      <Link to='/' onClick={closeMobileMenu}>
+        <Logo size={isMobile ? '75' : '100'} />
+      </Link>
 
-        <div className='mobilemenu__button' onClick={handleClick}>
-          {openedMobileMenu ? <FaTimes /> : <HiOutlineMenuAlt3 />}
-        </div>
-      </div> */}
-
-      <LargaBlueLogo size={'100'} />
-
-      <div className='navbar-items'>
-        {navbarItems.map((item, index) => (
-                      <Link to={item.link} onClick={closeMobileMenu}>
-          <div className='navbar-item' key={index}>
-
-              <img className='navbar-icons'src={item.img} alt='icon' /> 
-              <p>{item.name}</p>
-          
-          </div>
-          </Link>
-        ))}
+      <div className={isMobile ? 'navbar-btn' : 'hidden'} onClick={handleClick}>
+        {openedMobileMenu ? <FaTimes /> : <HiOutlineMenuAlt3 />}
       </div>
 
-     <FaFacebook className='navbar-social'/>
+      <div className={isMobile ? (openedMobileMenu ? 'navbar-items' : 'hidden') : 'navbar-items'}>
+        {navbarItems.map((item, index) => (
+          <Link to={item.link} onClick={closeMobileMenu} key={index}>
+            <div className='navbar-item'>
+              <img className='navbar-icons' src={item.img} alt='icon' />
+              <p>{item.name}</p>
+            </div>
+          </Link>
+        ))}
+
+        {/* If the view is mobile, socials will be part of the navbar-items in order to appear in the mobile menu. */}
+        <div className={isMobile ? 'navbar-socials' : 'hidden'}>
+          <br />
+          {socialItems.map((item, index) => {
+            const IconComponent = iconMap[item.name];
+            return (
+              <a
+                className='navbar-social'
+                href={item.link}
+                target='_blank'
+                rel='noreferrer'
+                key={index}
+              >
+                {IconComponent && <IconComponent />}
+              </a>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* If the view is not mobile, socials will be displayed as an independent block on the navbar.*/}
+      <div className={isMobile ? 'hidden' : 'navbar-socials'}>
+        {socialItems.map((item, index) => {
+          const IconComponent = iconMap[item.name];
+          return (
+            <a
+              className='navbar-social'
+              href={item.link}
+              target='_blank'
+              rel='noreferrer'
+              key={index}
+            >
+              {IconComponent && <IconComponent />}
+            </a>
+          );
+        })}
+      </div>
     </div>
   );
 }
-
-const lang = new LocalizedStrings({
-  en: {
-    home: 'Home',
-    about: 'About',
-    reservation: 'Reservation',
-    gallery: 'Gallery',
-    contact: 'Contact',
-  },
-  fr: {
-    home: 'Accueil',
-    about: 'à propos',
-    reservation: 'Réservation',
-    gallery: 'Galerie',
-    contact: 'Contact',
-  },
-});

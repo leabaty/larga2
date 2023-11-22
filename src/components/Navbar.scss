@@ -5,6 +5,7 @@
   align-items: center;
   width: 80%;
   margin: 0 auto;
+  padding-top: 20px;
 
   &-items {
     display: flex;
@@ -13,21 +14,44 @@
   }
 
   &-item {
-    color: (var(--dark));
-    font-weight: 800;
-    text-transform: uppercase;
-    font-size: 1.2rem;
     display: flex;
     flex-direction: row;
     align-items: center;
+    color: (var(--dark));
+    font-weight: 800;
+    text-transform: uppercase;
   }
 
   &-icons {
-    height: 30px;
-    margin-right:10px;
+    height: 20px;
+    margin-right: 10px;
   }
 
-  &-social{
-    font-size:25px;
+  &-social {
+    font-size: 15px;
+    margin: 0 3px;
+  }
+}
+
+@media (max-width: 880px) {
+  .navbar {
+    &-btn {
+      display: flex;
+      cursor: pointer;
+      font-size: 30px;
+    }
+
+    &-items {
+      display: flex;
+      flex-direction: column;
+      width: 80%;
+      position: absolute;
+      top: 100px;
+      align-items: flex-end;
+    }
+
+    &-item {
+      margin: 10px 0;
+    }
   }
 }

@@ -25,7 +25,7 @@ a {
   // align-items: center;
   max-width: 80%;
   padding: 40px 0 0;
-  margin: 0 auto;
+  margin: 0 auto 0;
 }
 
 h1,
@@ -51,6 +51,9 @@ strong {
   text-align: center;
 }
 
+.hidden {
+  display: none;
+}
 .underlined {
   text-decoration: underline;
 }
