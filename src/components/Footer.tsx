@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import LocalizedStrings from 'react-localization';
-import './Footer.scss';
+import '../styles/Footer.scss';
 
 export default function Footer() {
   return (
@@ -14,6 +14,9 @@ export default function Footer() {
         <Link className='footer-link' to='/privacy-policy'>
           {lang.privacyPolicy}
         </Link>
+        <a className='footer-link' href='lebaty.com' target='_blank'>
+          © 2023 Léa Baty
+        </a>
       </div>
     </>
   );

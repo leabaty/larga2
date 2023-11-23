@@ -1,17 +1,18 @@
 :root {
-  --text: '#000000';
-  --background: '#FFFFFF';
+  --text: #000000;
+  --background: #ffffff;
 
-  --dark: '#001F36';
-  --light: '#FFFFFF';
-  --color1: '';
-  --color2: '';
-  --color3: '';
-  --color4: '';
+  --dark: #001f36;
+  --light: #fdfeee;
+  // --color1: '';
+  // --color2: '';
+  // --color3: '';
+  // --color4: '';
 }
 
 body {
   font-family: 'Outfit', sans-serif;
+  color: var(--dark);
 }
 
 a {
@@ -28,10 +29,25 @@ a {
   margin: 0 auto 0;
 }
 
+h1 {
+  font-weight: 700;
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-weight: 600;
+  font-size: 1.8rem;
+}
+
+h3 {
+  font-weight: 500;
+  font-size: 1.4rem;
+}
+
 h1,
 h2,
 h3 {
-  font-weight: 500;
+  margin: 5px 0;
 }
 
 b,

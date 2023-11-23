@@ -1,12 +1,14 @@
 import LocalizedStrings from 'react-localization';
 
-import homeLogo from './images/home.svg';
-import aboutLogo from './images/about.svg';
-import reservationLogo from './images/reservation.svg';
-import galleryLogo from './images/gallery.svg';
-import contactLogo from './images/contact.svg';
+import {
+  HomeLogo,
+  AboutLogo,
+  ReservationLogo,
+  GalleryLogo,
+  ContactLogo,
+} from './images/navbarLogos';
 
-import LargaBlueLogo from './images/larga2Blue';
+import { LargaWhiteLogo, LargaBlueLogo } from './images/largaLogo';
 
 const lang = new LocalizedStrings({
   en: {
@@ -26,11 +28,11 @@ const lang = new LocalizedStrings({
 });
 
 export const navbarItems = [
-  { name: lang.home, link: '/', img: homeLogo },
-  { name: lang.about, link: '/about', img: aboutLogo },
-  { name: lang.reservation, link: '/reservation', img: reservationLogo },
-  { name: lang.gallery, link: '/gallery', img: galleryLogo },
-  { name: lang.contact, link: '/contact', img: contactLogo },
+  { name: lang.home, link: '/', img: HomeLogo },
+  { name: lang.about, link: '/about', img: AboutLogo },
+  { name: lang.reservation, link: '/reservation', img: ReservationLogo },
+  { name: lang.gallery, link: '/gallery', img: GalleryLogo },
+  { name: lang.contact, link: '/contact', img: ContactLogo },
 ];
 
 // available : facebook, instagram
@@ -40,4 +42,4 @@ export const socialItems = [
 ];
 
 //TODO SVG rules explained here
-export const Logo = LargaBlueLogo;
+export const Logo = LargaWhiteLogo;

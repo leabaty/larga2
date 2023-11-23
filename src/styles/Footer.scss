@@ -1,14 +1,14 @@
 .footer {
   &-container {
-    background-color: var(--light);
-    padding: 0.8rem 0;
-    border-top: 2px dashed var(--dark);
-    width: 100%;
     display: flex;
     justify-content: center;
+    background-color: var(--dark);
+    padding: 15px 0;
 
     & a {
       margin: 5px 15px;
+      color: var(--light);
+      font-size: 0.8rem;
     }
 
     & a:hover {
