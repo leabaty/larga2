@@ -9,6 +9,7 @@
     margin: 15px;
     padding: 10px;
     background-color: var(--light);
+    border-radius: 15px;
     color: var(--dark);
     width: 50%;
     text-align: left;
@@ -17,6 +18,7 @@
   &-date {
     padding: 10px;
     background-color: var(--light);
+    border-radius: 15px;
     color: var(--dark);
     width: 80%;
   }
