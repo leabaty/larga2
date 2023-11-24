@@ -18,7 +18,8 @@ const lang = new LocalizedStrings({
   },
 });
 
-export const coverImages = [
+//TODO : make a slider with selected images
+export const images = [
   { src: largasun, alt: 'Larga II au coucher de soleil' },
   //   { src: frioul, alt: 'îles du Frioul' },
   //   { src: baie, alt: 'Baie' },

@@ -1,0 +1,41 @@
+.about {
+  &-map {
+    display: flex;
+    flex-direction: row;
+    margin: 30px 0;
+    &-info {
+      width: 20%;
+      background-color: var(--dark);
+      color: var(--light);
+    }
+    &-text {
+      text-align: center;
+      margin: 50% auto;
+      line-height: 2rem;
+    }
+  }
+
+  &-articles {
+    display: flex;
+    justify-content: space-between;
+    margin: 30px 0;
+  }
+  &-article {
+    padding: 0 40px 30px;
+    width: 48%;
+    text-align: center;
+
+    border: 1px dashed var(--dark);
+    border-radius: 25px;
+    background-color: var(--beige);
+
+    &-img {
+      width: 60%;
+    }
+    &-txt {
+      margin: 10px auto 0;
+      text-align: justify;
+      text-justify: auto;
+    }
+  }
+}

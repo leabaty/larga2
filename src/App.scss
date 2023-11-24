@@ -4,6 +4,7 @@
 
   --dark: #001f36;
   --light: #fdfeee;
+  --beige: #fef4e4;
   // --color1: '';
   // --color2: '';
   // --color3: '';
@@ -21,12 +22,15 @@ a {
 }
 
 .page {
-  // display: flex;
-  // flex-direction: column;
-  // align-items: center;
   max-width: 80%;
-  padding: 40px 0 0;
+  padding: 120px 0 0;
   margin: 0 auto 0;
+}
+
+// for the map on the about page
+.leaflet-container {
+  height: 50vh;
+  width: 80%;
 }
 
 h1 {
@@ -47,7 +51,8 @@ h3 {
 h1,
 h2,
 h3 {
-  margin: 5px 0;
+  margin: 20px 0;
+  text-align: center;
 }
 
 b,

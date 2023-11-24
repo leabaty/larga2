@@ -31,7 +31,7 @@ export const navbarItems = [
   { name: lang.home, link: '/', img: HomeLogo },
   { name: lang.about, link: '/about', img: AboutLogo },
   { name: lang.reservation, link: '/reservation', img: ReservationLogo },
-  { name: lang.gallery, link: '/gallery', img: GalleryLogo },
+  // { name: lang.gallery, link: '/gallery', img: GalleryLogo },
   { name: lang.contact, link: '/contact', img: ContactLogo },
 ];
 
@@ -42,4 +42,5 @@ export const socialItems = [
 ];
 
 //TODO SVG rules explained here
+/* SVGs have to be imported as components in order for them to be adaptable (size, color) */
 export const Logo = LargaWhiteLogo;

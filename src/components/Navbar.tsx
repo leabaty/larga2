@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Navbar.scss';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { FaFacebook, FaInstagram, FaTimes } from 'react-icons/fa';
 import { HiOutlineMenuAlt3 } from 'react-icons/hi';
 import { Logo, navbarItems, socialItems } from '../contents/Navbar';
 
+// react/typescript component management
 interface IconMap {
   [key: string]: React.ComponentType;
 }
@@ -14,12 +15,12 @@ const iconMap: IconMap = {
 };
 
 export default function Navbar() {
-  // to be updated on scroll
   const logoColor = '#fff';
+  const location = useLocation();
 
   const [openedMobileMenu, setOpenMobileMenu] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  const [scrolling, setScrolling] = useState(false);
+  const [fullNavbar, setFullNavbar] = useState(false);
 
   const handleClick = () => setOpenMobileMenu(!openedMobileMenu);
 
@@ -27,13 +28,19 @@ export default function Navbar() {
     setOpenMobileMenu(false);
   };
 
+  // handling initial setting of fullNavbar
+  useEffect(() => {
+    setFullNavbar(location.pathname !== '/');
+  }, [location.pathname]);
+
+  // scroll and resize events
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 880);
     };
 
     const handleScroll = () => {
-      setScrolling(window.scrollY > 80);
+      setFullNavbar(window.scrollY > 80 || location.pathname !== '/');
     };
 
     window.addEventListener('resize', handleResize);
@@ -43,13 +50,13 @@ export default function Navbar() {
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [location.pathname]);
 
   return (
-    <div className={`navbar ${scrolling ? 'scrolling' : ''}`}>
-      <div className={`navbar-container ${scrolling ? 'scrolling' : ''}`}>
+    <div className={`navbar ${fullNavbar ? 'fullNavbar' : ''}`}>
+      <div className={`navbar-container ${fullNavbar ? 'fullNavbar' : ''}`}>
         <Link to='/' onClick={closeMobileMenu}>
-          <Logo size={isMobile || scrolling ? '75' : '100'} />
+          <Logo size={isMobile || fullNavbar ? '75' : '100'} />
         </Link>
 
         <div className={isMobile ? 'navbar-btn' : 'hidden'} onClick={handleClick}>
