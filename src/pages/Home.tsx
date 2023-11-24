@@ -3,7 +3,7 @@ import React from 'react';
 import '../styles/Home.scss';
 
 import { content, images } from '../contents/Home';
-export function Home() {
+export default function Home() {
   return (
     <div className='home-content'>
       {/*TODO : make a slider with selected images*/}

@@ -1,0 +1,70 @@
+.form {
+  background-color: var(--dark);
+  color: var(--light);
+  padding: 15px 30px;
+  text-align: center;
+  margin: 10px 0 30px;
+
+  &-input {
+    margin: 15px;
+    padding: 10px;
+    background-color: var(--light);
+    color: var(--dark);
+    width: 50%;
+    text-align: left;
+  }
+
+  &-date {
+    padding: 10px;
+    background-color: var(--light);
+    color: var(--dark);
+    width: 80%;
+  }
+
+  &-inputs {
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+  }
+
+  &-addpax {
+    margin: 15px;
+    padding: 10px;
+  }
+
+  &-btn-pax {
+    border: 1px var(--light) solid;
+    padding: 10px;
+    border-radius: 15%;
+    cursor: pointer;
+    margin: 5px;
+    &:hover {
+      color: var(--dark);
+      background-color: var(--light);
+    }
+  }
+
+  &-btn-submit {
+    border: 1px var(--light) solid;
+    padding: 10px;
+    margin: 20px;
+    border-radius: 15px;
+    width: 250px;
+    text-align: center;
+    cursor: pointer;
+    &:hover {
+      color: var(--dark);
+      background-color: var(--light);
+      transform: scale(1.1);
+      transition: all 0.2s ease;
+    }
+  }
+
+  &-block {
+    border-bottom: 1px solid var(--light); /* or any other color */
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}

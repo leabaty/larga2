@@ -28,7 +28,7 @@ const lang = new LocalizedStrings({
     ],
     skipperTitle: 'Denis',
     skipperDesc: [
-      'Navigateur passionné, avec de nombreuses régates et milles à son actif, Denis hisse à présent les voiles de son Larga 2 presque quotidiennement depuis son acquisition il y a cinq ans.',
+      'Navigateur passionné, avec de nombreuses régates et milles à son actif, Denis hisse les voiles de son Larga 2 presque quotidiennement depuis son acquisition il y a cinq ans.',
       "Il aspire à partager connaissances et bons moments, à créer des souvenirs avec une diversité de personnes dans ce cadre exceptionnel qu'offre la méditerrannée.",
     ],
     location: 'Retrouvez-les à Carry-le-Rouet',
