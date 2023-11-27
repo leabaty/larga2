@@ -4,7 +4,7 @@ import '../styles/Reservation.scss';
 
 import { content } from '../contents/Reservation';
 
-import Form from '../components/Form/Form';
+import ReservationForm from '../components/Form/ReservationForm';
 import { CheckListLogo } from '../contents/images/reservationLogos';
 
 export default function Reservation() {
@@ -39,7 +39,7 @@ export default function Reservation() {
         ))}
       </div>
 
-      <Form />
+      <ReservationForm />
     </div>
   );
 }

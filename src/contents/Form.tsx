@@ -3,7 +3,8 @@ import '../styles/Form.scss';
 
 const lang = new LocalizedStrings({
   en: {
-    title: 'Reservation',
+    reservationTitle: 'Reservation',
+    contactTitle: 'Contact',
     field: {
       firstname: 'First name',
       lastname: 'Last name',
@@ -13,6 +14,7 @@ const lang = new LocalizedStrings({
       pax: 'passenger(s)',
       add: 'add',
       remove: 'remove',
+      message: 'Write your question or comment here!',
     },
     submit: 'Reservation request',
     error: {
@@ -24,7 +26,8 @@ const lang = new LocalizedStrings({
   },
 
   fr: {
-    title: 'Réservation',
+    reservationTitle: 'Réservation',
+    contactTitle: 'Contact',
     field: {
       firstname: 'Prénom',
       lastname: 'Nom',
@@ -34,6 +37,7 @@ const lang = new LocalizedStrings({
       pax: 'passager(s)',
       add: 'ajouter',
       remove: 'supprimer',
+      message: 'Ecrivez ici votre question ou remarque !',
     },
     submit: 'Demande de réservation',
     error: {
@@ -46,7 +50,8 @@ const lang = new LocalizedStrings({
 });
 
 export const content = {
-  title: lang.title,
+  reservationTitle: lang.reservationTitle,
+  contactTitle: lang.contactTitle,
   field: {
     firstname: lang.field.firstname,
     lastname: lang.field.lastname,
@@ -56,6 +61,7 @@ export const content = {
     addpax: lang.field.pax,
     add: lang.field.add,
     remove: lang.field.remove,
+    message: lang.field.message,
   },
   submit: lang.submit,
   error: {

@@ -1,4 +1,4 @@
-import { ErrorMessages, FormValues, Pax } from 'Form';
+import { ReservationErrorMessages, ReservationFormValues, Pax } from 'Form';
 import React, { useState } from 'react';
 import { InputField } from './FormInputs';
 import { DateField } from './FormDateField';
@@ -6,8 +6,8 @@ import { AdditionalPaxFields } from './FormAdditionalPax';
 import '../../styles/Form.scss';
 import { content } from '../../contents/Form';
 
-export default function Form() {
-  const [formValues, setFormValues] = useState<FormValues>({
+export default function ReservationForm() {
+  const [formValues, setFormValues] = useState<ReservationFormValues>({
     firstName: '',
     lastName: '',
     email: '',
@@ -17,7 +17,7 @@ export default function Form() {
     selectedDate: null as Date | null,
   });
 
-  const [errors, setErrors] = useState<ErrorMessages>({
+  const [errors, setErrors] = useState<ReservationErrorMessages>({
     firstName: '',
     lastName: '',
     email: '',
@@ -84,7 +84,7 @@ export default function Form() {
   };
 
   const handleSubmit = () => {
-    const newErrors: ErrorMessages = {
+    const newErrors: ReservationErrorMessages = {
       firstName: '',
       lastName: '',
       email: '',
@@ -127,7 +127,7 @@ export default function Form() {
 
   return (
     <div className='form'>
-      <h2>{content.title}</h2>
+      <h2>{content.reservationTitle}</h2>
       <InputField
         name='firstName'
         placeholder={content.field.firstname}
