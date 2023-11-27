@@ -1,9 +1,10 @@
 .form {
   background-color: var(--dark);
+  border-radius: 20px;
   color: var(--light);
   padding: 15px 30px;
   text-align: center;
-  margin: 10px 0 30px;
+  margin: 10px 30px 30px;
 
   &-input {
     margin: 15px;
