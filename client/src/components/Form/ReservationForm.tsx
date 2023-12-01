@@ -1,8 +1,8 @@
 import { ReservationErrorMessages, ReservationFormValues, Pax } from 'Form';
 import React, { useState } from 'react';
-import { InputField } from './FormInputs';
-import { DateField } from './FormDateField';
-import { AdditionalPaxFields } from './FormAdditionalPax';
+import { InputField } from './formComponents/FormInputs';
+import { DateField } from './formComponents/FormDateField';
+import { AdditionalPaxFields } from './formComponents/FormAdditionalPax';
 import '../../styles/Form.scss';
 import { content } from '../../contents/Form';
 
@@ -25,6 +25,8 @@ export default function ReservationForm() {
     selectedDate: '',
     additionalPax: '',
   });
+
+  const [submitted, setSubmitted] = useState(false);
 
   const { firstName, lastName, email, phone, additionalPax, counter, selectedDate } = formValues;
 
@@ -119,6 +121,7 @@ export default function ReservationForm() {
 
     if (Object.values(newErrors).every((error) => !error)) {
       // Handle form submission logic here
+      setSubmitted(true);
       console.log('Form submitted!', formValues);
     } else {
       setErrors(newErrors);
@@ -128,56 +131,41 @@ export default function ReservationForm() {
   return (
     <div className='form'>
       <h2>{content.reservationTitle}</h2>
-      <InputField
-        name='firstName'
-        placeholder={content.field.firstname}
-        value={firstName}
-        error={errors.firstName}
-        onChange={handleInputChange}
-      />
-      <InputField
-        name='lastName'
-        placeholder={content.field.lastname}
-        value={lastName}
-        error={errors.lastName}
-        onChange={handleInputChange}
-      />
-      <InputField
-        name='email'
-        placeholder={content.field.email}
-        type='email'
-        value={email}
-        error={errors.email}
-        onChange={handleInputChange}
-      />
-      <InputField
-        name='phone'
-        placeholder={content.field.phone}
-        type='tel'
-        value={phone}
-        error={errors.phone}
-        onChange={handleInputChange}
-      />
-      <div className='form-block'></div>
-      <DateField
-        selectedDate={selectedDate}
-        onChange={handleDateChange}
-        error={errors.selectedDate}
-      />
 
-      <AdditionalPaxFields
-        additionalPax={additionalPax}
-        counter={counter}
-        onAddPax={handleAddPax}
-        onRemovePax={handleRemovePax}
-        onAdditionalPaxChange={handleAdditionalPaxChange}
-        additionalPaxError={errors.additionalPax}
-        mainPassenger={{ firstName: firstName, lastName: lastName }}
-      />
+      {!submitted ? (
+        <>
+          <InputField
+            name='firstName'
+            placeholder={content.field.firstname}
+            value={firstName}
+            error={errors.firstName}
+            onChange={handleInputChange}
+          />
+          <InputField name='lastName' placeholder={content.field.lastname} value={lastName} error={errors.lastName} onChange={handleInputChange} />
+          <InputField name='email' placeholder={content.field.email} type='email' value={email} error={errors.email} onChange={handleInputChange} />
+          <InputField name='phone' placeholder={content.field.phone} type='tel' value={phone} error={errors.phone} onChange={handleInputChange} />
+          <div className='form-block'></div>
+          <DateField selectedDate={selectedDate} onChange={handleDateChange} error={errors.selectedDate} />
 
-      <button className='form-btn-submit' onClick={handleSubmit}>
-        {content.submit}
-      </button>
+          <AdditionalPaxFields
+            additionalPax={additionalPax}
+            counter={counter}
+            onAddPax={handleAddPax}
+            onRemovePax={handleRemovePax}
+            onAdditionalPaxChange={handleAdditionalPaxChange}
+            additionalPaxError={errors.additionalPax}
+            mainPassenger={{ firstName: firstName, lastName: lastName }}
+          />
+
+          <button className='form-btn-submit' onClick={handleSubmit}>
+            {content.submit}
+          </button>
+        </>
+      ) : (
+        <div className='submit-message'>
+          <p>{content.submitMessage}</p>
+        </div>
+      )}
     </div>
   );
 }

@@ -4,7 +4,7 @@ import '../../styles/Form.scss';
 
 import { FaCirclePlus, FaCircleMinus, FaPerson } from 'react-icons/fa6';
 
-import { content } from '../../contents/Form';
+import { content } from '../../../contents/Form';
 
 export const AdditionalPaxFields: React.FC<{
   additionalPax: Pax[];
@@ -14,15 +14,7 @@ export const AdditionalPaxFields: React.FC<{
   onAdditionalPaxChange: (index: number, e: React.ChangeEvent<HTMLInputElement>) => void;
   additionalPaxError: string | undefined;
   mainPassenger: { firstName: string; lastName: string };
-}> = ({
-  additionalPax,
-  counter,
-  onAddPax,
-  onRemovePax,
-  onAdditionalPaxChange,
-  additionalPaxError,
-  mainPassenger,
-}) => (
+}> = ({ additionalPax, counter, onAddPax, onRemovePax, onAdditionalPaxChange, additionalPaxError, mainPassenger }) => (
   <div className='form-block'>
     <p>{`${counter} ${content.field.addpax}`}</p>
 

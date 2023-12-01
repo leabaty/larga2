@@ -1,9 +1,9 @@
 import { ContactErrorMessages, ContactFormValues } from 'Form';
 import React, { useState } from 'react';
-import { InputField } from './FormInputs';
+import { InputField } from './formComponents/FormInputs';
 import '../../styles/Form.scss';
 import { content } from '../../contents/Form';
-import { TextAreaField } from './FormTextArea';
+import { TextAreaField } from './formComponents/FormTextArea';
 
 export default function ContactForm() {
   const [formValues, setFormValues] = useState<ContactFormValues>({
@@ -80,36 +80,10 @@ export default function ContactForm() {
   return (
     <div className='form'>
       <h2>{content.contactTitle}</h2>
-      <InputField
-        name='firstName'
-        placeholder={content.field.firstname}
-        value={firstName}
-        error={errors.firstName}
-        onChange={handleInputChange}
-      />
-      <InputField
-        name='lastName'
-        placeholder={content.field.lastname}
-        value={lastName}
-        error={errors.lastName}
-        onChange={handleInputChange}
-      />
-      <InputField
-        name='email'
-        placeholder={content.field.email}
-        type='email'
-        value={email}
-        error={errors.email}
-        onChange={handleInputChange}
-      />
-      <InputField
-        name='phone'
-        placeholder={content.field.phone}
-        type='tel'
-        value={phone}
-        error={errors.phone}
-        onChange={handleInputChange}
-      />
+      <InputField name='firstName' placeholder={content.field.firstname} value={firstName} error={errors.firstName} onChange={handleInputChange} />
+      <InputField name='lastName' placeholder={content.field.lastname} value={lastName} error={errors.lastName} onChange={handleInputChange} />
+      <InputField name='email' placeholder={content.field.email} type='email' value={email} error={errors.email} onChange={handleInputChange} />
+      <InputField name='phone' placeholder={content.field.phone} type='tel' value={phone} error={errors.phone} onChange={handleInputChange} />
 
       <TextAreaField
         name='message'

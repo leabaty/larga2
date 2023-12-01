@@ -17,6 +17,7 @@ const lang = new LocalizedStrings({
       message: 'Write your question or comment here!',
     },
     submit: 'Reservation request',
+    submitMessage: 'Thank you for your request. It will be confirmed via email in the next 48h.',
     error: {
       mandatory: 'This field is mandatory',
       email: 'Your email is incorrect or missing',
@@ -40,6 +41,7 @@ const lang = new LocalizedStrings({
       message: 'Ecrivez ici votre question ou remarque !',
     },
     submit: 'Demande de réservation',
+    submitMessage: 'Merci pour votre demande, je reviendrai vers vous dans les prochaines 48h afin de la confirmer !',
     error: {
       mandatory: 'Ce champ est obligatoire',
       email: 'Votre e-mail est incorrect ou manquant',
@@ -64,6 +66,7 @@ export const content = {
     message: lang.field.message,
   },
   submit: lang.submit,
+  submitMessage: lang.submitMessage,
   error: {
     mandatory: lang.error.mandatory,
     email: lang.error.email,
