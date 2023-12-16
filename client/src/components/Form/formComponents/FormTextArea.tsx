@@ -1,9 +1,9 @@
-import { ContactFormValues } from 'Form';
+import { FormContactValues } from 'FormTypes';
 import React from 'react';
-import '../../styles/Form.scss';
+import '../../../styles/Form.scss';
 
 export const TextAreaField: React.FC<{
-  name: keyof ContactFormValues;
+  name: keyof FormContactValues;
   placeholder: string;
   required?: boolean;
   value: string | undefined;
@@ -12,15 +12,8 @@ export const TextAreaField: React.FC<{
 }> = ({ name, placeholder, required = true, value, error, onChange }) => (
   <div>
     <label>
-      <textarea
-        className='form-input'
-        name={name}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        required={required}
-      />
-      {error && <p>{error}</p>}
+      <textarea className='form-input' name={name} placeholder={placeholder} value={value} onChange={onChange} required={required} />
+      {error && <p>⚠️ {error}</p>}
     </label>
   </div>
 );

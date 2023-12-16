@@ -1,25 +1,25 @@
-export interface Pax {
+export interface FormPax {
   firstName: string;
   lastName: string;
 }
 
-export interface ReservationErrorMessages extends ErrorMessages {
+export interface FormReservationErrorMessages extends FormErrorMessages {
   selectedDate: string;
   additionalPax: string;
   [key: string]: string;
 }
 
-export interface ReservationFormValues extends FormValues {
-  additionalPax: Pax[];
+export interface FormReservationValues extends FormValues {
+  additionalPax: FormPax[];
   counter: number;
   selectedDate: Date | null;
 }
 
-export interface ContactErrorMessages extends ErrorMessages {
+export interface FormContactErrorMessages extends FormErrorMessages {
   message: string;
 }
 
-export interface ContactFormValues extends FormValues {
+export interface FormContactValues extends FormValues {
   message: string;
 }
 
@@ -30,7 +30,7 @@ export interface FormValues {
   phone: string;
 }
 
-export interface ErrorMessages {
+export interface FormErrorMessages {
   firstName: string;
   lastName: string;
   email: string;

@@ -1,6 +1,6 @@
-import { FormValues } from 'Form';
+import { FormValues } from 'FormTypes';
 import React from 'react';
-import '../../styles/Form.scss';
+import '../../../styles/Form.scss';
 
 export const InputField: React.FC<{
   name: keyof FormValues;
@@ -13,16 +13,8 @@ export const InputField: React.FC<{
 }> = ({ name, placeholder, type = 'text', required = true, value, error, onChange }) => (
   <div>
     <label>
-      <input
-        className='form-input'
-        type={type}
-        name={name}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        required={required}
-      />
-      {error && <p>{error}</p>}
+      <input className='form-input' type={type} name={name} placeholder={placeholder} value={value} onChange={onChange} required={required} />
+      {error && <p>⚠️ {error}</p>}
     </label>
   </div>
 );

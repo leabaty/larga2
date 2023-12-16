@@ -1,14 +1,6 @@
 import LocalizedStrings from 'react-localization';
 
-import {
-  AgeLogo,
-  DaysLogo,
-  PaxLogo,
-  ProgramLogo,
-  WhenLogo,
-  WhereLogo,
-  CheckListLogo,
-} from './images/reservationLogos';
+import { AgeLogo, DaysLogo, PaxLogo, ProgramLogo, WhenLogo, WhereLogo, CheckListLogo } from './images/reservationLogos';
 
 const lang = new LocalizedStrings({
   en: {
@@ -21,12 +13,7 @@ const lang = new LocalizedStrings({
     winterProgram: 'lunch in a port or calanque',
     summerProgram: 'swimming & lunch in a calanque',
     checkListTitle: 'Checklist',
-    checkList: [
-      'waterproof clothes',
-      'soft-soled shoes (such as sneakers or rain boots)',
-      'snack',
-      'sunscreen',
-    ],
+    checkList: ['waterproof clothes', 'soft-soled shoes (such as sneakers or rain boots)', 'snack', 'sunscreen'],
     note: "For our safety, all outings will be based on the day's weather report. Depending on the weather conditions, the captain may postpone the navigation or propose a non-stop navigation.",
   },
 
@@ -40,12 +27,8 @@ const lang = new LocalizedStrings({
     winterProgram: 'déjeuner dans un port ou une calanque',
     summerProgram: 'baignade et déjeuner dans une calanque',
     checkListTitle: 'Check-List',
-    checkList: [
-      'vêtements imperméables',
-      'chaussures à semelle souple (comme des baskets ou des bottes de pluie)',
-      'casse-croûte',
-      'crème solaire',
-    ],
+    checkList: ['vêtements imperméables', 'chaussures à semelle souple (comme des baskets ou des bottes de pluie)', 'casse-croûte', 'crème solaire'],
+
     note: 'Pour notre sécurité, toutes les sorties seront basées sur le bulletin météo du jour. Selon les conditions météorologiques, le capitaine peut reporter la navigation ou proposer une navigation sans escale.',
   },
 });

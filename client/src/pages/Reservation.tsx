@@ -29,6 +29,8 @@ export default function Reservation() {
           </>
         ))}
       </div>
+      <ReservationForm />
+
       <div className='res-checklist'>
         <h2>{content.checkListTitle}</h2>
         {content.checkList.map((item, index) => (
@@ -38,8 +40,6 @@ export default function Reservation() {
           </div>
         ))}
       </div>
-
-      <ReservationForm />
     </div>
   );
 }

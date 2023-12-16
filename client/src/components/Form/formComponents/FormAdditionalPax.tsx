@@ -1,13 +1,16 @@
-import { Pax } from 'Form';
+import { FormPax } from 'FormTypes';
 import React from 'react';
-import '../../styles/Form.scss';
+import '../../../styles/Form.scss';
 
 import { FaCirclePlus, FaCircleMinus, FaPerson } from 'react-icons/fa6';
 
 import { content } from '../../../contents/Form';
 
+//TODO : Here we should get the counter from the selected date and cap the number of additional pax with this.
+// If our counter = 5-existing reservations then it's disabled.
+
 export const AdditionalPaxFields: React.FC<{
-  additionalPax: Pax[];
+  additionalPax: FormPax[];
   counter: number;
   onAddPax: () => void;
   onRemovePax: () => void;
