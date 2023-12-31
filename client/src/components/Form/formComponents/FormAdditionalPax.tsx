@@ -6,9 +6,6 @@ import { FaCirclePlus, FaCircleMinus, FaPerson } from 'react-icons/fa6';
 
 import { content } from '../../../contents/Form';
 
-//TODO : Here we should get the counter from the selected date and cap the number of additional pax with this.
-// If our counter = 5-existing reservations then it's disabled.
-
 export const AdditionalPaxFields: React.FC<{
   additionalPax: FormPax[];
   counter: number;
@@ -17,15 +14,18 @@ export const AdditionalPaxFields: React.FC<{
   onAdditionalPaxChange: (index: number, e: React.ChangeEvent<HTMLInputElement>) => void;
   additionalPaxError: string | undefined;
   mainPassenger: { firstName: string; lastName: string };
-}> = ({ additionalPax, counter, onAddPax, onRemovePax, onAdditionalPaxChange, additionalPaxError, mainPassenger }) => (
+  showAddPax: boolean;
+}> = ({ additionalPax, counter, onAddPax, onRemovePax, onAdditionalPaxChange, additionalPaxError, mainPassenger, showAddPax }) => (
   <div className='form-block'>
     <p>{`${counter} ${content.field.addpax}`}</p>
 
     {mainPassenger.firstName && mainPassenger.lastName && (
       <div className='form-inputs'>
-        <button className='form-btn-pax' onClick={onAddPax}>
-          <FaCirclePlus /> <FaPerson />
-        </button>
+        {showAddPax && (
+          <button className='form-btn-pax' onClick={onAddPax}>
+            <FaCirclePlus /> <FaPerson />
+          </button>
+        )}
         {additionalPax.length > 0 && (
           <button className='form-btn-pax' onClick={onRemovePax}>
             <FaCircleMinus /> <FaPerson />

@@ -6,7 +6,6 @@ import { Calendar } from 'ApiTypes/calendar';
 
 // Mui
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import fr from 'date-fns/locale/fr';
 
@@ -26,7 +25,6 @@ export const DateField: React.FC<{
   calendarItems: Calendar;
 }> = ({ selectedDate, onChange, error, calendarItems }) => {
   const disabledDates = getDisabledDates(calendarItems);
-  console.log(disabledDates);
 
   const color = '#fdfeee';
   const bgcolor = '#001f36';

@@ -7,8 +7,10 @@ import '../../styles/Form.scss';
 import { content } from '../../contents/Form';
 import usePost from '../../utils/usePost';
 import { Calendar } from 'ApiTypes/calendar';
+import { getTime } from 'date-fns';
 
 export default function ReservationForm() {
+  const maxBoatPax = 4;
   const [formValues, setFormValues] = useState<FormReservationValues>({
     firstName: '',
     lastName: '',
@@ -32,6 +34,7 @@ export default function ReservationForm() {
 
   const [calendarItems, setCalendarItems] = useState<Calendar>([]);
   const [availablePax, setavailablePax] = useState<number | null>(null);
+  const [showAddPax, setShowAddPax] = useState(false);
 
   const { firstName, lastName, email, phone, additionalPax, counter, selectedDate } = formValues;
 
@@ -154,14 +157,38 @@ export default function ReservationForm() {
   }, []);
 
   useEffect(() => {
+    const areDatesEqual = (date1: Date, date2: Date) => {
+      return date1.getDate() === date2.getDate() && date1.getMonth() === date2.getMonth() && date1.getFullYear() === date2.getFullYear();
+    };
+
     const updateAvailablePax = () => {
-      const selectedDateItems = calendarItems.filter((item) => item.date === selectedDate);
-      const availablePlaces = selectedDateItems.reduce((sum, item) => sum + (item.enabled ? item.paxCounter : 0), 0);
-      setavailablePax(availablePlaces);
+      // determine if the selected date has a counterpart in the database
+      if (selectedDate) {
+        const selectedDateItem = calendarItems.find((item) => {
+          const calendarDate = new Date(item.date);
+          return areDatesEqual(calendarDate, selectedDate);
+        });
+
+        if (selectedDateItem) {
+          const availableSpots = selectedDateItem.enabled ? maxBoatPax - selectedDateItem.paxCounter : 0;
+          setavailablePax(availableSpots);
+
+          // determine if there are enough spots to show the additional pax feature
+          setShowAddPax(availableSpots > 0 && availableSpots > counter);
+        } else {
+          console.error(`No item found for the selected date: ${selectedDate}`);
+          setavailablePax(0);
+          setShowAddPax(false);
+        }
+      } else {
+        console.error('No selected date yet');
+        setavailablePax(0);
+        setShowAddPax(false);
+      }
     };
 
     updateAvailablePax();
-  }, [selectedDate, calendarItems]);
+  }, [selectedDate, calendarItems, counter]);
 
   return (
     <div className='form'>
@@ -194,6 +221,7 @@ export default function ReservationForm() {
             onAdditionalPaxChange={handleAdditionalPaxChange}
             additionalPaxError={errors.additionalPax}
             mainPassenger={{ firstName: firstName, lastName: lastName }}
+            showAddPax={showAddPax}
           />
 
           <button className='form-btn-submit' onClick={handleSubmit}>
