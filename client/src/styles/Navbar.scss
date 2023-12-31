@@ -65,15 +65,19 @@
       display: flex;
       cursor: pointer;
       font-size: 30px;
+      color: var(--beige);
     }
 
     &-items {
       display: flex;
       flex-direction: column;
-      width: 80%;
+      width: 100%;
       position: absolute;
-      top: 100px;
+      top: 98px;
+      right: 0%;
       align-items: flex-end;
+      background-color: var(--dark);
+      padding: 5% 10%;
     }
 
     &-item {

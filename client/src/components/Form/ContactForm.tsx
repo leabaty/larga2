@@ -33,7 +33,7 @@ export default function ContactForm() {
   };
 
   const validatePhone = (phone: string) => {
-    const phoneRegex = /^\d{10}$/; // Assuming a 10-digit phone number
+    const phoneRegex = /^(\+|00)?[0-9]{2,}([0-9]{9})$/; // +33 or 00 or 0, at least 10 digits
     return phoneRegex.test(phone);
   };
 

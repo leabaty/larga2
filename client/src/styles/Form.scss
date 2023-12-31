@@ -80,3 +80,13 @@
     align-items: center;
   }
 }
+
+@media (max-width: 880px) {
+  .form {
+    margin: 10px 5% 30px;
+
+    &-input {
+      width: 80%;
+    }
+  }
+}

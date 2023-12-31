@@ -39,6 +39,15 @@
     }
     &-txt {
       margin-left: 5px;
+      text-align: left;
+    }
+  }
+}
+
+@media (max-width: 880px) {
+  .res {
+    &-checklist {
+      margin: 0 5% 10%;
     }
   }
 }

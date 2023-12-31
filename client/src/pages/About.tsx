@@ -26,6 +26,7 @@ export default function About() {
       <h2>{content.location}</h2>
       <div className='about-map'>
         <Map />
+
         <div className='about-map-info'>
           <div className='about-map-text'>
             {content.address.map((item, index) => (

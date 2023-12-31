@@ -15,18 +15,16 @@ export default function Reservation() {
       <h1>{content.title}</h1>
       <div className='res-tiles'>
         {content.tiles.map((item, index) => (
-          <>
-            <div key={index}>
-              <div className='res-img'>
-                {React.createElement(item.img, {
-                  color: logoColor,
-                  size: '30',
-                })}
-              </div>
-
-              <p className='res-text'>{item.name}</p>
+          <div key={index}>
+            <div className='res-img'>
+              {React.createElement(item.img, {
+                color: logoColor,
+                size: '30',
+              })}
             </div>
-          </>
+
+            <p className='res-text'>{item.name}</p>
+          </div>
         ))}
       </div>
       <ReservationForm />

@@ -40,3 +40,35 @@
     }
   }
 }
+
+// for the map on the about page
+.leaflet-container {
+  height: 50vh;
+  width: 80%;
+}
+
+@media (max-width: 880px) {
+  .about {
+    &-articles {
+      flex-direction: column;
+      align-items: center;
+    }
+    &-article {
+      margin-bottom: 30px;
+      width: 80%;
+    }
+
+    &-map {
+      flex-direction: column;
+      &-info {
+        width: 100%;
+      }
+      &-text {
+        margin: 5% auto;
+      }
+    }
+  }
+  .leaflet-container {
+    width: 100%;
+  }
+}
