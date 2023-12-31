@@ -25,9 +25,10 @@
     width: 48%;
     text-align: center;
 
-    border: 1px dashed var(--dark);
+    border: 2px dashed var(--green);
     border-radius: 20px;
-    background-color: var(--beige);
+    background-color: var(--lightbeige);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
 
     &-img {
       width: 60%;

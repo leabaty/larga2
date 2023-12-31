@@ -4,7 +4,7 @@
   color: var(--light);
   padding: 15px 30px;
   text-align: center;
-  margin: 10px 30px 30px;
+  margin: 10px 0 30px;
 
   &-input {
     margin: 15px;
@@ -14,6 +14,10 @@
     color: var(--dark);
     width: 50%;
     text-align: left;
+  }
+
+  &-textarea {
+    height: 200px;
   }
 
   &-date {
@@ -61,8 +65,9 @@
     cursor: pointer;
     &:hover {
       color: var(--dark);
-      background-color: var(--light);
-      transform: scale(1.1);
+      background-color: var(--orange);
+      border: none;
+      transform: scale(1.2);
       transition: all 0.2s ease;
     }
   }

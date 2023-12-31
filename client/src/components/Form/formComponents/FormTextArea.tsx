@@ -12,7 +12,7 @@ export const TextAreaField: React.FC<{
 }> = ({ name, placeholder, required = true, value, error, onChange }) => (
   <div>
     <label>
-      <textarea className='form-input' name={name} placeholder={placeholder} value={value} onChange={onChange} required={required} />
+      <textarea className='form-input form-textarea' name={name} placeholder={placeholder} value={value} onChange={onChange} required={required} />
       {error && <p>⚠️ {error}</p>}
     </label>
   </div>
