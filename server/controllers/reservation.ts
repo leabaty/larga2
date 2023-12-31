@@ -1,11 +1,13 @@
 import { Request, Response } from 'express';
-import Reservation from '../models/reservation'; // adjust the path based on your project structure
+import Reservation from '../models/reservation';
+
+import nodemailer from 'nodemailer';
+import hbs from 'nodemailer-express-handlebars';
 
 export const saveReservation = async (req: Request, res: Response) => {
   try {
     const { firstName, lastName, email, phone, additionalPax, counter, selectedDate } = req.body;
 
-    // Assuming you want to save the main reservation and additional pax separately
     const reservation = new Reservation({
       firstName,
       lastName,
@@ -13,24 +15,70 @@ export const saveReservation = async (req: Request, res: Response) => {
       phone,
       counter,
       selectedDate,
-      requestDate: new Date(), // Set the current date as the requestDate
+      requestDate: new Date(),
     });
 
-    // Assuming additionalPax is an array of objects with firstName and lastName
     const additionalPaxArray = additionalPax.map((pax: any) => ({
       firstName: pax.firstName,
       lastName: pax.lastName,
     }));
 
-    // Assign the additionalPax array to the reservation
     reservation.additionalPax = additionalPaxArray;
 
-    // Save the reservation to MongoDB
     await reservation.save();
 
     res.status(201).json({ message: 'Reservation created successfully' });
   } catch (error) {
     console.error('Error creating reservation:', error);
     res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+export const sendRequest = async (req: Request, res: Response) => {
+  try {
+    const { firstName, lastName, email, phone, additionalPax, counter, selectedDate } = req.body;
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASS,
+      },
+    });
+
+    var options = {
+      viewEngine: {
+        extname: '.hbs', // handlebars extension
+        layoutsDir: 'views/email/', // location of handlebars templates
+        defaultLayout: 'reservationRequest', // name of main template
+        partialsDir: 'views/email/', // location of your subtemplates aka. header, footer etc
+      },
+      viewPath: 'views/email',
+      extName: '.hbs',
+    };
+
+    transporter.use('compile', hbs(options));
+
+    let mailOptions = {
+      from: process.env.GMAIL_USER,
+      to: email,
+      subject: 'Votre demande de sortie Larga II ',
+      template: 'reservationRequest',
+      context: {
+        firstName,
+        lastName,
+        email,
+        phone,
+        additionalPax,
+        counter,
+        selectedDate,
+      },
+    };
+
+    console.log(mailOptions);
+
+    await transporter.sendMail(mailOptions);
+  } catch (err) {
+    console.log('Error occured: ' + err);
   }
 };

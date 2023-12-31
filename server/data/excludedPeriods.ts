@@ -1,1 +1,1 @@
-export const excludedPeriods = ['03.12.2023', '04.12.2023'];
+export const excludedPeriods = ['02.02.2024', '03.02.2024', '04.02.2024'];

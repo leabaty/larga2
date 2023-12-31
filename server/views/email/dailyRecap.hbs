@@ -1,0 +1,118 @@
+<html lang='fr' xmlns='http://www.w3.org/1999/xhtml' xmlns:o='urn:schemas-microsoft-com:office:office'>
+  <head>
+    <meta charset='utf-8' />
+    <meta name='viewport' content='width=device-width,initial-scale=1' />
+    <meta name='x-apple-disable-message-reformatting' />
+    <link href='https://fonts.googleapis.com/css2?family=Homemade+Apple&family=Jost:wght@300;400;500&display=swap' rel='stylesheet' />
+    <title>Ta sortie du {{date}}</title>
+
+    <style>
+      table, td, div, h1, p { font-family: Jost, Arial, sans-serif; } @media screen and (max-width: 530px) { .unsub { display: block; padding: 8px;
+      margin-top: 14px; border-radius: 6px; background-color: #f2e8dc; text-decoration: none !important; } .col-lge { max-width: 100% !important; } }
+      @media screen and (min-width: 531px) { .col-sml { max-width: 27% !important; } .col-lge { max-width: 73% !important; } }
+    </style>
+  </head>
+  <body style='margin: 0; padding: 0; word-spacing: normal'>
+    <div
+      role='article'
+      aria-roledescription='email'
+      lang='fr'
+      style='
+        text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+        background-color: #001f36;
+        background-position: center;
+        padding: 0 0 40px 0;
+      '
+    >
+      <table role='presentation' style='width: 100%; border: none; border-spacing: 0'>
+        <tr>
+          <td align='center' style='padding: 0'>
+            <table
+              role='presentation'
+              style='
+                width: 94%;
+                max-width: 600px;
+                border: none;
+                border-spacing: 0;
+                text-align: left;
+                font-family: Jost, Arial, sans-serif;
+                font-size: 17px;
+                line-height: 22px;
+                color: #001f36;
+                padding-bottom: 40px;
+              '
+            >
+              <tr>
+                <td style='padding: 40px 30px 30px 30px; text-align: center; font-size: 24px'>
+                  <a href='https://www.larga2.fr' style='text-decoration: none'>
+                    <img
+                      src='https://i.ibb.co/vJZ9QKk/logo512.png'
+                      style='
+                        width: 20%;
+                        /* max-width: 600px;
+                        border: none;
+                        border-spacing: 0;
+                        text-align: left;
+                        font-family: Jost, Arial, sans-serif;
+                        font-size: 17px;
+                        line-height: 22px;
+                        color: #001f36;
+                        padding-bottom: 40px; */
+                      '
+                    />
+                  </a>
+                </td>
+              </tr>
+
+              <tr>
+                <td style='padding: 30px; background-color: #f2e8dc'>
+                  <p style='margin-top: 0; margin-bottom: 16px; font-size: 22px; line-height: 32px; letter-spacing: -0.02em'>Coucou Denis,</p>
+                  <p style='margin: 0'>Voici le récap de la sortie :</p>
+
+                  <ul style='list-style: none'>
+                    <li>📅 Date : {{date}}</li>
+                    <li>👥 Participants : {{counter}}</li>
+                    <li>👤 Contact 1 : {{firstname}} {{lastname}} | 📞 {{phone}} | ✉️ {{email}}. Accompagnants : Jean Martin</li>
+
+                    <li>📞 Contact 2 : {{firstname}} {{lastname}} / {{phone}}</li>
+                    <li>📞 Contact 3 : {{firstname}} {{lastname}} / {{phone}}</li>
+                    <li>📞 Contact 4 : {{firstname}} {{lastname}} / {{phone}}</li>
+                  </ul>
+
+                  <p>
+                    Le nombre total de participants sur cette journée s'élève à
+                    <strong>{{totalpax}}</strong>.
+                  </p>
+
+                  <p style='margin: 0; color: red'>VEUX TU INSERER D'AUTRES INFOS ?!</p>
+
+                  <p>Liens utiles:</p>
+                  <ul style='list-style: none'>
+                    <li>
+                      🌤️
+                      <a style='color: #001f36' href='https://www.windy.com/43.332/5.152?42.870,5.153,8'>Coup d'oeil météo (Windy)</a>
+                    </li>
+                    <li>
+                      ✉️
+                      <a style='color: #001f36' href='mailto: {{emails}}'>Leur envoyer un mail groupé</a>
+                    </li>
+                    <li>
+                      📱
+                      <a style='color: #001f36' href='mailto: {{emails}}'>Leur envoyer un sms groupé</a>
+                    </li>
+                  </ul>
+
+                  <p>Belle sortie à toi et ton équipage ! ✨⛵️</p>
+                  <p>Amicalement,</p>
+                  <p>Léa</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

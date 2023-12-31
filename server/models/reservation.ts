@@ -1,13 +1,13 @@
 import mongoose from 'mongoose';
 
 const additionalPaxSchema = new mongoose.Schema({
-  firstname: String,
+  firstName: String,
   lastName: String,
 });
 
 const reservationSchema = new mongoose.Schema(
   {
-    firstname: String,
+    firstName: String,
     lastName: String,
     email: String,
     phone: String,

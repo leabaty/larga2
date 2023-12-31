@@ -1,0 +1,168 @@
+<html lang="fr" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="x-apple-disable-message-reformatting" />
+    <link href="https://fonts.googleapis.com/css2?family=Homemade+Apple&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+    <title>Nouvelle demande de sortie</title>
+
+    <style>
+      table,
+      td,
+      div,
+      h1,
+      p {
+        font-family: Jost, Arial, sans-serif;
+      }
+      @media screen and (max-width: 530px) {
+        .unsub {
+          display: block;
+          padding: 8px;
+          margin-top: 14px;
+          border-radius: 6px;
+          background-color: #f2e8dc;
+          text-decoration: none !important;
+        }
+        .col-lge {
+          max-width: 100% !important;
+        }
+      }
+      @media screen and (min-width: 531px) {
+        .col-sml {
+          max-width: 27% !important;
+        }
+        .col-lge {
+          max-width: 73% !important;
+        }
+      }
+    </style>
+  </head>
+  <body style="margin: 0; padding: 0; word-spacing: normal">
+    <div
+      role="article"
+      aria-roledescription="email"
+      lang="fr"
+      style="
+        text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+        background-color: #001f36;
+        background-position: center;
+        padding: 0 0 40px 0;
+      "
+    >
+      <table role="presentation" style="width: 100%; border: none; border-spacing: 0">
+        <tr>
+          <td align="center" style="padding: 0">
+            <table
+              role="presentation"
+              style="
+                width: 94%;
+                max-width: 600px;
+                border: none;
+                border-spacing: 0;
+                text-align: left;
+                font-family: Jost, Arial, sans-serif;
+                font-size: 17px;
+                line-height: 22px;
+                color: #001f36;
+                padding-bottom: 40px;
+              "
+            >
+              <tr>
+                <td style="padding: 40px 30px 30px 30px; text-align: center; font-size: 24px">
+                  <a href="https://www.larga2.fr" style="text-decoration: none">
+                    <img
+                      src="https://i.ibb.co/vJZ9QKk/logo512.png"
+                      style="
+                        width: 20%;
+                        /* max-width: 600px;
+                        border: none;
+                        border-spacing: 0;
+                        text-align: left;
+                        font-family: Jost, Arial, sans-serif;
+                        font-size: 17px;
+                        line-height: 22px;
+                        color: #001f36;
+                        padding-bottom: 40px; */
+                      "
+                    />
+                  </a>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding: 30px; background-color: #f2e8dc">
+                  <p style="margin-top: 0; margin-bottom: 16px; font-size: 22px; line-height: 32px; letter-spacing: -0.02em">Coucou Denis,</p>
+                  <p style="margin: 0">Tu as reçu une nouvelle demande de réservation !</p>
+
+                  <p>Voici les détails:</p>
+
+                  <ul style="list-style: none">
+                    <li>📅 Date : {{date}}</li>
+                    <li>👥 Participants : {{counter}}</li>
+                    <li>📞 Contact principal : {{firstname}} {{lastname}} / {{phone}}</li>
+                  </ul>
+
+                  <p>
+                    Le nombre total de participants sur cette journée s'élève maintenant à <strong>{{totalpax}}</strong>. Tu peux valider cette
+                    réservation directement en supprimant le début de ce mail, en changeant l'objet par :
+                  </p>
+
+                  <strong>Confirmation de votre sortie voile du {{date}}, {{counter}} participants</strong>
+
+                  <p>et en l'envoyant à : <strong>{{email}}.</strong></p>
+
+                  <br />
+
+                  <p style="margin-top: 0; margin-bottom: 16px; font-size: 22px; line-height: 32px; letter-spacing: -0.02em">
+                    Bonjour {{firstname}},
+                  </p>
+                  <p style="margin: 0">J'ai bien reçu votre demande de réservation pour une sortie voile dont voici les détails :</p>
+
+                  <ul style="list-style: none">
+                    <li>📅 Date : {{date}}</li>
+                    <li>👥 Participants : {{counter}}</li>
+                    <li>📞 Contact principal : {{firstname}} {{lastname}} / {{phone}}</li>
+                  </ul>
+
+                  <strong style="margin: 0">Je vous confirme la sortie voile par cet email. </strong>
+
+                  <p style="margin: 0; color: red">VEUX TU INSERER D'AUTRES INFOS ?!</p>
+
+                  <p>Infos utiles pour le jour J :</p>
+                  <ul style="list-style: none">
+                    <li>🥪 Pensez à votre petit casse-croûte</li>
+                    <li>
+                      🌦️ Choisissez des vêtements adaptés (en fonction de la météo, vêtements imperméables ou maillot de bain, chaussures à la semelle
+                      souple, et éventuellement crème solaire!)
+                    </li>
+                    <li>📍 Rendez-vous à la Panne 2, au port de Carry-le-Rouet, à 10 heures</li>
+                    <li>💶 10 euros par personne, pour participation à la caisse de bord</li>
+                  </ul>
+
+                  <p>A très bientôt sur l'eau ⛵️</p>
+                  <p>Amicalement,</p>
+                  <p>Votre skipper Denis</p>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding: 20px; text-align: center; font-size: 12px; background-color: #f2e8dc; color: #001f36">
+                  <p style="margin: 0 0 8px 0">
+                    <a
+                      href="https://www.facebook.com/larga.deux.9/"
+                      style="text-decoration: none; color: #001f36; font-family: 'Jost', Arial, sans-serif; font-size: 15px"
+                    >
+                      → Suivez-moi sur facebook ←
+                    </a>
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

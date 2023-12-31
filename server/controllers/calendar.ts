@@ -11,7 +11,7 @@ import { Reservation } from '../types/reservation';
 import { excludedPeriods } from '../data/excludedPeriods';
 
 export const getCalendarData = async (req: Request, res: Response) => {
-  const maxPax = 5;
+  const maxPax = 4; // boat is 6 pax max, 1 skipper + 1 (always) free spot
 
   try {
     const reservations: Reservation[] = await ReservationModel.find();
@@ -30,12 +30,13 @@ export const getCalendarData = async (req: Request, res: Response) => {
 
     const calendarItems: Calendar = [];
 
-    // go through each day between currentDate and lastDate
+    // go through each day between currentDate and lastDate, and add the paxCounter and the enabled/disabled
     for (let date = new Date(currentDate); date <= lastDate; date.setDate(date.getDate() + 1)) {
-      const dateKey = date.toISOString().split('T')[0];
+      const currentDate = new Date(date); // Create a new Date object for each day
+      const dateKey = currentDate.toISOString().split('T')[0];
       const paxCounter = dateMap.get(dateKey) || 0;
       const enabled = paxCounter < maxPax;
-      const calendarItem: CalendarItem = { date, paxCounter, enabled };
+      const calendarItem: CalendarItem = { date: currentDate, paxCounter, enabled };
       calendarItems.push(calendarItem);
     }
 
@@ -63,9 +64,10 @@ const excludeDays = (startDate: Date, endDate: Date): Calendar => {
 
   for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
     const dayOfWeek = date.getDay();
+    const currentDate = new Date(date); // Create a new Date object
 
     if (days.includes(dayOfWeek)) {
-      const calendarItem: CalendarItem = { date, paxCounter: 6, enabled: false };
+      const calendarItem: CalendarItem = { date: currentDate, paxCounter: 6, enabled: false };
       excludedDays.push(calendarItem);
     }
   }
