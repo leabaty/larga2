@@ -5,7 +5,7 @@ import { FaFacebook, FaInstagram, FaTimes } from 'react-icons/fa';
 import { HiOutlineMenuAlt3 } from 'react-icons/hi';
 import { Logo, navbarItems, socialItems } from '../contents/Navbar';
 
-// react/typescript component management
+// for bad typing react/typescript component
 interface IconMap {
   [key: string]: React.ComponentType;
 }
@@ -53,8 +53,8 @@ export default function Navbar() {
   }, [location.pathname]);
 
   return (
-    <div className={`navbar ${fullNavbar ? 'fullNavbar' : ''}`}>
-      <div className={`navbar-container ${fullNavbar ? 'fullNavbar' : ''}`}>
+    <div className={`navbar ${fullNavbar || openedMobileMenu ? 'fullNavbar' : ''}`}>
+      <div className={`navbar-container ${fullNavbar || openedMobileMenu ? 'fullNavbar' : ''}`}>
         <Link to='/' onClick={closeMobileMenu}>
           <Logo size={isMobile || fullNavbar ? '75' : '100'} />
         </Link>
@@ -77,13 +77,7 @@ export default function Navbar() {
             {socialItems.map((item, index) => {
               const IconComponent = iconMap[item.name];
               return (
-                <a
-                  className='navbar-social'
-                  href={item.link}
-                  target='_blank'
-                  rel='noreferrer'
-                  key={index}
-                >
+                <a className='navbar-social' href={item.link} target='_blank' rel='noreferrer' key={index}>
                   {IconComponent && <IconComponent />}
                 </a>
               );
@@ -96,13 +90,7 @@ export default function Navbar() {
           {socialItems.map((item, index) => {
             const IconComponent = iconMap[item.name];
             return (
-              <a
-                className='navbar-social'
-                href={item.link}
-                target='_blank'
-                rel='noreferrer'
-                key={index}
-              >
+              <a className='navbar-social' href={item.link} target='_blank' rel='noreferrer' key={index}>
                 {IconComponent && <IconComponent />}
               </a>
             );
