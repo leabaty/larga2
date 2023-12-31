@@ -44,7 +44,7 @@ export default function ReservationForm() {
   };
 
   const validatePhone = (phone: string) => {
-    const phoneRegex = /^(\+|00)?[0-9]{2,}([0-9]{9})$/; // +33 or 00 or 0, at least 10 digits
+    const phoneRegex = /^(\+|0)[0-9]{7,}$/; // Should be only numbers, should begin with 0 or +
     return phoneRegex.test(phone);
   };
 
@@ -94,6 +94,7 @@ export default function ReservationForm() {
   };
 
   const postData = usePost('/reservation/create', formValues);
+  const sendData = usePost('/reservation/email', formValues);
 
   const handleSubmit = async () => {
     const newErrors: FormReservationErrorMessages = {
@@ -134,6 +135,13 @@ export default function ReservationForm() {
         await postData();
         console.log('Reservation submitted successfully!');
         setSubmitted(true);
+        try {
+          await sendData();
+          console.log('Reservation sent successfully!');
+          setSubmitted(true);
+        } catch (error) {
+          console.error('Reservation failed to sent:', error);
+        }
       } catch (error) {
         console.error('Reservation failed to submit:', error);
       }
