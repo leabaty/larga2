@@ -93,9 +93,6 @@ export default function ReservationForm() {
     setErrors((prevErrors) => ({ ...prevErrors, additionalPax: '' }));
   };
 
-  const postData = usePost('/reservation/create', formValues);
-  const sendData = usePost('/reservation/email', formValues);
-
   const handleSubmit = async () => {
     const newErrors: FormReservationErrorMessages = {
       firstName: '',
@@ -132,22 +129,26 @@ export default function ReservationForm() {
 
     if (Object.values(newErrors).every((error) => !error)) {
       try {
-        await postData();
+        await saveSendReservation();
         console.log('Reservation submitted successfully!');
         setSubmitted(true);
-        try {
-          await sendData();
-          console.log('Reservation sent successfully!');
-          setSubmitted(true);
-        } catch (error) {
-          console.error('Reservation failed to sent:', error);
-        }
       } catch (error) {
         console.error('Reservation failed to submit:', error);
       }
     } else {
       setErrors(newErrors);
     }
+  };
+
+  // save data in DB + send email recaps
+  const saveData = usePost('/reservation/create', formValues);
+  const sendRequest = usePost('/reservation/email-request', formValues);
+  const sendRecap = usePost('/reservation/email-recap', formValues);
+
+  const saveSendReservation = () => {
+    saveData();
+    sendRequest();
+    sendRecap();
   };
 
   useEffect(() => {

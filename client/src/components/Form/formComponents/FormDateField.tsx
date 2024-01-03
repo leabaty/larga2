@@ -34,6 +34,7 @@ export const DateField: React.FC<{
       <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fr}>
         <DatePicker
           label='Date'
+          timezone='system'
           value={selectedDate}
           onChange={onChange}
           minDate={new Date()}
