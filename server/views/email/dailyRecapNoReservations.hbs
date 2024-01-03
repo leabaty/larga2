@@ -4,7 +4,7 @@
     <meta name='viewport' content='width=device-width,initial-scale=1' />
     <meta name='x-apple-disable-message-reformatting' />
     <link href='https://fonts.googleapis.com/css2?family=Homemade+Apple&family=Jost:wght@300;400;500&display=swap' rel='stylesheet' />
-    <title>Ta sortie du {{date}}</title>
+    <title>Pas de réservations pour demain !</title>
 
     <style>
       table, td, div, h1, p { font-family: Jost, Arial, sans-serif; } @media screen and (max-width: 530px) { .unsub { display: block; padding: 8px;
@@ -69,68 +69,9 @@
               <tr>
                 <td style='padding: 30px; background-color: #f2e8dc'>
                   <p style='margin-top: 0; margin-bottom: 16px; font-size: 22px; line-height: 32px; letter-spacing: -0.02em'>Coucou Denis,</p>
-                  <p style='margin: 0'>Voici le récap de la sortie :</p>
+                  <p style='margin: 0'>Aucune réservation n'a été faite pour le {{date}}, tu es donc libre comme l'air !</p>
 
-                  <ul style='list-style: none'>
-                    <li>📅 Date : {{date}}</li>
-                    <li>👥 Participants : {{counter}}</li>
-                    <li>👤 Contact 1 : {{firstname}} {{lastname}} | 📞 {{phone}} | ✉️ {{email}}. Accompagnants : Jean Martin</li>
-                  </ul>
-
-                  <p>
-                    Le nombre total de participants sur cette journée s'élève à
-                    <strong>{{totalpax}}</strong>.
-                  </p>
-
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Nom</th>
-                        <th>Téléphone</th>
-                        <th>Email</th>
-                        <th>Accompagnants</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {{#each paxInfo}}
-                        <tr>
-                          <td>{{firstName}} {{lastName}}</td>
-                          <td>{{phone}}</td>
-                          <td>{{email}}</td>
-                          <td>
-                            {{#if additionalPax.length}}
-                              {{#each additionalPax}}
-                                {{firstName}}
-                                {{lastName}}{{#unless @last}}, {{/unless}}
-                              {{/each}}
-                            {{else}}
-                              N/A
-                            {{/if}}
-                          </td>
-                        </tr>
-                      {{/each}}
-                    </tbody>
-                  </table>
-
-                  <p style='margin: 0; color: red'>VEUX TU INSERER D'AUTRES INFOS ?!</p>
-
-                  <p>Liens utiles:</p>
-                  <ul style='list-style: none'>
-                    <li>
-                      🌤️
-                      <a style='color: #001f36' href='https://www.windy.com/43.332/5.152?42.870,5.153,8'>Coup d'oeil météo (Windy)</a>
-                    </li>
-                    <li>
-                      ✉️
-                      <a style='color: #001f36' href='mailto: {{emails}}'>Leur envoyer un mail groupé</a>
-                    </li>
-                    <li>
-                      📱
-                      <a style='color: #001f36' href='mailto: {{emails}}'>Leur envoyer un sms groupé</a>
-                    </li>
-                  </ul>
-
-                  <p>Belle sortie à toi et ton équipage ! ✨⛵️</p>
+                  <p>Bonne journée ✨⛵️</p>
                   <p>Amicalement,</p>
                   <p>Léa</p>
                 </td>

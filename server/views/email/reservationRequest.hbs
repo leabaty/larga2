@@ -70,7 +70,7 @@
                 <td style='padding: 30px; background-color: #f2e8dc'>
                   <p style='margin-top: 0; margin-bottom: 16px; font-size: 22px; line-height: 32px; letter-spacing: -0.02em'>
                     Bonjour
-                    {{firstname}},
+                    {{firstName}},
                   </p>
                   <p style='margin: 0'>
                     Merci pour votre demande de réservation. Veuillez noter que ceci n'est pas une confirmation, je reviendrai vers vous très
@@ -80,10 +80,12 @@
                   <p>Récapitulatif :</p>
 
                   <ul style='list-style: none'>
-                    <li>📅 Date : {{selectedDate}}</li>
-                    <li>👥 Participants : {{counter}}</li>
-                    <li>📞 Contact principal : {{firstname}} {{lastname}} / {{phone}}</li>
-                    <li>additionalPax : {{additionalPax}} </li>
+                    <li>📅 Date : {{date}}</li>
+
+                    <li>👤 Contact principal : {{firstName}} {{lastName}}</li>
+                    <li>📞 Téléphone : {{phone}}</li>
+                    <li>✉️ Email: {{email}}</li>
+                    <li>👥 Nombre de participants: {{counter}}, dont {{addPax}} </li>
                   </ul>
 
                   <p>D'ici là, vous pouvez toujours :</p>

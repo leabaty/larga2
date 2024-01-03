@@ -10,6 +10,9 @@ import { Reservation } from '../types/reservation';
 // data
 import { excludedPeriods } from '../data/excludedPeriods';
 
+/** getCalendarData constructs and sends a whole year worth of dates and their information
+ to the front in order to show unavailable dates in the calendar, and their paxCounter.*/
+
 export const getCalendarData = async (req: Request, res: Response) => {
   const maxPax = 4; // boat is 6 pax max, 1 skipper + 1 (always) free spot
 

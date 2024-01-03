@@ -17,6 +17,8 @@ exports.getCalendarData = void 0;
 const reservation_1 = __importDefault(require("../models/reservation"));
 // data
 const excludedPeriods_1 = require("../data/excludedPeriods");
+/** getCalendarData constructs and sends a whole year worth of dates and their information
+ to the front in order to show unavailable dates in the calendar, and their paxCounter.*/
 const getCalendarData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const maxPax = 4; // boat is 6 pax max, 1 skipper + 1 (always) free spot
     try {
