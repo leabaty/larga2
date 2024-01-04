@@ -48,7 +48,7 @@
                 <td style='padding: 40px 30px 30px 30px; text-align: center; font-size: 24px'>
                   <a href='https://www.larga2.fr' style='text-decoration: none'>
                     <img
-                      src='https://i.ibb.co/vJZ9QKk/logo512.png'
+                      src='https://i.ibb.co/GWN285t/larga2-white.png'
                       style='
                         width: 20%;
                         /* max-width: 600px;
@@ -74,19 +74,19 @@
                   <p>Voici les détails de cette demande:</p>
 
                   <ul style='list-style: none'>
-                    <li>📅 Date : {{date}}</li>
-                    <li>👤 Contact principal : {{firstName}} {{lastName}}</li>
-                    <li>📞 Téléphone : {{phone}}</li>
-                    <li>✉️ Email: {{email}}</li>
+                    <li>📅 {{date}}</li>
+                    <li>👤 {{firstName}} {{lastName}}</li>
+                    <li>📞 {{phone}}</li>
+                    <li>✉️ {{email}}</li>
                     {{#if addPax}}
-                      <li>👥 Nombre de participants: {{counter}}, dont {{addPax}}</li>
+                      <li>👥 {{counter}} participants, dont {{addPax}}</li>
                     {{/if}}
                   </ul>
 
                   <p>
-                    Le nombre total de participants sur cette journée s'élèverait maintenant à
-                    <strong>{{recapPaxCounter}} participants</strong>, pour un total de
-                    <strong>{{recapReservationCounter}} réservations</strong>
+                    Le nombre de participants sur cette journée s'élèverait maintenant à
+                    <strong>{{recapPaxCounter}} participant(s)</strong>, pour un total de
+                    <strong>{{recapReservationCounter}} réservation(s)</strong>
                     dont voici les infos :
                   </p>
 
@@ -101,7 +101,7 @@
                     </thead>
                     <tbody>
                       {{#each recap}}
-                        <tr style='height: 50px; border-bottom: 1px solid #3bafa3'>
+                        <tr style='height: 50px; border-bottom: 2px solid #3bafa3'>
                           <td style='padding: 8px'>{{this.firstName}} {{this.lastName}}</td>
                           <td style='padding: 8px'>{{this.phone}}</td>
                           <td style='padding: 8px'>{{this.email}}</td>
@@ -127,7 +127,7 @@
 
                   <div style='text-align: center'>
                     <a
-                      href='https://www.larga2.fr/confirmation/{{reservationId}}'
+                      href='https://www.larga2.fr/answer/{{reservationId}}'
                       style='
                           display: inline-block;
                           margin: 10px 5px;

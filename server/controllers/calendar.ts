@@ -8,7 +8,7 @@ import { CalendarItem, Calendar } from '../types/calendar';
 import { Reservation } from '../types/reservation';
 
 // data
-import { excludedPeriods } from '../data/excludedPeriods';
+import { excludedPeriods } from '../data';
 
 /** getCalendarData constructs and sends a whole year worth of dates and their information
  to the front in order to show unavailable dates in the calendar, and their paxCounter.*/

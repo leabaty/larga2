@@ -19,11 +19,6 @@ export interface DateRecap {
   paxCounter: number;
 }
 
-export interface FormattedData {
-  formattedAddPax: string;
-  formattedDate: string;
-}
-
 export interface MailOptions {
   from: string | undefined;
   to: any;

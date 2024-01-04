@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="x-apple-disable-message-reformatting" />
     <link href="https://fonts.googleapis.com/css2?family=Homemade+Apple&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
-    <title>Nouvelle demande de sortie</title>
+    <title>Pas de sortie le {{date}}</title>
 
     <style>
       table,
@@ -73,7 +73,7 @@
                 <td style="padding: 40px 30px 30px 30px; text-align: center; font-size: 24px">
                   <a href="https://www.larga2.fr" style="text-decoration: none">
                     <img
-                      src="https://i.ibb.co/vJZ9QKk/logo512.png"
+                      src="https://i.ibb.co/GWN285t/larga2-white.png"
                       style="
                         width: 20%;
                         /* max-width: 600px;
@@ -93,61 +93,23 @@
 
               <tr>
                 <td style="padding: 30px; background-color: #f2e8dc">
-                  <p style="margin-top: 0; margin-bottom: 16px; font-size: 22px; line-height: 32px; letter-spacing: -0.02em">Coucou Denis,</p>
-                  <p style="margin: 0">Tu as reçu une nouvelle demande de réservation !</p>
+                  <p style="margin-top: 0; margin-bottom: 16px; font-size: 22px; line-height: 32px; letter-spacing: -0.02em">
+                    Bonjour {{firstName}},
+                  </p>
+                  <p style="margin: 0">La sortie voile du {{date}} n'est malheureusement pas disponible...</p>
 
-                  <p>Voici les détails de cette demande:</p>
+                  <br />
 
-                  <ul style="list-style: none">
-                    <li>📅 Date : {{date}}</li>
-                    <li>👤 Contact principal : {{firstName}} {{lastName}}</li>
-                    <li>📞 Téléphone : {{phone}}</li>
-                    <li>✉️ Email: {{email}}</li>
-                    {{#if addPax}}
-                    <li>👥 Nombre de participants: {{counter}}, dont {{addPax}}</li>
-                    {{/if}}
-                  </ul>
-
-                  <p>
-                    Le nombre total de participants sur cette journée s'élèverait maintenant à
-                    <strong>{{recapPaxCounter}} participants</strong>, pour un total de
-                    <strong>{{recapReservationCounter}} réservations</strong>
-                    dont voici les infos :
+                  <p style="margin: 0">
+                    Cependant, n'hésitez pas à faire une demande sur une autre date, je sors très régulièrement et ça serait toujours un plaisir de
+                    vous accueillir à bord.
                   </p>
 
-                  <table style="width: 100%; border-collapse: collapse">
-                    <thead>
-                      <tr style="background-color: #f2e8dc; height: 40px">
-                        <th style="padding: 8px">Nom</th>
-                        <th style="padding: 8px">Téléphone</th>
-                        <th style="padding: 8px">Email</th>
-                        <th style="padding: 8px">Accompagnants</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {{#each recap}}
-                      <tr style="height: 50px; border-bottom: 1px solid #3bafa3">
-                        <td style="padding: 8px">{{this.firstName}} {{this.lastName}}</td>
-                        <td style="padding: 8px">{{this.phone}}</td>
-                        <td style="padding: 8px">{{this.email}}</td>
-                        <td style="padding: 8px">
-                          {{#if this.additionalPax.length}} {{#each this.additionalPax}} {{this.firstName}} {{this.lastName}}{{#unless @last}},
-                          {{/unless}} {{/each}} {{else}} - {{/if}}
-                        </td>
-                      </tr>
-                      {{/each}}
-                    </tbody>
-                  </table>
-
-                  <p>
-                    Tu peux maintenant répondre à la demande en cliquant sur le bouton ci-dessous.
-                    <strong>Attention, le refus est définitif</strong>
-                    (la réservation sera supprimée).
-                  </p>
+                  <br />
 
                   <div style="text-align: center">
                     <a
-                      href="https://www.larga2.fr/confirmation/{{reservationId}}"
+                      href="https://www.larga2.fr/reservation"
                       style="
                         display: inline-block;
                         margin: 10px 5px;
@@ -161,11 +123,26 @@
                         color: #fdf9f2;
                       "
                     >
-                      REPONDRE A LA DEMANDE
+                      Je choisis une autre date
                     </a>
                   </div>
-                  <p>Amicalement ⛵️</p>
-                  <p>Léa</p>
+
+                  <p>A très bientôt sur l'eau ⛵️</p>
+                  <p>Amicalement,</p>
+                  <p>Votre skipper Denis</p>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding: 20px; text-align: center; font-size: 12px; background-color: #f2e8dc; color: #001f36">
+                  <p style="margin: 0 0 8px 0">
+                    <a
+                      href="https://www.facebook.com/larga.deux.9/"
+                      style="text-decoration: none; color: #001f36; font-family: 'Jost', Arial, sans-serif; font-size: 15px"
+                    >
+                      → Suivez-moi sur facebook ←
+                    </a>
+                  </p>
                 </td>
               </tr>
             </table>

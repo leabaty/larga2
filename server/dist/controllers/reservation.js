@@ -12,23 +12,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.saveReservation = exports.sendRecap = exports.sendRequest = void 0;
+exports.sendDailyRecap = exports.saveReservation = exports.sendRecap = exports.sendRequest = void 0;
 // email sending
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const nodemailer_express_handlebars_1 = __importDefault(require("nodemailer-express-handlebars"));
+const node_schedule_1 = __importDefault(require("node-schedule"));
 // date management
 const date_fns_1 = require("date-fns");
 const locale_1 = require("date-fns/locale");
 // types & models
 const reservation_1 = __importDefault(require("../models/reservation"));
+// misc
+const data_1 = require("../data");
 /**When getting a reservation :
  * Database : Date gets 11h added to counteract browser TZ + is stored
  * RequestEmail :  Date gets 11h added to counteract browser TZ + is sent
  * RecapEmail :  Date gets 11h added to counteract browser TZ, more info is fetched about the reservation date, and it's sent
- *
- * DailyEmail :  More info is fetched about the reservation date, and it's sent automatically each 24h
+ * DateRecap :  More info is fetched about the reservation date, and it's sent automatically day before
  * */
-const senderEmail = process.env.GMAIL_USER || 'sorties.larga2@gmail.com';
 //get the ID of the last saved item id with the same lastname for managing confirmations
 const getReservationId = (lastName) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -79,10 +80,19 @@ const counteractBrowserTZ = (date) => {
         return null;
     }
 };
-const sendDateRecap = (date, res) => __awaiter(void 0, void 0, void 0, function* () {
+const sendDateRecap = (date) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const dateInfo = yield getDateInfo(date);
         const formattedDate = (0, date_fns_1.format)(date, 'EEEE d MMMM yyyy', { locale: locale_1.fr });
+        let formattedEmails;
+        if (dateInfo) {
+            const emails = dateInfo.paxInfo.map((pax) => pax.email);
+            formattedEmails = emails.join(',');
+        }
+        else {
+            console.error('dateInfo is undefined');
+            formattedEmails = ''; // Set a default value or handle the case where emails are not available
+        }
         const transporter = nodemailer_1.default.createTransport({
             service: 'gmail',
             auth: {
@@ -105,8 +115,8 @@ const sendDateRecap = (date, res) => __awaiter(void 0, void 0, void 0, function*
         if (dateInfo) {
             // if there are reservations, use the templates
             mailOptions = {
-                from: senderEmail,
-                to: senderEmail,
+                from: data_1.senderEmail,
+                to: data_1.senderEmail,
                 subject: 'Ta sortie de demain',
                 template: 'dateRecap',
                 context: {
@@ -114,14 +124,15 @@ const sendDateRecap = (date, res) => __awaiter(void 0, void 0, void 0, function*
                     recap: dateInfo.paxInfo || [],
                     recapPaxCounter: dateInfo.paxCounter || 0,
                     recapReservationCounter: dateInfo.reservationCounter || 0,
+                    emails: formattedEmails,
                 },
             };
         }
         else {
             // otherwise, send an informative email about no reservations
             mailOptions = {
-                from: senderEmail,
-                to: senderEmail,
+                from: data_1.senderEmail,
+                to: data_1.senderEmail,
                 subject: 'Pas de réservations pour demain !',
                 template: 'dateRecapEmpty',
                 context: {
@@ -130,11 +141,10 @@ const sendDateRecap = (date, res) => __awaiter(void 0, void 0, void 0, function*
             };
         }
         yield transporter.sendMail(mailOptions);
-        res.status(200).send('Recap sent successfully');
+        console.log('Recap sent successfully');
     }
     catch (err) {
         console.error('Error occurred in sendRecap: ' + err);
-        res.status(500).send('Internal Server Error');
     }
 });
 const sendEmail = (req, res, template, subject, from, to) => __awaiter(void 0, void 0, void 0, function* () {
@@ -204,8 +214,6 @@ const sendEmail = (req, res, template, subject, from, to) => __awaiter(void 0, v
                     reservationId,
                 },
             };
-            console.log('MAILOPTIONS');
-            console.log(JSON.stringify(mailOptions));
         }
         else {
             // otherwise, send an informative email about no reservations
@@ -228,11 +236,11 @@ const sendEmail = (req, res, template, subject, from, to) => __awaiter(void 0, v
     }
 });
 const sendRequest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    yield sendEmail(req, res, 'reservationRequest', 'Votre demande de sortie Larga II', senderEmail, req.body.email);
+    yield sendEmail(req, res, 'reservationRequest', 'Votre demande de sortie Larga II', data_1.senderEmail, req.body.email);
 });
 exports.sendRequest = sendRequest;
 const sendRecap = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    yield sendEmail(req, res, 'reservationRecap', 'Nouvelle demande de sortie', senderEmail, senderEmail);
+    yield sendEmail(req, res, 'reservationRecap', 'Nouvelle demande de sortie', data_1.senderEmail, data_1.senderEmail);
 });
 exports.sendRecap = sendRecap;
 const saveReservation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -262,49 +270,38 @@ const saveReservation = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.saveReservation = saveReservation;
-// // sending the daily recap email
-// export const sendDailyRecap = async () => {
-//   try {
-//     // Get the current date
-//     const currentDate = new Date();
-//     // Determine the next day based on the current day
-//     let nextDay;
-//     switch (currentDate.getUTCDay()) {
-//       case 0: // Sunday
-//         nextDay = addDays(currentDate, 1); // Monday
-//         break;
-//       case 1: // Monday
-//         nextDay = addDays(currentDate, 1); // Tuesday
-//         break;
-//       case 2: // Tuesday
-//         nextDay = addDays(currentDate, 2); // Wednesday
-//         break;
-//       case 3: // Wednesday
-//         nextDay = addDays(currentDate, 1); // Thursday
-//         break;
-//       case 4: // Thursday
-//         nextDay = addDays(currentDate, 3); // Sunday (for the next week)
-//         break;
-//       default:
-//         // For other days, do not send the recap
-//         return;
-//     }
-//     // Set the time to 09:00 UTC for the next day
-//     nextDay.setUTCHours(9, 0, 0, 0);
-//     // Get additional information about the precise date
-//     getDateInfo(nextDay);
-//     // Construct a fake request object with the required data for the daily recap email
-//     const fakeReq = {
-//       body: {
-//         // Add any required data for the daily recap email
-//         // For example, you may want to pass a subject, template, and other data specific to the daily recap email
-//       },
-//     };
-//     // Call the function to send the daily recap email
-//     await sendEmail(fakeReq, {}, 'dailyRecap', 'Daily Recap Subject');
-//   } catch (err) {
-//     console.error('Error occurred in sendDailyRecap: ' + err);
-//   }
-// };
-// // Schedule the function to run every day at 09:00 UTC
-// schedule.scheduleJob('0 9 * * *', sendDailyRecap);
+// sending the daily recap email
+const sendDailyRecap = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const currentDate = new Date();
+        let nextDay;
+        switch (currentDate.getUTCDay()) {
+            case 0: // Sunday
+                nextDay = (0, date_fns_1.addDays)(currentDate, 1); // Monday
+                break;
+            case 1: // Monday
+                nextDay = (0, date_fns_1.addDays)(currentDate, 1); // Tuesday
+                break;
+            case 2: // Tuesday
+                nextDay = (0, date_fns_1.addDays)(currentDate, 2); // Wednesday
+                break;
+            case 3: // Wednesday
+                nextDay = (0, date_fns_1.addDays)(currentDate, 1); // Thursday
+                break;
+            case 4: // Thursday
+                nextDay = (0, date_fns_1.addDays)(currentDate, 3); // Sunday (for the next week)
+                break;
+            default:
+                // For other days, do not send the recap
+                return;
+        }
+        nextDay.setUTCHours(9, 0, 0, 0);
+        yield sendDateRecap(nextDay);
+    }
+    catch (err) {
+        console.error('Error occurred in sendDailyRecap: ' + err);
+    }
+});
+exports.sendDailyRecap = sendDailyRecap;
+// run every day at 09:00 UTC
+node_schedule_1.default.scheduleJob('0 9 * * *', exports.sendDailyRecap);

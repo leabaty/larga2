@@ -4,7 +4,7 @@
     <meta name='viewport' content='width=device-width,initial-scale=1' />
     <meta name='x-apple-disable-message-reformatting' />
     <link href='https://fonts.googleapis.com/css2?family=Homemade+Apple&family=Jost:wght@300;400;500&display=swap' rel='stylesheet' />
-    <title>Votre demande de sortie Larga II</title>
+    <title>Pas de sortie le {{date}}</title>
 
     <style>
       table, td, div, h1, p { font-family: Jost, Arial, sans-serif; } @media screen and (max-width: 530px) { .unsub { display: block; padding: 8px;
@@ -72,41 +72,36 @@
                     Bonjour
                     {{firstName}},
                   </p>
+                  <p style='margin: 0'>La sortie voile du {{date}} n'est malheureusement pas disponible...</p>
+
+                  <br />
+
                   <p style='margin: 0'>
-                    Merci pour votre demande de réservation. Veuillez noter que ceci n'est pas une confirmation, je reviendrai vers vous très
-                    rapidement afin de confirmer la disponibilité de la sortie demandée.
+                    Cependant, n'hésitez pas à faire une demande sur une autre date, je sors très régulièrement et ça serait toujours un plaisir de
+                    vous accueillir à bord.
                   </p>
 
-                  <p>Récapitulatif :</p>
+                  <br />
 
-                  <ul style='list-style: none'>
-                    <li>📅 {{date}}</li>
-                    <li>👤 {{firstName}} {{lastName}}</li>
-                    <li>📞 {{phone}}</li>
-                    <li>✉️ {{email}}</li>
-                    {{#if addPax}}
-                      <li>👥 {{counter}} participants, dont {{addPax}}</li>
-                    {{/if}}
-                  </ul>
-
-                  <p>D'ici là, vous pouvez toujours :</p>
-                  <ul style='list-style: none'>
-                    <li>
-                      🌤️
-                      <a style='color: #001f36' href='https://www.windy.com/43.332/5.152?42.870,5.153,8'>Garder un oeil sur la météo</a>
-                    </li>
-                    <li>
-                      🎒
-                      <a style='color: #001f36' href='https://www.larga2.fr/'>Vérifier votre checklist et les infos des sorties</a>
-                    </li>
-                    <li>
-                      ✉️
-                      <a
-                        style='color: #001f36'
-                        href='https://open.spotify.com/playlist/4GoIeK5CHSofywVbaBM5JI?si=9037dbe20373491d&pt=2f31654743ea4780f01b059aa0d99056'
-                      >Me contacter</a>
-                    </li>
-                  </ul>
+                  <div style='text-align: center'>
+                    <a
+                      href='https://www.larga2.fr/reservation'
+                      style='
+                        display: inline-block;
+                        margin: 10px 5px;
+                        padding: 10px 20px;
+                        text-align: center;
+                        text-decoration: none;
+                        border: none;
+                        cursor: pointer;
+                        border-radius: 5px;
+                        background-color: #001f36;
+                        color: #fdf9f2;
+                      '
+                    >
+                      Je choisis une autre date
+                    </a>
+                  </div>
 
                   <p>A très bientôt sur l'eau ⛵️</p>
                   <p>Amicalement,</p>

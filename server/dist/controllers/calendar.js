@@ -16,7 +16,7 @@ exports.getCalendarData = void 0;
 // mongo
 const reservation_1 = __importDefault(require("../models/reservation"));
 // data
-const excludedPeriods_1 = require("../data/excludedPeriods");
+const data_1 = require("../data");
 /** getCalendarData constructs and sends a whole year worth of dates and their information
  to the front in order to show unavailable dates in the calendar, and their paxCounter.*/
 const getCalendarData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -47,7 +47,7 @@ const getCalendarData = (req, res) => __awaiter(void 0, void 0, void 0, function
         const fixedDateObjects = excludeDays(currentDate, lastDate);
         updateCalendarItems(fixedDateObjects, calendarItems);
         // exclude selected periods of time (which are set from the data file)
-        const additionalDateObjects = excludePeriods(excludedPeriods_1.excludedPeriods);
+        const additionalDateObjects = excludePeriods(data_1.excludedPeriods);
         updateCalendarItems(additionalDateObjects, calendarItems);
         res.status(200).json(calendarItems);
     }
