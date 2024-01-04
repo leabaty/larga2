@@ -1,6 +1,7 @@
 import { MainPax } from '.';
 
 export interface Reservation extends MainPax {
+  _id?: string;
   additionalPax: AdditionalPax[];
   counter: number;
   selectedDate: Date;
@@ -39,5 +40,7 @@ export interface MailOptions {
     recap?: Reservation[];
     recapPaxCounter?: number;
     recapReservationCounter?: number;
+    reservationId?: string;
+    emails?: string;
   };
 }

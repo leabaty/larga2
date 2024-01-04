@@ -81,11 +81,12 @@
 
                   <ul style='list-style: none'>
                     <li>📅 Date : {{date}}</li>
-
                     <li>👤 Contact principal : {{firstName}} {{lastName}}</li>
                     <li>📞 Téléphone : {{phone}}</li>
                     <li>✉️ Email: {{email}}</li>
-                    <li>👥 Nombre de participants: {{counter}}, dont {{addPax}} </li>
+                    {{#if addPax}}
+                      <li>👥 Nombre de participants: {{counter}}, dont {{addPax}} </li>
+                    {{/if}}
                   </ul>
 
                   <p>D'ici là, vous pouvez toujours :</p>

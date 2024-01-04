@@ -23,8 +23,21 @@ import { AdditionalPax, DateRecap, FormattedData, MailOptions, Reservation } fro
 
 const senderEmail = process.env.GMAIL_USER || 'sorties.larga2@gmail.com';
 
+//get the ID of the last saved item id with the same lastname for managing confirmations
+const getReservationId = async (lastName: string) => {
+  try {
+    const reservations: Reservation[] = await ReservationModel.find({ lastName });
+    const lastReservation = reservations.length > 0 ? reservations[reservations.length - 1] : null;
+    const reservationId = lastReservation ? lastReservation._id : null;
+
+    return reservationId;
+  } catch (error) {
+    console.error('Error getting reservation id:', error);
+  }
+};
+
 // gets the selectedDate and constructs a new object by filtering on the same date reservations.
-export const getDateInfo = async (date: Date) => {
+const getDateInfo = async (date: Date) => {
   try {
     const startOfDayDate = startOfDay(date);
 
@@ -68,21 +81,77 @@ const counteractBrowserTZ = (date: Date) => {
   }
 };
 
-// put data into a "readable" format for human emails
-const formatData = (additionalPax: AdditionalPax[], correctedDate: Date | null): FormattedData => {
-  if (correctedDate === null) {
-    console.error('Invalid correctedDate:', correctedDate);
-    throw new Error('Invalid correctedDate');
-  }
-
+const sendDateRecap = async (date: Date, res: Response) => {
   try {
-    const formattedDate = format(correctedDate, 'EEEE d MMMM yyyy', { locale: fr });
-    const formattedAddPax = additionalPax.map((pax: AdditionalPax) => `${pax.firstName} ${pax.lastName}`).join(', ');
+    const dateInfo = await getDateInfo(date);
+    const formattedDate = format(date, 'EEEE d MMMM yyyy', { locale: fr });
 
-    return { formattedAddPax, formattedDate };
+    let formattedEmails;
+
+    if (dateInfo) {
+      const emails = dateInfo.paxInfo.map((pax) => pax.email);
+      formattedEmails = emails.join(',');
+    } else {
+      console.error('dateInfo is undefined');
+      formattedEmails = ''; // Set a default value or handle the case where emails are not available
+    }
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASS,
+      },
+    });
+
+    var options = {
+      viewEngine: {
+        extname: '.hbs',
+        layoutsDir: 'views/email/',
+        defaultLayout: 'dateRecap',
+        partialsDir: 'views/email/',
+      },
+      viewPath: 'views/email',
+      extName: '.hbs',
+    };
+
+    transporter.use('compile', hbs(options));
+
+    let mailOptions: MailOptions;
+    if (dateInfo) {
+      // if there are reservations, use the templates
+      mailOptions = {
+        from: senderEmail,
+        to: senderEmail,
+        subject: 'Ta sortie de demain',
+        template: 'dateRecap',
+        context: {
+          date: formattedDate,
+          recap: dateInfo.paxInfo || [],
+          recapPaxCounter: dateInfo.paxCounter || 0,
+          recapReservationCounter: dateInfo.reservationCounter || 0,
+          emails: formattedEmails,
+        },
+      };
+    } else {
+      // otherwise, send an informative email about no reservations
+      mailOptions = {
+        from: senderEmail,
+        to: senderEmail,
+        subject: 'Pas de réservations pour demain !',
+        template: 'dateRecapEmpty',
+        context: {
+          date: formattedDate,
+        },
+      };
+    }
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).send('Recap sent successfully');
   } catch (err) {
-    console.error('Error occurred in formatData: ' + err);
-    throw err;
+    console.error('Error occurred in sendRecap: ' + err);
+    res.status(500).send('Internal Server Error');
   }
 };
 
@@ -93,16 +162,28 @@ const sendEmail = async (req: Request, res: Response, template: string, subject:
     // correct timezone
     const correctedDate = counteractBrowserTZ(selectedDate);
 
-    // get additional information about a precise date
+    // get additional info about the booked date, in case there are other bookings
     if (correctedDate === null) {
       console.error('Invalid correctedDate:', correctedDate);
       res.status(400).send('Invalid date');
       return;
     }
     const dateInfo = await getDateInfo(correctedDate);
+    // Deep copy the data to eliminate prototype chain issues
+    let sanitizedRecapData;
+    if (dateInfo) {
+      sanitizedRecapData = JSON.parse(JSON.stringify(dateInfo.paxInfo));
+    } else {
+      console.error('dateInfo is undefined');
+    }
 
-    // make data "human-readable"
-    const { formattedAddPax, formattedDate } = formatData(additionalPax, correctedDate);
+    // get the ID for managing the reservation for the recap email (confirm/refuse)
+    // uses the last saved reservation with that name
+    const reservationId = (await getReservationId(lastName)) ?? 'error-reservation';
+
+    // make some data human-readable
+    const formattedDate = format(correctedDate, 'EEEE d MMMM yyyy', { locale: fr });
+    const formattedAddPax = additionalPax.map((pax: AdditionalPax) => `${pax.firstName} ${pax.lastName}`).join(', ');
 
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -141,11 +222,14 @@ const sendEmail = async (req: Request, res: Response, template: string, subject:
           addPax: formattedAddPax,
           counter,
           date: formattedDate,
-          recap: dateInfo.paxInfo || [],
+          recap: sanitizedRecapData || [],
           recapPaxCounter: dateInfo.paxCounter || 0,
           recapReservationCounter: dateInfo.reservationCounter || 0,
+          reservationId,
         },
       };
+      console.log('MAILOPTIONS');
+      console.log(JSON.stringify(mailOptions));
     } else {
       // otherwise, send an informative email about no reservations
       mailOptions = {

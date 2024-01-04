@@ -69,50 +69,43 @@
               <tr>
                 <td style='padding: 30px; background-color: #f2e8dc'>
                   <p style='margin-top: 0; margin-bottom: 16px; font-size: 22px; line-height: 32px; letter-spacing: -0.02em'>Coucou Denis,</p>
-                  <p style='margin: 0'>Voici le récap de la sortie :</p>
-
-                  <ul style='list-style: none'>
-                    <li>📅 Date : {{date}}</li>
-                    <li>👥 Participants : {{counter}}</li>
-                    <li>👤 Contact 1 : {{firstname}} {{lastname}} | 📞 {{phone}} | ✉️ {{email}}. Accompagnants : Jean Martin</li>
-                  </ul>
 
                   <p>
-                    Le nombre total de participants sur cette journée s'élève à
-                    <strong>{{totalpax}}</strong>.
+                    Tes stats pour demain :
+                    <strong>{{recapPaxCounter}} participants</strong>, pour un total de
+                    <strong>{{recapReservationCounter}} réservations</strong>
+                    dont voici les infos :
                   </p>
 
-                  <table>
+                  <table style='width: 100%; border-collapse: collapse;'>
                     <thead>
-                      <tr>
-                        <th>Nom</th>
-                        <th>Téléphone</th>
-                        <th>Email</th>
-                        <th>Accompagnants</th>
+                      <tr style='background-color: #f2e8dc; height: 40px;'>
+                        <th style='padding: 8px;'>Nom</th>
+                        <th style='padding: 8px;'>Téléphone</th>
+                        <th style='padding: 8px;'>Email</th>
+                        <th style='padding: 8px;'>Accompagnants</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {{#each paxInfo}}
-                        <tr>
-                          <td>{{firstName}} {{lastName}}</td>
-                          <td>{{phone}}</td>
-                          <td>{{email}}</td>
-                          <td>
-                            {{#if additionalPax.length}}
-                              {{#each additionalPax}}
-                                {{firstName}}
-                                {{lastName}}{{#unless @last}}, {{/unless}}
+                      {{#each recap}}
+                        <tr style='height: 50px; border-bottom: 1px solid #3bafa3;'>
+                          <td style='padding: 8px;'>{{this.firstName}} {{this.lastName}}</td>
+                          <td style='padding: 8px;'>{{this.phone}}</td>
+                          <td style='padding: 8px;'>{{this.email}}</td>
+                          <td style='padding: 8px;'>
+                            {{#if this.additionalPax.length}}
+                              {{#each this.additionalPax}}
+                                {{this.firstName}}
+                                {{this.lastName}}{{#unless @last}}, {{/unless}}
                               {{/each}}
                             {{else}}
-                              N/A
+                              -
                             {{/if}}
                           </td>
                         </tr>
                       {{/each}}
                     </tbody>
                   </table>
-
-                  <p style='margin: 0; color: red'>VEUX TU INSERER D'AUTRES INFOS ?!</p>
 
                   <p>Liens utiles:</p>
                   <ul style='list-style: none'>
@@ -123,10 +116,6 @@
                     <li>
                       ✉️
                       <a style='color: #001f36' href='mailto: {{emails}}'>Leur envoyer un mail groupé</a>
-                    </li>
-                    <li>
-                      📱
-                      <a style='color: #001f36' href='mailto: {{emails}}'>Leur envoyer un sms groupé</a>
                     </li>
                   </ul>
 

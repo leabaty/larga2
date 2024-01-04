@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.saveReservation = exports.sendRecap = exports.sendRequest = exports.getDateInfo = void 0;
+exports.saveReservation = exports.sendRecap = exports.sendRequest = void 0;
 // email sending
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const nodemailer_express_handlebars_1 = __importDefault(require("nodemailer-express-handlebars"));
@@ -29,6 +29,18 @@ const reservation_1 = __importDefault(require("../models/reservation"));
  * DailyEmail :  More info is fetched about the reservation date, and it's sent automatically each 24h
  * */
 const senderEmail = process.env.GMAIL_USER || 'sorties.larga2@gmail.com';
+//get the ID of the last saved item id with the same lastname for managing confirmations
+const getReservationId = (lastName) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const reservations = yield reservation_1.default.find({ lastName });
+        const lastReservation = reservations.length > 0 ? reservations[reservations.length - 1] : null;
+        const reservationId = lastReservation ? lastReservation._id : null;
+        return reservationId;
+    }
+    catch (error) {
+        console.error('Error getting reservation id:', error);
+    }
+});
 // gets the selectedDate and constructs a new object by filtering on the same date reservations.
 const getDateInfo = (date) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -52,7 +64,6 @@ const getDateInfo = (date) => __awaiter(void 0, void 0, void 0, function* () {
         console.error('Error getting recap data:', error);
     }
 });
-exports.getDateInfo = getDateInfo;
 //TODO : The date gets sent by MUI Date Picker as a local timezone, but the server stores it as a UTC Timezone.
 // for ex. Date picker shows 2024-01-01 00:00, the date picker will send it with the timezone (+1 Paris time) and the server interprets it as UTC 2023-12-31 23:00.
 // When sending it back to the datepicker it is not converted back to a local TZ, and only the days are compared. So 2024-01-01 is compared with 2023-12-31 and it's false.
@@ -68,36 +79,91 @@ const counteractBrowserTZ = (date) => {
         return null;
     }
 };
-// put data into a "readable" format for human emails
-const formatData = (additionalPax, correctedDate) => {
-    if (correctedDate === null) {
-        console.error('Invalid correctedDate:', correctedDate);
-        throw new Error('Invalid correctedDate');
-    }
+const sendDateRecap = (date, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const formattedDate = (0, date_fns_1.format)(correctedDate, 'EEEE d MMMM yyyy', { locale: locale_1.fr });
-        const formattedAddPax = additionalPax.map((pax) => `${pax.firstName} ${pax.lastName}`).join(', ');
-        return { formattedAddPax, formattedDate };
+        const dateInfo = yield getDateInfo(date);
+        const formattedDate = (0, date_fns_1.format)(date, 'EEEE d MMMM yyyy', { locale: locale_1.fr });
+        const transporter = nodemailer_1.default.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.GMAIL_USER,
+                pass: process.env.GMAIL_PASS,
+            },
+        });
+        var options = {
+            viewEngine: {
+                extname: '.hbs',
+                layoutsDir: 'views/email/',
+                defaultLayout: 'dateRecap',
+                partialsDir: 'views/email/',
+            },
+            viewPath: 'views/email',
+            extName: '.hbs',
+        };
+        transporter.use('compile', (0, nodemailer_express_handlebars_1.default)(options));
+        let mailOptions;
+        if (dateInfo) {
+            // if there are reservations, use the templates
+            mailOptions = {
+                from: senderEmail,
+                to: senderEmail,
+                subject: 'Ta sortie de demain',
+                template: 'dateRecap',
+                context: {
+                    date: formattedDate,
+                    recap: dateInfo.paxInfo || [],
+                    recapPaxCounter: dateInfo.paxCounter || 0,
+                    recapReservationCounter: dateInfo.reservationCounter || 0,
+                },
+            };
+        }
+        else {
+            // otherwise, send an informative email about no reservations
+            mailOptions = {
+                from: senderEmail,
+                to: senderEmail,
+                subject: 'Pas de réservations pour demain !',
+                template: 'dateRecapEmpty',
+                context: {
+                    date: formattedDate,
+                },
+            };
+        }
+        yield transporter.sendMail(mailOptions);
+        res.status(200).send('Recap sent successfully');
     }
     catch (err) {
-        console.error('Error occurred in formatData: ' + err);
-        throw err;
+        console.error('Error occurred in sendRecap: ' + err);
+        res.status(500).send('Internal Server Error');
     }
-};
+});
 const sendEmail = (req, res, template, subject, from, to) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
         const { firstName, lastName, email, phone, counter, additionalPax, selectedDate } = req.body;
         // correct timezone
         const correctedDate = counteractBrowserTZ(selectedDate);
-        // get additional information about a precise date
+        // get additional info about the booked date, in case there are other bookings
         if (correctedDate === null) {
             console.error('Invalid correctedDate:', correctedDate);
             res.status(400).send('Invalid date');
             return;
         }
-        const dateInfo = yield (0, exports.getDateInfo)(correctedDate);
-        // make data "human-readable"
-        const { formattedAddPax, formattedDate } = formatData(additionalPax, correctedDate);
+        const dateInfo = yield getDateInfo(correctedDate);
+        // Deep copy the data to eliminate prototype chain issues
+        let sanitizedRecapData;
+        if (dateInfo) {
+            sanitizedRecapData = JSON.parse(JSON.stringify(dateInfo.paxInfo));
+        }
+        else {
+            console.error('dateInfo is undefined');
+        }
+        // get the ID for managing the reservation for the recap email (confirm/refuse)
+        // uses the last saved reservation with that name
+        const reservationId = (_a = (yield getReservationId(lastName))) !== null && _a !== void 0 ? _a : 'error-reservation';
+        // make some data human-readable
+        const formattedDate = (0, date_fns_1.format)(correctedDate, 'EEEE d MMMM yyyy', { locale: locale_1.fr });
+        const formattedAddPax = additionalPax.map((pax) => `${pax.firstName} ${pax.lastName}`).join(', ');
         const transporter = nodemailer_1.default.createTransport({
             service: 'gmail',
             auth: {
@@ -132,11 +198,14 @@ const sendEmail = (req, res, template, subject, from, to) => __awaiter(void 0, v
                     addPax: formattedAddPax,
                     counter,
                     date: formattedDate,
-                    recap: dateInfo.paxInfo || [],
+                    recap: sanitizedRecapData || [],
                     recapPaxCounter: dateInfo.paxCounter || 0,
                     recapReservationCounter: dateInfo.reservationCounter || 0,
+                    reservationId,
                 },
             };
+            console.log('MAILOPTIONS');
+            console.log(JSON.stringify(mailOptions));
         }
         else {
             // otherwise, send an informative email about no reservations

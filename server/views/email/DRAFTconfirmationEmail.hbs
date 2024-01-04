@@ -79,7 +79,7 @@
                     <li>📞 Téléphone : {{phone}}</li>
                     <li>✉️ Email: {{email}}</li>
                     {{#if addPax}}
-                      <li>👥 Nombre de participants: {{counter}}, dont {{addPax}}</li>
+                      <li>👥 Nombre de participants: {{counter}}, dont {{addPax}} </li>
                     {{/if}}
                   </ul>
 
@@ -90,29 +90,30 @@
                     dont voici les infos :
                   </p>
 
-                  <table style='width: 100%; border-collapse: collapse'>
+                  <table style='width: 100%; border-collapse: collapse;'>
                     <thead>
-                      <tr style='background-color: #f2e8dc; height: 40px'>
-                        <th style='padding: 8px'>Nom</th>
-                        <th style='padding: 8px'>Téléphone</th>
-                        <th style='padding: 8px'>Email</th>
-                        <th style='padding: 8px'>Accompagnants</th>
+                      <tr style='background-color: #f2e8dc; height: 40px;'>
+                        <th style='padding: 8px;'>Nom</th>
+                        <th style='padding: 8px;'>Téléphone</th>
+                        <th style='padding: 8px;'>Email</th>
+                        <th style='padding: 8px;'>Accompagnants</th>
                       </tr>
                     </thead>
                     <tbody>
                       {{#each recap}}
-                        <tr style='height: 50px; border-bottom: 1px solid #3bafa3'>
-                          <td style='padding: 8px'>{{this.firstName}} {{this.lastName}}</td>
-                          <td style='padding: 8px'>{{this.phone}}</td>
-                          <td style='padding: 8px'>{{this.email}}</td>
-                          <td style='padding: 8px'>
+                        <tr style='height: 50px; border-bottom: 1px solid #3bafa3;'>
+                          <td style='padding: 8px;'>{{this.firstName}} {{this.lastName}}</td>
+                          <td style='padding: 8px;'>{{this.phone}}</td>
+                          <td style='padding: 8px;'>{{this.email}}</td>
+                          <td style='padding: 8px;'>
                             {{#if this.additionalPax.length}}
                               {{#each this.additionalPax}}
                                 {{this.firstName}}
-                                {{this.lastName}}{{#unless @last}},
-                                {{/unless}}
+                                {{this.lastName}}{{#unless @last}}, {{/unless}}
                               {{/each}}
-                            {{else}} - {{/if}}
+                            {{else}}
+                              -
+                            {{/if}}
                           </td>
                         </tr>
                       {{/each}}
@@ -120,33 +121,59 @@
                   </table>
 
                   <p>
-                    Tu peux maintenant répondre à la demande en cliquant sur le bouton ci-dessous.
-                    <strong>Attention, le refus est définitif</strong>
-                    (la réservation sera supprimée).
+                    Tu peux valider cette réservation directement en supprimant le début de ce mail, et en changeant l'objet par :
                   </p>
 
-                  <div style='text-align: center'>
-                    <a
-                      href='https://www.larga2.fr/confirmation/{{reservationId}}'
-                      style='
-                          display: inline-block;
-                          margin: 10px 5px;
-                          padding: 10px 20px;
-                          text-align: center;
-                          text-decoration: none;
-                          border: none;
-                          cursor: pointer;
-                          border-radius: 5px;
-                          background-color: #001f36;
-                          color: #fdf9f2;
-                        '
-                    >
-                      REPONDRE A LA DEMANDE
-                    </a>
+                  <strong>Confirmation de votre sortie voile du {{date}}, {{counter}} participant(s)</strong>
 
-                  </div>
-                  <p>Amicalement ⛵️</p>
-                  <p>Léa</p>
+                  <p>et en l'envoyant à : <strong>{{email}}.</strong></p>
+
+                  <br />
+
+                  <p style='margin-top: 0; margin-bottom: 16px; font-size: 22px; line-height: 32px; letter-spacing: -0.02em'>
+                    Bonjour
+                    {{firstName}},
+                  </p>
+                  <p style='margin: 0'>J'ai bien reçu votre demande de réservation pour une sortie voile dont voici les détails :</p>
+
+                  <ul style='list-style: none'>
+                    <li>📅 Date : {{date}}</li>
+
+                    <li>👤 Contact principal : {{firstName}} {{lastName}}</li>
+                    <li>📞 Téléphone : {{phone}}</li>
+                    <li>✉️ Email: {{email}}</li>
+                    <li>👥 Nombre de participants: {{counter}}, dont {{addPax}} </li>
+                  </ul>
+
+                  <strong style='margin: 0'>Je vous confirme la sortie voile par cet email. </strong>
+
+                  <p>Infos utiles pour le jour J :</p>
+                  <ul style='list-style: none'>
+                    <li>🥪 Pensez à votre petit casse-croûte</li>
+                    <li>
+                      🌦️ Choisissez des vêtements adaptés (en fonction de la météo, vêtements imperméables ou maillot de bain, chaussures à la semelle
+                      souple, et éventuellement crème solaire!)
+                    </li>
+                    <li>📍 Rendez-vous à la Panne 2, au port de Carry-le-Rouet, à 10 heures</li>
+                    <li>💶 10 euros par personne, pour participation à la caisse de bord</li>
+                  </ul>
+
+                  <p>A très bientôt sur l'eau ⛵️</p>
+                  <p>Amicalement,</p>
+                  <p>Votre skipper Denis</p>
+                </td>
+              </tr>
+
+              <tr>
+                <td style='padding: 20px; text-align: center; font-size: 12px; background-color: #f2e8dc; color: #001f36'>
+                  <p style='margin: 0 0 8px 0'>
+                    <a
+                      href='https://www.facebook.com/larga.deux.9/'
+                      style="text-decoration: none; color: #001f36; font-family: 'Jost', Arial, sans-serif; font-size: 15px"
+                    >
+                      → Suivez-moi sur facebook ←
+                    </a>
+                  </p>
                 </td>
               </tr>
             </table>
