@@ -11,6 +11,7 @@ import Footer from './components/Footer';
 import About from './pages/About';
 import Reservation from './pages/Reservation';
 import Contact from './pages/Contact';
+import Answer from './pages/Answer';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path='/about' element={<About />}></Route>
           <Route path='/reservation' element={<Reservation />}></Route>
           <Route path='/contact' element={<Contact />}></Route>
+          <Route path='/answer/:id' element={<Answer />}></Route>
 
           {/* <Route path='*' element={<NotFound />}></Route>
           <Route path='/politique-de-confidentialite' element={<PrivacyPolicy />}></Route>
