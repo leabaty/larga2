@@ -51,7 +51,7 @@ export const sendCancellation = async (req: Request, res: Response) => {
 
 const sendEmail = async (req: Request, res: Response, template: string, subject: string) => {
   try {
-    const reservation = await getById(req.body.id);
+    const reservation = await getById(req.body);
 
     if (!reservation) {
       console.error('Reservation not found');
