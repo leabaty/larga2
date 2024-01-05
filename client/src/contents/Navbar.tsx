@@ -1,12 +1,6 @@
 import LocalizedStrings from 'react-localization';
 
-import {
-  HomeLogo,
-  AboutLogo,
-  ReservationLogo,
-  GalleryLogo,
-  ContactLogo,
-} from './images/navbarLogos';
+import { HomeLogo, AboutLogo, BookingLogo, GalleryLogo, ContactLogo } from './images/navbarLogos';
 
 import { LargaWhiteLogo, LargaBlueLogo } from './images/largaLogo';
 
@@ -14,14 +8,14 @@ const lang = new LocalizedStrings({
   en: {
     home: 'Home',
     about: 'About',
-    reservation: 'Reservation',
+    booking: 'Booking',
     gallery: 'Gallery',
     contact: 'Contact',
   },
   fr: {
     home: 'Accueil',
     about: 'à propos',
-    reservation: 'Réservation',
+    booking: 'Réservation',
     gallery: 'Galerie',
     contact: 'Contact',
   },
@@ -30,7 +24,7 @@ const lang = new LocalizedStrings({
 export const navbarItems = [
   { name: lang.home, link: '/', img: HomeLogo },
   { name: lang.about, link: '/about', img: AboutLogo },
-  { name: lang.reservation, link: '/reservation', img: ReservationLogo },
+  { name: lang.booking, link: '/booking', img: BookingLogo },
   // { name: lang.gallery, link: '/gallery', img: GalleryLogo },
   { name: lang.contact, link: '/contact', img: ContactLogo },
 ];

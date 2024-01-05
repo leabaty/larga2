@@ -1,16 +1,16 @@
 import axios from 'axios';
 
-const useAnswer = (URL: string, data: string) => {
-  const post = async () => {
+const useAnswer = () => {
+  const sendPostRequest = async (URL: string, id: string): Promise<void> => {
     try {
-      const response = await axios.post(process.env.REACT_APP_SERVER + URL, data);
-      console.log(response.data);
+      await axios.post(`${process.env.REACT_APP_SERVER}${URL}/${id}`);
     } catch (error) {
-      console.error(error);
+      console.error('Error during post:', error);
+      throw error;
     }
   };
 
-  return post;
+  return { sendPostRequest };
 };
 
 export default useAnswer;

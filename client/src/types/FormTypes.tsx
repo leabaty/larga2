@@ -3,13 +3,13 @@ export interface FormPax {
   lastName: string;
 }
 
-export interface FormReservationErrorMessages extends FormErrorMessages {
+export interface FormBookingErrorMessages extends FormErrorMessages {
   selectedDate: string;
   additionalPax: string;
   [key: string]: string;
 }
 
-export interface FormReservationValues extends FormValues {
+export interface FormBookingValues extends FormValues {
   additionalPax: FormPax[];
   counter: number;
   selectedDate: Date | null;

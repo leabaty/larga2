@@ -78,7 +78,6 @@ export default function ContactForm() {
       try {
         await postData();
         setSubmitted(true);
-        console.log('Contactform submitted successfully!');
       } catch (error) {
         console.error('Contactform Failed to submit:', error);
       }

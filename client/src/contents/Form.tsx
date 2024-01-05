@@ -3,7 +3,7 @@ import '../styles/Form.scss';
 
 const lang = new LocalizedStrings({
   en: {
-    reservationTitle: 'Reservation',
+    bookingTitle: 'Booking',
     contactTitle: 'Contact',
     available: 'Available spots',
     field: {
@@ -18,8 +18,8 @@ const lang = new LocalizedStrings({
       message: 'Write your question or comment here!',
     },
     submit: {
-      submitReservation: 'Submit Reservation Request',
-      submittedReservation: 'Thank you for your request. I will get back to you within the next 48 hours to confirm!',
+      submitBooking: 'Submit Booking Request',
+      submittedBooking: 'Thank you for your request. I will get back to you within the next 48 hours to confirm!',
       submitContact: 'Send my message',
       submittedContact: 'Thank you for your message. I will get back to you as soon as possible.',
     },
@@ -32,7 +32,7 @@ const lang = new LocalizedStrings({
   },
 
   fr: {
-    reservationTitle: 'Réservation',
+    bookingTitle: 'Réservation',
     contactTitle: 'Contact',
     available: 'Places disponibles',
     field: {
@@ -47,8 +47,8 @@ const lang = new LocalizedStrings({
       message: 'Ecrivez ici votre question ou remarque !',
     },
     submit: {
-      submitReservation: 'Demande de réservation',
-      submittedReservation: 'Merci pour votre demande, je reviendrai vers vous dans les prochaines 48h afin de la confirmer !',
+      submitBooking: 'Demande de réservation',
+      submittedBooking: 'Merci pour votre demande, je reviendrai vers vous dans les prochaines 48h afin de la confirmer !',
       submitContact: 'Envoyer mon message',
       submittedContact: 'Merci pour votre message, je reviendrai vers vous dès que possible.',
     },
@@ -63,7 +63,7 @@ const lang = new LocalizedStrings({
 });
 
 export const content = {
-  reservationTitle: lang.reservationTitle,
+  bookingTitle: lang.bookingTitle,
   contactTitle: lang.contactTitle,
   available: lang.available,
   field: {
@@ -78,9 +78,9 @@ export const content = {
     message: lang.field.message,
   },
   submittedContact: lang.submit.submittedContact,
-  submittedReservation: lang.submit.submittedReservation,
+  submittedBooking: lang.submit.submittedBooking,
   submitContact: lang.submit.submitContact,
-  submitReservation: lang.submit.submitReservation,
+  submitBooking: lang.submit.submitBooking,
   error: {
     mandatory: lang.error.mandatory,
     email: lang.error.email,

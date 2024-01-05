@@ -1,6 +1,6 @@
 import { MainPax } from '.';
 
-export interface Reservation extends MainPax {
+export interface Booking extends MainPax {
   additionalPax: AdditionalPax[];
   counter: number;
   selectedDate: Date;

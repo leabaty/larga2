@@ -1,11 +1,10 @@
-import { FormContactValues, FormReservationValues } from 'FormTypes';
+import { FormContactValues, FormBookingValues } from 'FormTypes';
 import axios from 'axios';
 
-const usePost = (URL: string, data: FormContactValues | FormReservationValues) => {
+const usePost = (URL: string, data: FormContactValues | FormBookingValues) => {
   const post = async () => {
     try {
-      const response = await axios.post(process.env.REACT_APP_SERVER + URL, data);
-      console.log(response.data);
+      await axios.post(process.env.REACT_APP_SERVER + URL, data);
     } catch (error) {
       console.error(error);
     }

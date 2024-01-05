@@ -1,13 +1,13 @@
 import React from 'react';
 
-import '../styles/Reservation.scss';
+import '../styles/Booking.scss';
 
-import { content } from '../contents/Reservation';
+import { content } from '../contents/Booking';
 
-import ReservationForm from '../components/Form/ReservationForm';
-import { CheckListLogo } from '../contents/images/reservationLogos';
+import BookingForm from '../components/Form/BookingForm';
+import { CheckListLogo } from '../contents/images/bookingLogos';
 
-export default function Reservation() {
+export default function Booking() {
   const logoColor = '#3bafa3';
   const checkListLogoColor = '#fdfeee';
   return (
@@ -27,7 +27,7 @@ export default function Reservation() {
           </div>
         ))}
       </div>
-      <ReservationForm />
+      <BookingForm />
 
       <div className='res-checklist'>
         <h2>{content.checkListTitle}</h2>

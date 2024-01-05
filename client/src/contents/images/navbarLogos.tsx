@@ -40,7 +40,7 @@ export const AboutLogo: React.FC<props> = ({ color, size }) => {
   );
 };
 
-export const ReservationLogo: React.FC<props> = ({ color, size }) => {
+export const BookingLogo: React.FC<props> = ({ color, size }) => {
   return (
     <svg width={size} height={size} viewBox='0 0 100 100' version='1.1'>
       <g className='layer'>

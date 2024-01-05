@@ -1,6 +1,6 @@
 import LocalizedStrings from 'react-localization';
 
-import { AgeLogo, DaysLogo, PaxLogo, ProgramLogo, WhenLogo, WhereLogo, CheckListLogo } from './images/reservationLogos';
+import { AgeLogo, DaysLogo, PaxLogo, ProgramLogo, WhenLogo, WhereLogo, CheckListLogo } from './images/bookingLogos';
 
 const lang = new LocalizedStrings({
   en: {

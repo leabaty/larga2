@@ -1,6 +1,6 @@
-import { Reservation } from './reservation';
+import { Booking } from './booking';
 
 export interface RecapView {
   sailDate: Date;
-  pax: Reservation[];
+  pax: Booking[];
 }

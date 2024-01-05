@@ -16,6 +16,21 @@
   // --color2: '';
   // --color3: '';
   // --color4: '';
+
+  display: flex;
+  flex-flow: column;
+}
+
+.App {
+  display: flex;
+  flex-flow: column;
+  height: 100vh;
+
+  /* In order for the footer to always appear down even if the page is not 100vh:
+  navbar : flex: 0 1 auto; (grow/shrink)
+  page: 1 1 auto (shrink/shrink)
+  footer : flex: 0 1 auto; (grow/shrink)
+  */
 }
 
 body {
@@ -33,6 +48,7 @@ a {
   max-width: 80%;
   padding: 120px 0 0;
   margin: 0 auto 0;
+  flex: 1 1 auto;
 }
 
 h1 {
@@ -180,10 +196,6 @@ hr {
       background-size: cover;
       background-position: center;
     }
-  }
-
-  &--handwritten {
-    font-family: 'Homemade Apple', cursive;
   }
 
   &--large {

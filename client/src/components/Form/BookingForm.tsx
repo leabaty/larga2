@@ -1,4 +1,4 @@
-import { FormReservationErrorMessages, FormReservationValues, FormPax } from 'FormTypes';
+import { FormBookingErrorMessages, FormBookingValues, FormPax } from 'FormTypes';
 import React, { useEffect, useState } from 'react';
 import { InputField } from './formComponents/FormInputs';
 import { DateField } from './formComponents/FormDateField';
@@ -7,11 +7,10 @@ import '../../styles/Form.scss';
 import { content } from '../../contents/Form';
 import usePost from '../../utils/usePost';
 import { Calendar } from 'ApiTypes/calendar';
-import { getTime } from 'date-fns';
 
-export default function ReservationForm() {
+export default function BookingForm() {
   const maxBoatPax = 4;
-  const [formValues, setFormValues] = useState<FormReservationValues>({
+  const [formValues, setFormValues] = useState<FormBookingValues>({
     firstName: '',
     lastName: '',
     email: '',
@@ -21,7 +20,7 @@ export default function ReservationForm() {
     selectedDate: null as Date | null,
   });
 
-  const [errors, setErrors] = useState<FormReservationErrorMessages>({
+  const [errors, setErrors] = useState<FormBookingErrorMessages>({
     firstName: '',
     lastName: '',
     email: '',
@@ -94,7 +93,7 @@ export default function ReservationForm() {
   };
 
   const handleSubmit = async () => {
-    const newErrors: FormReservationErrorMessages = {
+    const newErrors: FormBookingErrorMessages = {
       firstName: '',
       lastName: '',
       email: '',
@@ -129,11 +128,10 @@ export default function ReservationForm() {
 
     if (Object.values(newErrors).every((error) => !error)) {
       try {
-        await saveSendReservation();
-        console.log('Reservation submitted successfully!');
+        await saveSendBooking();
         setSubmitted(true);
       } catch (error) {
-        console.error('Reservation failed to submit:', error);
+        console.error('Booking failed to submit:', error);
       }
     } else {
       setErrors(newErrors);
@@ -141,11 +139,11 @@ export default function ReservationForm() {
   };
 
   // save data in DB + send email recaps
-  const saveData = usePost('/reservation/create', formValues);
-  const sendRequest = usePost('/reservation/email-request', formValues);
-  const sendRecap = usePost('/reservation/email-recap', formValues);
+  const saveData = usePost('/booking/create', formValues);
+  const sendRequest = usePost('/booking/email-request', formValues);
+  const sendRecap = usePost('/booking/email-recap', formValues);
 
-  const saveSendReservation = () => {
+  const saveSendBooking = () => {
     saveData();
     sendRequest();
     sendRecap();
@@ -201,7 +199,7 @@ export default function ReservationForm() {
 
   return (
     <div className='form'>
-      <h2>{content.reservationTitle}</h2>
+      <h2>{content.bookingTitle}</h2>
 
       {!submitted ? (
         <>
@@ -234,12 +232,12 @@ export default function ReservationForm() {
           />
 
           <button className='form-btn-submit' onClick={handleSubmit}>
-            {content.submitReservation}
+            {content.submitBooking}
           </button>
         </>
       ) : (
         <div className='submit-message'>
-          <p>{content.submittedReservation}</p>
+          <p>{content.submittedBooking}</p>
         </div>
       )}
     </div>
