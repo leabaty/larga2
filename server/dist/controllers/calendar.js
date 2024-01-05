@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getCalendarData = void 0;
 // mongo
-const reservation_1 = __importDefault(require("../models/reservation"));
+const booking_1 = __importDefault(require("../models/booking"));
 // data
 const data_1 = require("../data");
 /** getCalendarData constructs and sends a whole year worth of dates and their information
@@ -22,13 +22,13 @@ const data_1 = require("../data");
 const getCalendarData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const maxPax = 4; // boat is 6 pax max, 1 skipper + 1 (always) free spot
     try {
-        const reservations = yield reservation_1.default.find();
-        // paxCounter : go through the reservation dates and add up the counter sums
+        const bookings = yield booking_1.default.find();
+        // paxCounter : go through the booking dates and add up the counter sums
         const dateMap = new Map();
-        reservations.forEach((reservation) => {
-            const dateKey = reservation.selectedDate.toISOString().split('T')[0];
+        bookings.forEach((booking) => {
+            const dateKey = booking.selectedDate.toISOString().split('T')[0];
             const currentSum = dateMap.get(dateKey) || 0;
-            dateMap.set(dateKey, currentSum + reservation.counter);
+            dateMap.set(dateKey, currentSum + booking.counter);
         });
         const currentDate = new Date();
         const lastDate = new Date(currentDate);

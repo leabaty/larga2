@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 
 // mongo
-import ReservationModel from '../models/reservation';
+import BookingModel from '../models/booking';
 
 // types
 import { CalendarItem, Calendar } from '../types/calendar';
-import { Reservation } from '../types/reservation';
+import { Booking } from '../types/booking';
 
 // data
 import { excludedPeriods } from '../data';
@@ -17,14 +17,14 @@ export const getCalendarData = async (req: Request, res: Response) => {
   const maxPax = 4; // boat is 6 pax max, 1 skipper + 1 (always) free spot
 
   try {
-    const reservations: Reservation[] = await ReservationModel.find();
+    const bookings: Booking[] = await BookingModel.find();
 
-    // paxCounter : go through the reservation dates and add up the counter sums
+    // paxCounter : go through the booking dates and add up the counter sums
     const dateMap = new Map<string, number>();
-    reservations.forEach((reservation) => {
-      const dateKey = reservation.selectedDate.toISOString().split('T')[0];
+    bookings.forEach((booking) => {
+      const dateKey = booking.selectedDate.toISOString().split('T')[0];
       const currentSum = dateMap.get(dateKey) || 0;
-      dateMap.set(dateKey, currentSum + reservation.counter);
+      dateMap.set(dateKey, currentSum + booking.counter);
     });
 
     const currentDate = new Date();

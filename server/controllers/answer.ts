@@ -11,55 +11,62 @@ import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 // types & models
-import ReservationModel from '../models/reservation';
-import { AdditionalPax, Reservation } from '../types/reservation';
+import BookingModel from '../models/booking';
+import { AdditionalPax, Booking } from '../types/booking';
 
-// getInformation (from the id)
 export const getById = async (id: string) => {
   try {
-    const reservation: Reservation | null = await ReservationModel.findById(id);
+    const booking: Booking | null = await BookingModel.findById(id);
 
-    return reservation;
+    return booking;
   } catch (error) {
-    console.error('Error getting reservation by id:', error);
-    throw error; // Optionally rethrow the error to propagate it up the call stack
+    console.error('Error getting booking by id:', error);
+    throw error;
+  }
+};
+
+export const getBooking = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const booking = await getById(id);
+
+    if (!booking) {
+      res.status(404).send('Booking not found');
+      return;
+    }
+
+    res.json(booking);
+  } catch (err) {
+    console.error('Error occurred in handleGet: ' + err);
+    res.status(500).send('Internal Server Error');
   }
 };
 
 export const deleteById = async (id: string) => {
   try {
-    const result = await ReservationModel.deleteOne({ _id: id });
+    const result = await BookingModel.deleteOne({ _id: id });
 
     if (result.deletedCount === 1) {
-      console.log('Reservation deleted successfully');
+      console.log('Booking deleted successfully');
     } else {
-      console.error('Reservation not found');
+      console.error('Booking not found');
     }
   } catch (error) {
-    console.error('Error deleting reservation by id:', error);
-    throw error; // Optionally rethrow the error to propagate it up the call stack
+    console.error('Error deleting booking by id:', error);
+    throw error;
   }
-};
-
-export const sendConfirmation = async (req: Request, res: Response) => {
-  await sendEmail(req, res, 'answerConfirmation', 'Sortie voile confirmée !');
-};
-
-export const sendCancellation = async (req: Request, res: Response) => {
-  await sendEmail(req, res, 'answerCancellation', 'Sortie voile non disponible');
 };
 
 const sendEmail = async (req: Request, res: Response, template: string, subject: string) => {
   try {
-    const reservation = await getById(req.body);
+    const booking = await getById(req.params.id);
 
-    if (!reservation) {
-      console.error('Reservation not found');
-      res.status(404).send('Reservation not found');
+    if (!booking) {
+      res.status(404).send('Booking not found');
       return;
     }
 
-    const { firstName, lastName, email, phone, selectedDate, additionalPax, counter } = reservation;
+    const { firstName, lastName, email, phone, selectedDate, additionalPax, counter } = booking;
 
     // make some data human-readable
     const formattedDate = format(selectedDate, 'EEEE d MMMM yyyy', { locale: fr });
@@ -88,7 +95,7 @@ const sendEmail = async (req: Request, res: Response, template: string, subject:
 
     let mailOptions = {
       from: senderEmail,
-      to: reservation.email,
+      to: booking.email,
       subject,
       template,
       context: {
@@ -107,6 +114,15 @@ const sendEmail = async (req: Request, res: Response, template: string, subject:
     res.status(200).send('Email sent successfully');
   } catch (err) {
     console.error('Error occurred in sendEmail: ' + err);
-    res.status(500).send('Internal Server Error');
+    res.status(500).send('Internal Server Error, see console');
   }
+};
+
+export const sendConfirmation = async (req: Request, res: Response) => {
+  await sendEmail(req, res, 'answerConfirmation', 'Sortie voile confirmée !');
+};
+
+export const sendCancellation = async (req: Request, res: Response) => {
+  await sendEmail(req, res, 'answerCancellation', 'Sortie voile non disponible');
+  await deleteById(req.params.id);
 };

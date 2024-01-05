@@ -10,52 +10,52 @@ import { format, startOfDay, isSameDay, addDays } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 // types & models
-import ReservationModel from '../models/reservation';
-import { AdditionalPax, DateRecap, MailOptions, Reservation } from '../types/reservation';
+import BookingModel from '../models/booking';
+import { AdditionalPax, DateRecap, MailOptions, Booking } from '../types/booking';
 
 // misc
 import { senderEmail } from '../data';
 
-/**When getting a reservation :
+/**When getting a booking :
  * Database : Date gets 11h added to counteract browser TZ + is stored
  * RequestEmail :  Date gets 11h added to counteract browser TZ + is sent
- * RecapEmail :  Date gets 11h added to counteract browser TZ, more info is fetched about the reservation date, and it's sent
- * DateRecap :  More info is fetched about the reservation date, and it's sent automatically day before
+ * RecapEmail :  Date gets 11h added to counteract browser TZ, more info is fetched about the booking date, and it's sent
+ * DateRecap :  More info is fetched about the booking date, and it's sent automatically day before
  * */
 
 //get the ID of the last saved item id with the same lastname for managing confirmations
-const getReservationId = async (lastName: string) => {
+const getBookingId = async (lastName: string) => {
   try {
-    const reservations: Reservation[] = await ReservationModel.find({ lastName });
-    const lastReservation = reservations.length > 0 ? reservations[reservations.length - 1] : null;
-    const reservationId = lastReservation ? lastReservation._id : null;
+    const bookings: Booking[] = await BookingModel.find({ lastName });
+    const lastBooking = bookings.length > 0 ? bookings[bookings.length - 1] : null;
+    const bookingId = lastBooking ? lastBooking._id : null;
 
-    return reservationId;
+    return bookingId;
   } catch (error) {
-    console.error('Error getting reservation id:', error);
+    console.error('Error getting booking id:', error);
   }
 };
 
-// gets the selectedDate and constructs a new object by filtering on the same date reservations.
+// gets the selectedDate and constructs a new object by filtering on the same date bookings.
 const getDateInfo = async (date: Date) => {
   try {
     const startOfDayDate = startOfDay(date);
 
-    const reservations: Reservation[] = await ReservationModel.find();
+    const bookings: Booking[] = await BookingModel.find();
 
-    const filteredReservations = reservations.filter((reservation) => {
-      const reservationStartOfDay = startOfDay(reservation.selectedDate);
+    const filteredBookings = bookings.filter((booking) => {
+      const bookingStartOfDay = startOfDay(booking.selectedDate);
 
-      // TODO understand why the f*ck startOfDayDate is the old, not corrected date vs reservationStartOfDay
-      return isSameDay(reservationStartOfDay, startOfDayDate);
+      // TODO understand why the f*ck startOfDayDate is the old, not corrected date vs bookingStartOfDay
+      return isSameDay(bookingStartOfDay, startOfDayDate);
     });
 
-    const paxCounter = filteredReservations.reduce((sum, reservation) => sum + reservation.counter, 0);
+    const paxCounter = filteredBookings.reduce((sum, booking) => sum + booking.counter, 0);
 
     const dateRecap: DateRecap = {
       date,
-      paxInfo: filteredReservations,
-      reservationCounter: filteredReservations.length,
+      paxInfo: filteredBookings,
+      bookingCounter: filteredBookings.length,
       paxCounter: paxCounter,
     };
     return dateRecap;
@@ -119,7 +119,7 @@ const sendDateRecap = async (date: Date) => {
 
     let mailOptions: MailOptions;
     if (dateInfo) {
-      // if there are reservations, use the templates
+      // if there are bookings, use the templates
       mailOptions = {
         from: senderEmail,
         to: senderEmail,
@@ -129,12 +129,12 @@ const sendDateRecap = async (date: Date) => {
           date: formattedDate,
           recap: dateInfo.paxInfo || [],
           recapPaxCounter: dateInfo.paxCounter || 0,
-          recapReservationCounter: dateInfo.reservationCounter || 0,
+          recapBookingCounter: dateInfo.bookingCounter || 0,
           emails: formattedEmails,
         },
       };
     } else {
-      // otherwise, send an informative email about no reservations
+      // otherwise, send an informative email about no bookings
       mailOptions = {
         from: senderEmail,
         to: senderEmail,
@@ -147,8 +147,6 @@ const sendDateRecap = async (date: Date) => {
     }
 
     await transporter.sendMail(mailOptions);
-
-    console.log('Recap sent successfully');
   } catch (err) {
     console.error('Error occurred in sendRecap: ' + err);
   }
@@ -176,9 +174,9 @@ const sendEmail = async (req: Request, res: Response, template: string, subject:
       console.error('dateInfo is undefined');
     }
 
-    // get the ID for managing the reservation for the recap email (confirm/refuse)
-    // uses the last saved reservation with that name
-    const reservationId = (await getReservationId(lastName)) ?? 'error-reservation';
+    // get the ID for managing the booking for the recap email (confirm/refuse)
+    // uses the last saved booking with that name
+    const bookingId = (await getBookingId(lastName)) ?? 'error-booking';
 
     // make some data human-readable
     const formattedDate = format(correctedDate, 'EEEE d MMMM yyyy', { locale: fr });
@@ -207,7 +205,7 @@ const sendEmail = async (req: Request, res: Response, template: string, subject:
 
     let mailOptions: MailOptions;
     if (dateInfo) {
-      // if there are reservations, use the templates
+      // if there are bookings, use the templates
       mailOptions = {
         from,
         to,
@@ -223,17 +221,17 @@ const sendEmail = async (req: Request, res: Response, template: string, subject:
           date: formattedDate,
           recap: sanitizedRecapData || [],
           recapPaxCounter: dateInfo.paxCounter || 0,
-          recapReservationCounter: dateInfo.reservationCounter || 0,
-          reservationId,
+          recapBookingCounter: dateInfo.bookingCounter || 0,
+          bookingId,
         },
       };
     } else {
-      // otherwise, send an informative email about no reservations
+      // otherwise, send an informative email about no bookings
       mailOptions = {
         from,
         to,
         subject: 'Pas de réservations pour demain !',
-        template: 'dailyRecapNoReservations',
+        template: 'dailyRecapNoBookings',
         context: {
           date: formattedDate,
         },
@@ -250,20 +248,20 @@ const sendEmail = async (req: Request, res: Response, template: string, subject:
 };
 
 export const sendRequest = async (req: Request, res: Response) => {
-  await sendEmail(req, res, 'reservationRequest', 'Votre demande de sortie Larga II', senderEmail, req.body.email);
+  await sendEmail(req, res, 'bookingRequest', 'Votre demande de sortie Larga II', senderEmail, req.body.email);
 };
 
 export const sendRecap = async (req: Request, res: Response) => {
-  await sendEmail(req, res, 'reservationRecap', 'Nouvelle demande de sortie', senderEmail, senderEmail);
+  await sendEmail(req, res, 'bookingRecap', 'Nouvelle demande de sortie', senderEmail, senderEmail);
 };
 
-export const saveReservation = async (req: Request, res: Response) => {
+export const saveBooking = async (req: Request, res: Response) => {
   try {
     const { firstName, lastName, email, phone, additionalPax, counter, selectedDate } = req.body;
 
     const correctedDate = counteractBrowserTZ(selectedDate);
 
-    const reservation = new ReservationModel({
+    const booking = new BookingModel({
       firstName,
       lastName,
       email,
@@ -278,13 +276,13 @@ export const saveReservation = async (req: Request, res: Response) => {
       lastName: pax.lastName,
     }));
 
-    reservation.additionalPax = additionalPaxArray;
+    booking.additionalPax = additionalPaxArray;
 
-    await reservation.save();
+    await booking.save();
 
-    res.status(201).json({ message: 'Reservation created successfully' });
+    res.status(201).json({ message: 'Booking created successfully' });
   } catch (error) {
-    console.error('Error creating reservation:', error);
+    console.error('Error creating booking:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };

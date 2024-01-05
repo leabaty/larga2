@@ -1,6 +1,6 @@
 import { MainPax } from '.';
 
-export interface Reservation extends MainPax {
+export interface Booking extends MainPax {
   _id?: string;
   additionalPax: AdditionalPax[];
   counter: number;
@@ -14,8 +14,8 @@ export interface AdditionalPax {
 
 export interface DateRecap {
   date: Date;
-  paxInfo: Reservation[];
-  reservationCounter: number;
+  paxInfo: Booking[];
+  bookingCounter: number;
   paxCounter: number;
 }
 
@@ -32,10 +32,10 @@ export interface MailOptions {
     addPax?: string;
     counter?: any;
     date: string;
-    recap?: Reservation[];
+    recap?: Booking[];
     recapPaxCounter?: number;
-    recapReservationCounter?: number;
-    reservationId?: string;
+    recapBookingCounter?: number;
+    bookingId?: string;
     emails?: string;
   };
 }

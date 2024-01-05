@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "Larga II server for reservation management and email sending.",
+  "description": "Larga II server for booking management and email sending.",
   "main": "index.js",
   "scripts": {
     "build": "npx tsc",

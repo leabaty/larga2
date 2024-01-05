@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendCancellation = exports.sendConfirmation = exports.deleteById = exports.getById = void 0;
+exports.sendCancellation = exports.sendConfirmation = exports.deleteById = exports.getBooking = exports.getById = void 0;
 const data_1 = require("../data");
 // email sending
 const nodemailer_1 = __importDefault(require("nodemailer"));
@@ -21,52 +21,58 @@ const nodemailer_express_handlebars_1 = __importDefault(require("nodemailer-expr
 const date_fns_1 = require("date-fns");
 const locale_1 = require("date-fns/locale");
 // types & models
-const reservation_1 = __importDefault(require("../models/reservation"));
-// getInformation (from the id)
+const booking_1 = __importDefault(require("../models/booking"));
 const getById = (id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const reservation = yield reservation_1.default.findById(id);
-        return reservation;
+        const booking = yield booking_1.default.findById(id);
+        return booking;
     }
     catch (error) {
-        console.error('Error getting reservation by id:', error);
-        throw error; // Optionally rethrow the error to propagate it up the call stack
+        console.error('Error getting booking by id:', error);
+        throw error;
     }
 });
 exports.getById = getById;
+const getBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id = req.params.id;
+        const booking = yield (0, exports.getById)(id);
+        if (!booking) {
+            res.status(404).send('Booking not found');
+            return;
+        }
+        res.json(booking);
+    }
+    catch (err) {
+        console.error('Error occurred in handleGet: ' + err);
+        res.status(500).send('Internal Server Error');
+    }
+});
+exports.getBooking = getBooking;
 const deleteById = (id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const result = yield reservation_1.default.deleteOne({ _id: id });
+        const result = yield booking_1.default.deleteOne({ _id: id });
         if (result.deletedCount === 1) {
-            console.log('Reservation deleted successfully');
+            console.log('Booking deleted successfully');
         }
         else {
-            console.error('Reservation not found');
+            console.error('Booking not found');
         }
     }
     catch (error) {
-        console.error('Error deleting reservation by id:', error);
-        throw error; // Optionally rethrow the error to propagate it up the call stack
+        console.error('Error deleting booking by id:', error);
+        throw error;
     }
 });
 exports.deleteById = deleteById;
-const sendConfirmation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    yield sendEmail(req, res, 'answerConfirmation', 'Sortie voile confirmée !');
-});
-exports.sendConfirmation = sendConfirmation;
-const sendCancellation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    yield sendEmail(req, res, 'answerCancellation', 'Sortie voile non disponible');
-});
-exports.sendCancellation = sendCancellation;
 const sendEmail = (req, res, template, subject) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const reservation = yield (0, exports.getById)(req.body.id);
-        if (!reservation) {
-            console.error('Reservation not found');
-            res.status(404).send('Reservation not found');
+        const booking = yield (0, exports.getById)(req.params.id);
+        if (!booking) {
+            res.status(404).send('Booking not found');
             return;
         }
-        const { firstName, lastName, email, phone, selectedDate, additionalPax, counter } = reservation;
+        const { firstName, lastName, email, phone, selectedDate, additionalPax, counter } = booking;
         // make some data human-readable
         const formattedDate = (0, date_fns_1.format)(selectedDate, 'EEEE d MMMM yyyy', { locale: locale_1.fr });
         const formattedAddPax = additionalPax.map((pax) => `${pax.firstName} ${pax.lastName}`).join(', ');
@@ -90,7 +96,7 @@ const sendEmail = (req, res, template, subject) => __awaiter(void 0, void 0, voi
         transporter.use('compile', (0, nodemailer_express_handlebars_1.default)(options));
         let mailOptions = {
             from: data_1.senderEmail,
-            to: reservation.email,
+            to: booking.email,
             subject,
             template,
             context: {
@@ -108,6 +114,15 @@ const sendEmail = (req, res, template, subject) => __awaiter(void 0, void 0, voi
     }
     catch (err) {
         console.error('Error occurred in sendEmail: ' + err);
-        res.status(500).send('Internal Server Error');
+        res.status(500).send('Internal Server Error, see console');
     }
 });
+const sendConfirmation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    yield sendEmail(req, res, 'answerConfirmation', 'Sortie voile confirmée !');
+});
+exports.sendConfirmation = sendConfirmation;
+const sendCancellation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    yield sendEmail(req, res, 'answerCancellation', 'Sortie voile non disponible');
+    yield (0, exports.deleteById)(req.params.id);
+});
+exports.sendCancellation = sendCancellation;

@@ -5,7 +5,7 @@ const additionalPaxSchema = new mongoose.Schema({
   lastName: String,
 });
 
-const reservationSchema = new mongoose.Schema(
+const bookingSchema = new mongoose.Schema(
   {
     firstName: String,
     lastName: String,
@@ -16,9 +16,9 @@ const reservationSchema = new mongoose.Schema(
     selectedDate: Date,
     requestDate: Date,
   },
-  { collection: 'Reservation' }
+  { collection: 'Booking' }
 );
 
-const ReservationModel = mongoose.model('Reservation', reservationSchema);
+const BookingModel = mongoose.model('Booking', bookingSchema);
 
-export default ReservationModel;
+export default BookingModel;
