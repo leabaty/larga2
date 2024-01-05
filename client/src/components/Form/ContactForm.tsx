@@ -43,7 +43,14 @@ export default function ContactForm() {
     setErrors((prevErrors) => ({ ...prevErrors, [name]: '' }));
   };
 
-  const postData = usePost('/contact/create', formValues);
+  // save data in DB + send email recaps
+  const saveData = usePost('/contact/create', formValues);
+  const sendRecap = usePost('/contact/recap', formValues);
+
+  const saveSendContact = () => {
+    saveData();
+    sendRecap();
+  };
 
   const handleSubmit = async () => {
     const newErrors: FormContactErrorMessages = {
@@ -76,7 +83,7 @@ export default function ContactForm() {
 
     if (Object.values(newErrors).every((error) => !error)) {
       try {
-        await postData();
+        await saveSendContact();
         setSubmitted(true);
       } catch (error) {
         console.error('Contactform Failed to submit:', error);
