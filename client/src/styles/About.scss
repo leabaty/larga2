@@ -10,8 +10,10 @@
     }
     &-text {
       text-align: center;
-      margin: 50% auto;
+      margin: 50% 5%;
       line-height: 2rem;
+      display: block;
+      color: var(--light);
     }
   }
 

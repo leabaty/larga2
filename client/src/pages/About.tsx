@@ -28,11 +28,11 @@ export default function About() {
         <Map />
 
         <div className='about-map-info'>
-          <div className='about-map-text'>
+          <a className='about-map-text' href='https://maps.app.goo.gl/4mKcS724iDhTCr5n6' target='_blank' rel='noreferrer'>
             {content.address.map((item, index) => (
               <p key={index}> {item} </p>
             ))}
-          </div>
+          </a>
         </div>
       </div>
     </div>
