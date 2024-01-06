@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Navbar.scss';
-import { Link, useLocation } from 'react-router-dom';
 import { FaFacebook, FaInstagram, FaTimes } from 'react-icons/fa';
 import { HiOutlineMenuAlt3 } from 'react-icons/hi';
 import { Logo, navbarItems, socialItems } from '../contents/Navbar';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 
 // for bad typing react/typescript component
 interface IconMap {
@@ -65,10 +65,10 @@ export default function Navbar() {
 
         <div className={isMobile ? (openedMobileMenu ? 'navbar-items' : 'hidden') : 'navbar-items'}>
           {navbarItems.map((item, index) => (
-            <Link className='navbar-item' to={item.link} onClick={closeMobileMenu} key={index}>
+            <NavLink className='navbar-item' to={item.link} onClick={closeMobileMenu} key={index}>
               {React.createElement(item.img, { color: logoColor, size: '20' })}
               <p className='navbar-text'>{item.name}</p>
-            </Link>
+            </NavLink>
           ))}
 
           {/* If the view is mobile, socials will be part of the navbar-items in order to appear in the mobile menu. */}

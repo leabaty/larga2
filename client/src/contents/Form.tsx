@@ -15,11 +15,11 @@ const lang = new LocalizedStrings({
       pax: 'passenger(s)',
       add: 'add',
       remove: 'remove',
-      message: 'Write your question or comment here!',
+      message: 'Write your question or comment here',
     },
     submit: {
       submitBooking: 'Submit Booking Request',
-      submittedBooking: 'Thank you for your request. I will get back to you within the next 48 hours to confirm!',
+      submittedBooking: 'Thank you for your request. I will get back to you within the next 48 hours to confirm.',
       submitContact: 'Send my message',
       submittedContact: 'Thank you for your message. I will get back to you as soon as possible.',
     },
@@ -28,7 +28,9 @@ const lang = new LocalizedStrings({
       email: 'Please enter a valid email, as xxxx@xxxx.xx',
       phone: 'Please enter a valid phone number, as 0612345678 or 0033612345678',
       addpax: "If you don't need an additional passenger, please remove it",
+      note: 'You must agree to the terms.',
     },
+    note: "I understand that this request will be confirmed in the next 48h. For our safety, all outings will be based on the day's weather report. Depending on the weather conditions, the captain may postpone the navigation or propose a non-stop navigation.",
   },
 
   fr: {
@@ -44,11 +46,11 @@ const lang = new LocalizedStrings({
       pax: 'passager(s)',
       add: 'ajouter',
       remove: 'supprimer',
-      message: 'Ecrivez ici votre question ou remarque !',
+      message: 'Ecrivez ici votre question ou remarque',
     },
     submit: {
       submitBooking: 'Demande de réservation',
-      submittedBooking: 'Merci pour votre demande, je reviendrai vers vous dans les prochaines 48h afin de la confirmer !',
+      submittedBooking: 'Merci pour votre demande, je reviendrai vers vous dans les prochaines 48h afin de la confirmer.',
       submitContact: 'Envoyer mon message',
       submittedContact: 'Merci pour votre message, je reviendrai vers vous dès que possible.',
     },
@@ -58,7 +60,9 @@ const lang = new LocalizedStrings({
       email: 'Merci de rentrer un email au format xxxx@xxxx.xx',
       phone: 'Merci de rentrer un numéro de téléphone au format 0612345678 ou 0033612345678',
       addpax: "Si vous n'avez pas besoin d'un passager supplémentaire, veuillez le supprimer.",
+      note: 'Merci de cocher cette case.',
     },
+    note: "Je comprends que ma demande de réservation est sujette aux disponibilités et me sera confirmée d'ici 48h. Pour notre sécurité, toutes les sorties seront basées sur le bulletin météo du jour. Selon les conditions météorologiques, le capitaine peut reporter la navigation ou proposer une navigation sans escale.",
   },
 });
 
@@ -86,5 +90,7 @@ export const content = {
     email: lang.error.email,
     phone: lang.error.phone,
     addpax: lang.error.addpax,
+    note: lang.error.note,
   },
+  note: lang.note,
 };

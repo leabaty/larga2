@@ -8,6 +8,9 @@ import { content } from '../../contents/Form';
 import usePost from '../../utils/usePost';
 import { Calendar } from 'ApiTypes/calendar';
 
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+
 export default function BookingForm() {
   const maxBoatPax = 4;
   const [formValues, setFormValues] = useState<FormBookingValues>({
@@ -29,6 +32,7 @@ export default function BookingForm() {
     additionalPax: '',
   });
 
+  const [agreeTerms, setAgreeTerms] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   const [calendarItems, setCalendarItems] = useState<Calendar>([]);
@@ -92,6 +96,10 @@ export default function BookingForm() {
     setErrors((prevErrors) => ({ ...prevErrors, additionalPax: '' }));
   };
 
+  const handleAgreeTermsChange = () => {
+    setAgreeTerms(!agreeTerms);
+  };
+
   const handleSubmit = async () => {
     const newErrors: FormBookingErrorMessages = {
       firstName: '',
@@ -100,6 +108,7 @@ export default function BookingForm() {
       phone: '',
       selectedDate: '',
       additionalPax: '',
+      agreeTerms: '', // Reset agreeTerms error on each submission
     };
 
     if (!firstName) {
@@ -126,6 +135,15 @@ export default function BookingForm() {
       newErrors.additionalPax = content.error.addpax;
     }
 
+    if (!agreeTerms) {
+      newErrors.agreeTerms = content.error.note;
+    }
+
+    // Display an error if the checkbox is not checked
+    if (!agreeTerms) {
+      newErrors.note = content.error.note;
+    }
+
     if (Object.values(newErrors).every((error) => !error)) {
       try {
         await saveSendBooking();
@@ -138,13 +156,11 @@ export default function BookingForm() {
     }
   };
 
-  // save data in DB + send email recaps
-  const saveData = usePost('/booking/create', formValues);
-  const sendRequest = usePost('/booking/email-request', formValues);
-  const sendRecap = usePost('/booking/email-recap', formValues);
+  // save data in DB + send emails
+  const sendRequest = usePost('/booking/request', formValues);
+  const sendRecap = usePost('/booking/recap', formValues);
 
   const saveSendBooking = () => {
-    saveData();
     sendRequest();
     sendRecap();
   };
@@ -230,6 +246,13 @@ export default function BookingForm() {
             mainPassenger={{ firstName: firstName, lastName: lastName }}
             showAddPax={showAddPax}
           />
+
+          <FormControlLabel
+            control={<Checkbox id='agreeTermsCheckbox' checked={agreeTerms} onChange={handleAgreeTermsChange} style={{ color: 'white' }} />}
+            label={content.note}
+            className='form-text'
+          />
+          {errors.note && <p>⚠️ {errors.note}</p>}
 
           <button className='form-btn-submit' onClick={handleSubmit}>
             {content.submitBooking}

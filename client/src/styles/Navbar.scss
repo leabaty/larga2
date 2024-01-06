@@ -50,7 +50,7 @@
   }
 
   &-social {
-    font-size: 15px;
+    font-size: 20px;
     margin: 0 3px;
     color: var(--light);
   }
@@ -58,6 +58,11 @@
   &.fullNavbar {
     background-color: var(--dark);
   }
+}
+
+.navbar-item.active {
+  border-bottom: 2px solid var(--light);
+  padding-bottom: 3px;
 }
 
 @media (max-width: 880px) {
@@ -83,6 +88,10 @@
 
     &-item {
       margin: 10px 0;
+    }
+
+    &-social {
+      font-size: 15px;
     }
   }
 }
