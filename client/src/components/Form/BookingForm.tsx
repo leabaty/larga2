@@ -136,12 +136,12 @@ export default function BookingForm() {
     }
 
     if (!agreeTerms) {
-      newErrors.agreeTerms = content.error.note;
+      newErrors.agreeTerms = content.error.terms;
     }
 
     // Display an error if the checkbox is not checked
     if (!agreeTerms) {
-      newErrors.note = content.error.note;
+      newErrors.terms = content.error.terms;
     }
 
     if (Object.values(newErrors).every((error) => !error)) {
@@ -249,10 +249,10 @@ export default function BookingForm() {
 
           <FormControlLabel
             control={<Checkbox id='agreeTermsCheckbox' checked={agreeTerms} onChange={handleAgreeTermsChange} style={{ color: 'white' }} />}
-            label={content.note}
+            label={content.terms}
             className='form-text'
           />
-          {errors.note && <p>⚠️ {errors.note}</p>}
+          {errors.terms && <p>⚠️ {errors.terms}</p>}
 
           <button className='form-btn-submit' onClick={handleSubmit}>
             {content.submitBooking}
