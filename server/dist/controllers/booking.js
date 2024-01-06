@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendDailyRecap = exports.saveBooking = exports.sendRecap = exports.sendRequest = void 0;
+exports.sendDailyRecap = exports.sendRecap = exports.sendRequest = void 0;
 // email sending
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const nodemailer_express_handlebars_1 = __importDefault(require("nodemailer-express-handlebars"));
@@ -159,7 +159,7 @@ const sendEmail = (req, res, template, subject, from, to) => __awaiter(void 0, v
             return;
         }
         const dateInfo = yield getDateInfo(correctedDate);
-        // Deep copy the data to eliminate prototype chain issues
+        // sanitize in order to make it readable by nodemailer + to eliminate prototype chain issues
         let sanitizedRecapData;
         if (dateInfo) {
             sanitizedRecapData = JSON.parse(JSON.stringify(dateInfo.paxInfo));
@@ -170,7 +170,7 @@ const sendEmail = (req, res, template, subject, from, to) => __awaiter(void 0, v
         // get the ID for managing the booking for the recap email (confirm/refuse)
         // uses the last saved booking with that name
         const bookingId = (_a = (yield getBookingId(lastName))) !== null && _a !== void 0 ? _a : 'error-booking';
-        // make some data human-readable
+        // make some data human-readable for emails
         const formattedDate = (0, date_fns_1.format)(correctedDate, 'EEEE d MMMM yyyy', { locale: locale_1.fr });
         const formattedAddPax = additionalPax.map((pax) => `${pax.firstName} ${pax.lastName}`).join(', ');
         const transporter = nodemailer_1.default.createTransport({
@@ -239,6 +239,7 @@ const sendRequest = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 });
 exports.sendRequest = sendRequest;
 const sendRecap = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    yield saveBooking(req, res);
     yield sendEmail(req, res, 'bookingRecap', 'Nouvelle demande de sortie', data_1.senderEmail, data_1.senderEmail);
 });
 exports.sendRecap = sendRecap;
@@ -268,7 +269,6 @@ const saveBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
-exports.saveBooking = saveBooking;
 // sending the daily recap email
 const sendDailyRecap = () => __awaiter(void 0, void 0, void 0, function* () {
     try {

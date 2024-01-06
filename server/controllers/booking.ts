@@ -166,7 +166,7 @@ const sendEmail = async (req: Request, res: Response, template: string, subject:
       return;
     }
     const dateInfo = await getDateInfo(correctedDate);
-    // Deep copy the data to eliminate prototype chain issues
+    // sanitize in order to make it readable by nodemailer + to eliminate prototype chain issues
     let sanitizedRecapData;
     if (dateInfo) {
       sanitizedRecapData = JSON.parse(JSON.stringify(dateInfo.paxInfo));
@@ -178,7 +178,7 @@ const sendEmail = async (req: Request, res: Response, template: string, subject:
     // uses the last saved booking with that name
     const bookingId = (await getBookingId(lastName)) ?? 'error-booking';
 
-    // make some data human-readable
+    // make some data human-readable for emails
     const formattedDate = format(correctedDate, 'EEEE d MMMM yyyy', { locale: fr });
     const formattedAddPax = additionalPax.map((pax: AdditionalPax) => `${pax.firstName} ${pax.lastName}`).join(', ');
 
@@ -252,10 +252,11 @@ export const sendRequest = async (req: Request, res: Response) => {
 };
 
 export const sendRecap = async (req: Request, res: Response) => {
+  await saveBooking(req, res);
   await sendEmail(req, res, 'bookingRecap', 'Nouvelle demande de sortie', senderEmail, senderEmail);
 };
 
-export const saveBooking = async (req: Request, res: Response) => {
+const saveBooking = async (req: Request, res: Response) => {
   try {
     const { firstName, lastName, email, phone, additionalPax, counter, selectedDate } = req.body;
 

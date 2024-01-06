@@ -21,5 +21,5 @@ if (!mongoDbUrl) {
 }
 mongoose_1.default
     .connect(mongoDbUrl)
-    .then(() => app.listen(port || 8000, () => console.log(`⚡️ Server is running at http://localhost:${port}`)))
+    .then(() => app.listen(port || 3000, () => console.log(`⚡️ Server is running at http://localhost:${port}`)))
     .catch((error) => console.log(`⚡️ ${error} did not connect`));
