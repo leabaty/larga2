@@ -83,6 +83,14 @@ const counteractBrowserTZ = (date) => {
 const sendDateRecap = (date) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const dateInfo = yield getDateInfo(date);
+        // sanitize in order to make it readable by nodemailer + to eliminate prototype chain issues
+        let sanitizedRecapData;
+        if (dateInfo) {
+            sanitizedRecapData = JSON.parse(JSON.stringify(dateInfo.paxInfo));
+        }
+        else {
+            console.error('dateInfo is undefined');
+        }
         const formattedDate = (0, date_fns_1.format)(date, 'EEEE d MMMM yyyy', { locale: locale_1.fr });
         let formattedEmails;
         if (dateInfo) {
@@ -91,7 +99,7 @@ const sendDateRecap = (date) => __awaiter(void 0, void 0, void 0, function* () {
         }
         else {
             console.error('dateInfo is undefined');
-            formattedEmails = ''; // Set a default value or handle the case where emails are not available
+            formattedEmails = '';
         }
         const transporter = nodemailer_1.default.createTransport({
             service: 'gmail',
@@ -100,11 +108,12 @@ const sendDateRecap = (date) => __awaiter(void 0, void 0, void 0, function* () {
                 pass: process.env.GMAIL_PASS,
             },
         });
+        const dateRecapTemplate = dateInfo && dateInfo.paxCounter > 0 ? 'dateRecap' : 'dateRecapEmpty';
         var options = {
             viewEngine: {
                 extname: '.hbs',
                 layoutsDir: 'views/email/',
-                defaultLayout: 'dateRecap',
+                defaultLayout: dateRecapTemplate,
                 partialsDir: 'views/email/',
             },
             viewPath: 'views/email',
@@ -112,16 +121,16 @@ const sendDateRecap = (date) => __awaiter(void 0, void 0, void 0, function* () {
         };
         transporter.use('compile', (0, nodemailer_express_handlebars_1.default)(options));
         let mailOptions;
-        if (dateInfo) {
+        if (dateInfo && dateInfo.paxCounter > 0) {
             // if there are bookings, use the templates
             mailOptions = {
                 from: data_1.senderEmail,
                 to: data_1.senderEmail,
-                subject: 'Ta sortie de demain',
+                subject: `Ta sortie de demain (${formattedDate})`,
                 template: 'dateRecap',
                 context: {
                     date: formattedDate,
-                    recap: dateInfo.paxInfo || [],
+                    recap: sanitizedRecapData || [],
                     recapPaxCounter: dateInfo.paxCounter || 0,
                     recapBookingCounter: dateInfo.bookingCounter || 0,
                     emails: formattedEmails,
@@ -133,7 +142,7 @@ const sendDateRecap = (date) => __awaiter(void 0, void 0, void 0, function* () {
             mailOptions = {
                 from: data_1.senderEmail,
                 to: data_1.senderEmail,
-                subject: 'Pas de réservations pour demain !',
+                subject: ` Pas de réservations pour demain (${formattedDate})`,
                 template: 'dateRecapEmpty',
                 context: {
                     date: formattedDate,
@@ -191,41 +200,25 @@ const sendEmail = (req, res, template, subject, from, to) => __awaiter(void 0, v
             extName: '.hbs',
         };
         transporter.use('compile', (0, nodemailer_express_handlebars_1.default)(options));
-        let mailOptions;
-        if (dateInfo) {
-            // if there are bookings, use the templates
-            mailOptions = {
-                from,
-                to,
-                subject,
-                template,
-                context: {
-                    firstName,
-                    lastName,
-                    email,
-                    phone,
-                    addPax: formattedAddPax,
-                    counter,
-                    date: formattedDate,
-                    recap: sanitizedRecapData || [],
-                    recapPaxCounter: dateInfo.paxCounter || 0,
-                    recapBookingCounter: dateInfo.bookingCounter || 0,
-                    bookingId,
-                },
-            };
-        }
-        else {
-            // otherwise, send an informative email about no bookings
-            mailOptions = {
-                from,
-                to,
-                subject: 'Pas de réservations pour demain !',
-                template: 'dailyRecapNoBookings',
-                context: {
-                    date: formattedDate,
-                },
-            };
-        }
+        let mailOptions = {
+            from,
+            to,
+            subject,
+            template,
+            context: {
+                firstName,
+                lastName,
+                email,
+                phone,
+                addPax: formattedAddPax,
+                counter,
+                date: formattedDate,
+                recap: sanitizedRecapData || [],
+                recapPaxCounter: (dateInfo === null || dateInfo === void 0 ? void 0 : dateInfo.paxCounter) || 0,
+                recapBookingCounter: (dateInfo === null || dateInfo === void 0 ? void 0 : dateInfo.bookingCounter) || 0,
+                bookingId,
+            },
+        };
         yield transporter.sendMail(mailOptions);
         res.status(200).send('Email sent successfully');
     }
@@ -235,12 +228,12 @@ const sendEmail = (req, res, template, subject, from, to) => __awaiter(void 0, v
     }
 });
 const sendRequest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    yield sendEmail(req, res, 'bookingRequest', 'Votre demande de sortie Larga II', data_1.senderEmail, req.body.email);
+    yield sendEmail(req, res, 'bookingRequest', 'Votre demande de sortie voile', data_1.senderEmail, req.body.email);
 });
 exports.sendRequest = sendRequest;
 const sendRecap = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     yield saveBooking(req, res);
-    yield sendEmail(req, res, 'bookingRecap', 'Nouvelle demande de sortie', data_1.senderEmail, data_1.senderEmail);
+    yield sendEmail(req, res, 'bookingRecap', `Nouvelle demande : ${req.body.firstName} ${req.body.lastName}`, data_1.senderEmail, data_1.senderEmail);
 });
 exports.sendRecap = sendRecap;
 const saveBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -288,7 +281,7 @@ const sendDailyRecap = () => __awaiter(void 0, void 0, void 0, function* () {
                 nextDay = (0, date_fns_1.addDays)(currentDate, 1); // Thursday
                 break;
             case 4: // Thursday
-                nextDay = (0, date_fns_1.addDays)(currentDate, 3); // Sunday (for the next week)
+                nextDay = (0, date_fns_1.addDays)(currentDate, 1); // Friday
                 break;
             default:
                 // For other days, do not send the recap
@@ -302,5 +295,5 @@ const sendDailyRecap = () => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.sendDailyRecap = sendDailyRecap;
-// run every day at 09:00 UTC
-node_schedule_1.default.scheduleJob('0 9 * * *', exports.sendDailyRecap);
+(0, exports.sendDailyRecap)();
+node_schedule_1.default.scheduleJob('0 9 * * 0,1,3,4', exports.sendDailyRecap);

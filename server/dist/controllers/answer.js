@@ -118,7 +118,7 @@ const sendEmail = (req, res, template, subject) => __awaiter(void 0, void 0, voi
     }
 });
 const sendConfirmation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    yield sendEmail(req, res, 'answerConfirmation', 'Sortie voile confirmée !');
+    yield sendEmail(req, res, 'answerConfirmation', 'Votre sortie voile est confirmée !');
 });
 exports.sendConfirmation = sendConfirmation;
 const sendCancellation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

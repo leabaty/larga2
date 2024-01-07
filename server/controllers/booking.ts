@@ -84,6 +84,14 @@ const counteractBrowserTZ = (date: Date) => {
 const sendDateRecap = async (date: Date) => {
   try {
     const dateInfo = await getDateInfo(date);
+    // sanitize in order to make it readable by nodemailer + to eliminate prototype chain issues
+    let sanitizedRecapData;
+    if (dateInfo) {
+      sanitizedRecapData = JSON.parse(JSON.stringify(dateInfo.paxInfo));
+    } else {
+      console.error('dateInfo is undefined');
+    }
+
     const formattedDate = format(date, 'EEEE d MMMM yyyy', { locale: fr });
 
     let formattedEmails;
@@ -93,7 +101,7 @@ const sendDateRecap = async (date: Date) => {
       formattedEmails = emails.join(',');
     } else {
       console.error('dateInfo is undefined');
-      formattedEmails = ''; // Set a default value or handle the case where emails are not available
+      formattedEmails = '';
     }
 
     const transporter = nodemailer.createTransport({
@@ -104,11 +112,13 @@ const sendDateRecap = async (date: Date) => {
       },
     });
 
+    const dateRecapTemplate = dateInfo && dateInfo.paxCounter > 0 ? 'dateRecap' : 'dateRecapEmpty';
+
     var options = {
       viewEngine: {
         extname: '.hbs',
         layoutsDir: 'views/email/',
-        defaultLayout: 'dateRecap',
+        defaultLayout: dateRecapTemplate,
         partialsDir: 'views/email/',
       },
       viewPath: 'views/email',
@@ -118,16 +128,16 @@ const sendDateRecap = async (date: Date) => {
     transporter.use('compile', hbs(options));
 
     let mailOptions: MailOptions;
-    if (dateInfo) {
+    if (dateInfo && dateInfo.paxCounter > 0) {
       // if there are bookings, use the templates
       mailOptions = {
         from: senderEmail,
         to: senderEmail,
-        subject: 'Ta sortie de demain',
+        subject: `Ta sortie de demain (${formattedDate})`,
         template: 'dateRecap',
         context: {
           date: formattedDate,
-          recap: dateInfo.paxInfo || [],
+          recap: sanitizedRecapData || [],
           recapPaxCounter: dateInfo.paxCounter || 0,
           recapBookingCounter: dateInfo.bookingCounter || 0,
           emails: formattedEmails,
@@ -138,7 +148,7 @@ const sendDateRecap = async (date: Date) => {
       mailOptions = {
         from: senderEmail,
         to: senderEmail,
-        subject: 'Pas de réservations pour demain !',
+        subject: ` Pas de réservations pour demain (${formattedDate})`,
         template: 'dateRecapEmpty',
         context: {
           date: formattedDate,
@@ -165,6 +175,7 @@ const sendEmail = async (req: Request, res: Response, template: string, subject:
       res.status(400).send('Invalid date');
       return;
     }
+
     const dateInfo = await getDateInfo(correctedDate);
     // sanitize in order to make it readable by nodemailer + to eliminate prototype chain issues
     let sanitizedRecapData;
@@ -203,40 +214,25 @@ const sendEmail = async (req: Request, res: Response, template: string, subject:
 
     transporter.use('compile', hbs(options));
 
-    let mailOptions: MailOptions;
-    if (dateInfo) {
-      // if there are bookings, use the templates
-      mailOptions = {
-        from,
-        to,
-        subject,
-        template,
-        context: {
-          firstName,
-          lastName,
-          email,
-          phone,
-          addPax: formattedAddPax,
-          counter,
-          date: formattedDate,
-          recap: sanitizedRecapData || [],
-          recapPaxCounter: dateInfo.paxCounter || 0,
-          recapBookingCounter: dateInfo.bookingCounter || 0,
-          bookingId,
-        },
-      };
-    } else {
-      // otherwise, send an informative email about no bookings
-      mailOptions = {
-        from,
-        to,
-        subject: 'Pas de réservations pour demain !',
-        template: 'dailyRecapNoBookings',
-        context: {
-          date: formattedDate,
-        },
-      };
-    }
+    let mailOptions = {
+      from,
+      to,
+      subject,
+      template,
+      context: {
+        firstName,
+        lastName,
+        email,
+        phone,
+        addPax: formattedAddPax,
+        counter,
+        date: formattedDate,
+        recap: sanitizedRecapData || [],
+        recapPaxCounter: dateInfo?.paxCounter || 0,
+        recapBookingCounter: dateInfo?.bookingCounter || 0,
+        bookingId,
+      },
+    };
 
     await transporter.sendMail(mailOptions);
 
@@ -248,12 +244,12 @@ const sendEmail = async (req: Request, res: Response, template: string, subject:
 };
 
 export const sendRequest = async (req: Request, res: Response) => {
-  await sendEmail(req, res, 'bookingRequest', 'Votre demande de sortie Larga II', senderEmail, req.body.email);
+  await sendEmail(req, res, 'bookingRequest', 'Votre demande de sortie voile', senderEmail, req.body.email);
 };
 
 export const sendRecap = async (req: Request, res: Response) => {
   await saveBooking(req, res);
-  await sendEmail(req, res, 'bookingRecap', 'Nouvelle demande de sortie', senderEmail, senderEmail);
+  await sendEmail(req, res, 'bookingRecap', `Nouvelle demande : ${req.body.firstName} ${req.body.lastName}`, senderEmail, senderEmail);
 };
 
 const saveBooking = async (req: Request, res: Response) => {
@@ -308,7 +304,7 @@ export const sendDailyRecap = async () => {
         nextDay = addDays(currentDate, 1); // Thursday
         break;
       case 4: // Thursday
-        nextDay = addDays(currentDate, 3); // Sunday (for the next week)
+        nextDay = addDays(currentDate, 1); // Friday
         break;
       default:
         // For other days, do not send the recap
@@ -323,5 +319,4 @@ export const sendDailyRecap = async () => {
   }
 };
 
-// run every day at 09:00 UTC
-schedule.scheduleJob('0 9 * * *', sendDailyRecap);
+schedule.scheduleJob('0 9 * * 0,1,3,4', sendDailyRecap);

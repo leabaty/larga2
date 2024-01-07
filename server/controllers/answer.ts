@@ -119,7 +119,7 @@ const sendEmail = async (req: Request, res: Response, template: string, subject:
 };
 
 export const sendConfirmation = async (req: Request, res: Response) => {
-  await sendEmail(req, res, 'answerConfirmation', 'Sortie voile confirmée !');
+  await sendEmail(req, res, 'answerConfirmation', 'Votre sortie voile est confirmée !');
 };
 
 export const sendCancellation = async (req: Request, res: Response) => {
