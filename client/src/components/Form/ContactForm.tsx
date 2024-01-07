@@ -4,7 +4,7 @@ import { InputField } from './formComponents/FormInputs';
 import '../../styles/Form.scss';
 import { content } from '../../contents/Form';
 import { TextAreaField } from './formComponents/FormTextArea';
-import usePost from '../../utils/usePost';
+import { usePost } from '../../utils/usePost';
 
 export default function ContactForm() {
   const [formValues, setFormValues] = useState<FormContactValues>({
@@ -47,9 +47,14 @@ export default function ContactForm() {
   const saveData = usePost('/contact/create', formValues);
   const sendRecap = usePost('/contact/recap', formValues);
 
-  const saveSendContact = () => {
-    saveData();
-    sendRecap();
+  const saveSendContact = async () => {
+    try {
+      await saveData();
+      await sendRecap();
+    } catch (error) {
+      console.error('Contactform Failed to submit:', error);
+      throw error;
+    }
   };
 
   const handleSubmit = async () => {
@@ -87,6 +92,10 @@ export default function ContactForm() {
         setSubmitted(true);
       } catch (error) {
         console.error('Contactform Failed to submit:', error);
+        setErrors({
+          ...newErrors,
+          formSubmission: 'There was something wrong with submitting the form. Please try again later or contact us.',
+        });
       }
     } else {
       setErrors(newErrors);
@@ -122,6 +131,7 @@ export default function ContactForm() {
           <button className='form-btn-submit' onClick={handleSubmit}>
             {content.submitContact}
           </button>
+          {errors.formSubmission && <p> ⚠️ {errors.formSubmission}</p>}
         </>
       ) : (
         <div className='submit-message'>

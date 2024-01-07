@@ -5,11 +5,11 @@ import { DateField } from './formComponents/FormDateField';
 import { AdditionalPaxFields } from './formComponents/FormAdditionalPax';
 import '../../styles/Form.scss';
 import { content } from '../../contents/Form';
-import usePost from '../../utils/usePost';
 import { Calendar } from 'ApiTypes/calendar';
 
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import { usePost } from '../../utils/usePost';
 
 export default function BookingForm() {
   const maxBoatPax = 4;
@@ -150,6 +150,10 @@ export default function BookingForm() {
         setSubmitted(true);
       } catch (error) {
         console.error('Booking failed to submit:', error);
+        setErrors({
+          ...newErrors,
+          formSubmission: content.error.submit,
+        });
       }
     } else {
       setErrors(newErrors);
@@ -160,9 +164,14 @@ export default function BookingForm() {
   const sendRequest = usePost('/booking/request', formValues);
   const sendRecap = usePost('/booking/recap', formValues);
 
-  const saveSendBooking = () => {
-    sendRequest();
-    sendRecap();
+  const saveSendBooking = async () => {
+    try {
+      await sendRequest();
+      await sendRecap();
+    } catch (error) {
+      console.error('Bookingform Failed to submit:', error);
+      throw error;
+    }
   };
 
   useEffect(() => {
@@ -174,6 +183,7 @@ export default function BookingForm() {
         setCalendarItems(data);
       } catch (error) {
         console.error('Error fetching calendar data:', error);
+        setCalendarItems([]);
       }
     };
     fetchCalendarData();
@@ -231,10 +241,17 @@ export default function BookingForm() {
           <InputField name='phone' placeholder={content.field.phone} type='tel' value={phone} error={errors.phone} onChange={handleInputChange} />
           <div className='form-block'></div>
 
-          <DateField selectedDate={selectedDate} onChange={handleDateChange} error={errors.selectedDate} calendarItems={calendarItems} />
-          <p className='form-text'>
-            {content.available} : {availablePax !== null ? availablePax : 'Loading...'}
-          </p>
+          {calendarItems.length === 0 ? (
+            <p className='form-text'>⚠️ {content.error.calendar}</p>
+          ) : (
+            <>
+              {' '}
+              <DateField selectedDate={selectedDate} onChange={handleDateChange} error={errors.selectedDate} calendarItems={calendarItems} />
+              <p className='form-text'>
+                {content.available} : {availablePax !== null ? availablePax : 'Loading...'}
+              </p>
+            </>
+          )}
 
           <AdditionalPaxFields
             additionalPax={additionalPax}
@@ -257,6 +274,7 @@ export default function BookingForm() {
           <button className='form-btn-submit' onClick={handleSubmit}>
             {content.submitBooking}
           </button>
+          {errors.formSubmission && <p> ⚠️ {errors.formSubmission}</p>}
         </>
       ) : (
         <div className='submit-message'>

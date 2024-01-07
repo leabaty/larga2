@@ -1,16 +1,16 @@
 import { FormContactValues, FormBookingValues } from 'FormTypes';
 import axios from 'axios';
 
-const usePost = (URL: string, data: FormContactValues | FormBookingValues) => {
+export const usePost = (URL: string, data: FormContactValues | FormBookingValues) => {
   const post = async () => {
     try {
-      await axios.post(process.env.REACT_APP_SERVER + URL, data);
+      const response = await axios.post(process.env.REACT_APP_SERVER + URL, data);
+      return response.data;
     } catch (error) {
       console.error(error);
+      throw error;
     }
   };
 
   return post;
 };
-
-export default usePost;
