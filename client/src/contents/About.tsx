@@ -24,7 +24,7 @@ const lang = new LocalizedStrings({
     boatTitle: 'Larga II',
     boatDesc: [
       "Le Larga II est un Jeanneau Attalia 32 pieds. C'est Un voilier habitable de 9,60 m qui peut embarquer jusqu'à 6 personnes.",
-      "Il est habituellement gréé d'une GV de ... m2 et d'un génois de ... m2.  Il dispose également d'un spi, d'une trinquette, d'un tri pour les gros temps. ",
+      "Il est habituellement gréé d'une GV de ... m2 et d'un génois de ... m2.  Il dispose également d'un spi, d'une trinquette, d'un ... pour les gros temps. ",
     ],
     skipperTitle: 'Denis',
     skipperDesc: [
