@@ -12,6 +12,9 @@ import About from './pages/About';
 import Booking from './pages/Booking';
 import Contact from './pages/Contact';
 import Answer from './pages/Answer';
+import NotFound from './pages/NotFound';
+import PrivacyPolicy from './pages/Legal/PrivacyPolicy';
+import LegalNotice from './pages/Legal/LegalNotice';
 
 function App() {
   return (
@@ -26,9 +29,9 @@ function App() {
           <Route path='/contact' element={<Contact />}></Route>
           <Route path='/answer/:id' element={<Answer />}></Route>
 
-          {/* <Route path='*' element={<NotFound />}></Route>
-          <Route path='/politique-de-confidentialite' element={<PrivacyPolicy />}></Route>
-          <Route path='/mentions-legales' element={<LegalNotice />}></Route> */}
+          <Route path='*' element={<NotFound />}></Route>
+          <Route path='/privacy-policy' element={<PrivacyPolicy />}></Route>
+          <Route path='/legal-notice' element={<LegalNotice />}></Route>
         </Routes>
         <Footer />
       </Router>

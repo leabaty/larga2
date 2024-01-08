@@ -33,7 +33,7 @@ const lang = new LocalizedStrings({
       submit: 'There was a problem validating the form. Please try again later or contact me.',
     },
     terms:
-      "I understand that this request will be confirmed in the next 48h. For our safety, all outings will be based on the day's weather report. Depending on the weather conditions, the captain may postpone the navigation or propose a non-stop navigation.",
+      "I understand that my booking request is subject to availability and will be confirmed within 48 hours. I will be asked to contribute 10€ to the ship's float on the day of the outing. For my safety and that of the crew, all outings will be based on the day's weather report. Depending on weather conditions, the captain may postpone the trip or propose a non-stop trip.",
   },
 
   fr: {
@@ -69,7 +69,7 @@ const lang = new LocalizedStrings({
       submit: 'Un problème est survenu lors de la validation du formulaire. Veuillez réessayer plus tard ou contactez-moi.',
     },
     terms:
-      "Je comprends que ma demande de réservation est sujette aux disponibilités et me sera confirmée d'ici 48h. Pour notre sécurité, toutes les sorties seront basées sur le bulletin météo du jour. Selon les conditions météorologiques, le capitaine peut reporter la navigation ou proposer une navigation sans escale.",
+      "Je comprends que ma demande de réservation est sujette aux disponibilités et me sera confirmée d'ici 48h. Une participation à la caisse de bord de 10€ me sera demandée le jour de la sortie. Pour ma sécurité et celle de l'équipage, toutes les sorties seront basées sur le bulletin météo du jour. Selon les conditions météorologiques, le capitaine peut reporter la navigation ou proposer une navigation sans escale.",
   },
 });
 

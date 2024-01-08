@@ -58,18 +58,11 @@
 
   &-btn-submit {
     border: 1px var(--light) solid;
-    padding: 10px;
     margin: 20px;
-    border-radius: 15px;
     width: 250px;
-    text-align: center;
-    cursor: pointer;
     &:hover {
-      color: var(--dark);
-      background-color: var(--orange);
+      background-color: var(--green);
       border: none;
-      transform: scale(1.2);
-      transition: all 0.2s ease;
     }
   }
 

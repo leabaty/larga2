@@ -17,26 +17,17 @@
   }
 
   &-btn {
-    border: none;
-    color: var(--light);
-    padding: 10px;
     margin: 15px 10px;
-    border-radius: 15px;
     width: 125px;
-    cursor: pointer;
     &:hover {
       background-color: var(--dark);
-      transform: scale(1.1);
-      transition: all 0.2s ease;
     }
-  }
-
-  &-btn-confirm {
-    background-color: green;
-  }
-
-  &-btn-cancel {
-    background-color: darkred;
+    &-confirm {
+      background-color: green;
+    }
+    &-cancel {
+      background-color: darkred;
+    }
   }
 }
 

@@ -89,10 +89,10 @@ export default function Answer() {
 
           {bookingDetails && <BookingRecap booking={bookingDetails} />}
 
-          <button className='answer-btn answer-btn-confirm' onClick={handleConfirm}>
+          <button className='btn answer-btn answer-btn-confirm' onClick={handleConfirm}>
             {content.confirm}
           </button>
-          <button className='answer-btn answer-btn-cancel' onClick={handleCancel}>
+          <button className='btn answer-btn answer-btn-cancel' onClick={handleCancel}>
             {content.cancel}
           </button>
         </div>

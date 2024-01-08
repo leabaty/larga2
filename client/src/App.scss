@@ -77,6 +77,14 @@ h3 {
   text-align: center;
 }
 
+li {
+  margin: 5px 0;
+}
+
+.txt {
+  margin: 15px 0;
+}
+
 b,
 .bold {
   font-weight: 500;
@@ -166,56 +174,16 @@ hr {
 }
 
 .btn {
-  margin: 10px auto;
+  border: none;
+  background-color: var(--dark);
+  color: var(--light);
+  padding: 10px;
+  border-radius: 15px;
+  text-align: center;
   cursor: pointer;
-  border-radius: 5px;
-
-  &--full {
-    background-color: var(--dark);
-    border: var(--light) 2px solid;
-    color: var(--light);
-
-    &:hover {
-      border: var(--dark) 2px solid;
-      color: var(--dark);
-      background-size: cover;
-      background-position: center;
-    }
-  }
-
-  &--outlined {
-    background-color: var(--light);
-    background-size: cover;
-    background-position: center;
-    border: var(--dark) 2px solid;
-    color: var(--dark);
-
-    &:hover {
-      border: var(--dark) 2px solid;
-      color: var(--dark);
-      background-size: cover;
-      background-position: center;
-    }
-  }
-
-  &--large {
-    padding: 1.2rem;
-    font-size: 1.3rem;
-  }
-
-  &--medium {
-    padding: 0.9rem;
-    font-size: 1.1rem;
-  }
-
-  &--small {
-    padding: 0.75rem;
-    font-size: 1rem;
-  }
-
-  &--nano {
-    padding: 0.6rem;
-    font-size: 0.9rem;
+  &:hover {
+    transform: scale(1.1);
+    transition: all 0.2s ease;
   }
 }
 

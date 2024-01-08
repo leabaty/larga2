@@ -271,7 +271,7 @@ export default function BookingForm() {
           />
           {errors.terms && <p>⚠️ {errors.terms}</p>}
 
-          <button className='form-btn-submit' onClick={handleSubmit}>
+          <button className='btn form-btn-submit' onClick={handleSubmit}>
             {content.submitBooking}
           </button>
           {errors.formSubmission && <p> ⚠️ {errors.formSubmission}</p>}

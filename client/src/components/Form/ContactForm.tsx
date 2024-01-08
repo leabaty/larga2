@@ -128,7 +128,7 @@ export default function ContactForm() {
             onChange={handleInputChange}
           />
 
-          <button className='form-btn-submit' onClick={handleSubmit}>
+          <button className='btn form-btn-submit' onClick={handleSubmit}>
             {content.submitContact}
           </button>
           {errors.formSubmission && <p> ⚠️ {errors.formSubmission}</p>}
