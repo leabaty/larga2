@@ -49,6 +49,9 @@ const getCalendarData = (req, res) => __awaiter(void 0, void 0, void 0, function
         // exclude selected periods of time (which are set from the data file)
         const additionalDateObjects = excludePeriods(data_1.excludedPeriods);
         updateCalendarItems(additionalDateObjects, calendarItems);
+        // exclude today and the next day
+        const exclude48hDateObjects = exclude48h();
+        updateCalendarItems(exclude48hDateObjects, calendarItems);
         res.status(200).json(calendarItems);
     }
     catch (error) {
@@ -64,7 +67,7 @@ const excludeDays = (startDate, endDate) => {
     const excludedDays = [];
     for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
         const dayOfWeek = date.getDay();
-        const currentDate = new Date(date); // Create a new Date object
+        const currentDate = new Date(date);
         if (days.includes(dayOfWeek)) {
             const calendarItem = { date: currentDate, paxCounter: 6, enabled: false };
             excludedDays.push(calendarItem);
@@ -82,6 +85,17 @@ const excludePeriods = (days) => {
         const calendarItem = { date, paxCounter: 0, enabled: false };
         dateObjects.push(calendarItem);
     });
+    return dateObjects;
+};
+// exclude today and the next day
+const exclude48h = () => {
+    const currentDate = new Date();
+    const nextDate = new Date(currentDate);
+    nextDate.setDate(currentDate.getDate() + 1);
+    const dateObjects = [
+        { date: currentDate, paxCounter: 6, enabled: false },
+        { date: nextDate, paxCounter: 6, enabled: false },
+    ];
     return dateObjects;
 };
 // replace calendar items with excluded items
