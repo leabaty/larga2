@@ -5,7 +5,7 @@ import '../styles/Booking.scss';
 import { content } from '../contents/Booking';
 
 import BookingForm from '../components/Form/BookingForm';
-import { CheckListLogo } from '../contents/images/bookingLogos';
+import { FiCheckCircle } from 'react-icons/fi';
 
 export default function Booking() {
   const logoColor = '#3bafa3';
@@ -33,8 +33,10 @@ export default function Booking() {
         <h2>{content.checkListTitle}</h2>
         {content.checkList.map((item, index) => (
           <div key={index} className='res-checklist-item'>
-            <CheckListLogo color={checkListLogoColor} size='20' />
-            <p className='res-checklist-txt'>{item}</p>
+            <p className='res-checklist-txt'>
+              {' '}
+              <FiCheckCircle size={15} /> {item}
+            </p>
           </div>
         ))}
       </div>
