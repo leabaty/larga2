@@ -8,6 +8,7 @@ import { Calendar } from 'ApiTypes/calendar';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import fr from 'date-fns/locale/fr';
+import { TextField } from '@mui/material';
 
 // styling
 
@@ -27,7 +28,6 @@ export const DateField: React.FC<{
   const disabledDates = getDisabledDates(calendarItems);
 
   const color = '#fdfeee';
-  const bgcolor = '#001f36';
 
   return (
     <div className='form-block'>

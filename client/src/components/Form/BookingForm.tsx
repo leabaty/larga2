@@ -41,6 +41,10 @@ export default function BookingForm() {
 
   const { firstName, lastName, email, phone, additionalPax, counter, selectedDate } = formValues;
 
+  const areDatesEqual = (date1: Date, date2: Date) => {
+    return date1.getDate() === date2.getDate() && date1.getMonth() === date2.getMonth() && date1.getFullYear() === date2.getFullYear();
+  };
+
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -108,7 +112,7 @@ export default function BookingForm() {
       phone: '',
       selectedDate: '',
       additionalPax: '',
-      agreeTerms: '', // Reset agreeTerms error on each submission
+      agreeTerms: '',
     };
 
     if (!firstName) {
@@ -142,6 +146,18 @@ export default function BookingForm() {
     // Display an error if the checkbox is not checked
     if (!agreeTerms) {
       newErrors.terms = content.error.terms;
+    }
+
+    // Check if the selected date is disabled
+    const selectedDateItem =
+      selectedDate &&
+      calendarItems.find((item) => {
+        const calendarDate = new Date(item.date);
+        return areDatesEqual(calendarDate, selectedDate);
+      });
+
+    if (selectedDateItem && !selectedDateItem.enabled) {
+      newErrors.selectedDate = content.error.disabledDate;
     }
 
     if (Object.values(newErrors).every((error) => !error)) {

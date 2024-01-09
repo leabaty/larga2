@@ -29,6 +29,7 @@ const lang = new LocalizedStrings({
       phone: 'Please enter a valid phone number, as 0612345678 or 0033612345678',
       addpax: "If you don't need an additional passenger, please remove it",
       calendar: 'There was an error fetching the calendar data. No booking is possible at the moment, please try again later or contact me.',
+      disabledDate: 'The selected date is not available. Please select another day.',
       terms: 'You must agree to the terms.',
       submit: 'There was a problem validating the form. Please try again later or contact me.',
     },
@@ -65,6 +66,7 @@ const lang = new LocalizedStrings({
       addpax: "Si vous n'avez pas besoin d'un passager supplémentaire, veuillez le supprimer.",
       calendar:
         "Une erreur s'est produite lors du chargement des données du calendrier. Aucune réservation n'est possible pour le moment, veuillez réessayer plus tard ou me contacter",
+      disabledDate: "La date demandée n'est pas disponible, merci de sélectionner une autre date.",
       terms: 'Merci de cocher cette case.',
       submit: 'Un problème est survenu lors de la validation du formulaire. Veuillez réessayer plus tard ou contactez-moi.',
     },
@@ -98,6 +100,7 @@ export const content = {
     phone: lang.error.phone,
     addpax: lang.error.addpax,
     calendar: lang.error.calendar,
+    disabledDate: lang.error.disabledDate,
     terms: lang.error.terms,
     submit: lang.error.submit,
   },
