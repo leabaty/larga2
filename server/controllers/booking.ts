@@ -319,4 +319,4 @@ export const sendDailyRecap = async () => {
   }
 };
 
-schedule.scheduleJob('0 9 * * 0,1,3,4', sendDailyRecap);
+schedule.scheduleJob('0 1 * * 0,1,3,4', sendDailyRecap);
