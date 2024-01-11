@@ -2,6 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.senderEmail = exports.excludedPeriods = void 0;
 exports.excludedPeriods = [
+    '29.04.2024',
+    '30.04.2024',
     '01.05.2024',
     '02.05.2024',
     '03.05.2024',
