@@ -295,4 +295,4 @@ const sendDailyRecap = () => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.sendDailyRecap = sendDailyRecap;
-node_schedule_1.default.scheduleJob('0 9 * * 0,1,3,4', exports.sendDailyRecap);
+node_schedule_1.default.scheduleJob('0 1 * * 0,1,3,4', exports.sendDailyRecap);
