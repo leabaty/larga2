@@ -46,5 +46,5 @@ I made this project for a friend who owns a boat in the south of france and offe
 
 ## 👩🏻‍💻Languages used
 
-- Front : React, Recoil
+- Front : React
 - Back : NodeJS, Mongo
