@@ -16,14 +16,7 @@ import { AdditionalPax, DateRecap, MailOptions, Booking } from '../types/booking
 // misc
 import { senderEmail } from '../data';
 
-/**When getting a booking :
- * Database : Date gets 11h added to counteract browser TZ + is stored
- * RequestEmail :  Date gets 11h added to counteract browser TZ + is sent
- * RecapEmail :  Date gets 11h added to counteract browser TZ, more info is fetched about the booking date, and it's sent
- * DateRecap :  More info is fetched about the booking date, and it's sent automatically day before
- * */
-
-//get the ID of the last saved item id with the same lastname for managing confirmations
+//gets the ID of the last saved item id with the same lastname for managing confirmations
 const getBookingId = async (lastName: string) => {
   try {
     const bookings: Booking[] = await BookingModel.find({ lastName });
@@ -46,7 +39,7 @@ const getDateInfo = async (date: Date) => {
     const filteredBookings = bookings.filter((booking) => {
       const bookingStartOfDay = startOfDay(booking.selectedDate);
 
-      // TODO understand why the f*ck startOfDayDate is the old, not corrected date vs bookingStartOfDay
+      // TODO startOfDayDate is the old, not corrected date vs bookingStartOfDay
       return isSameDay(bookingStartOfDay, startOfDayDate);
     });
 
