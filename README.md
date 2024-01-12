@@ -30,7 +30,7 @@ I made this project for a friend who owns a boat in the south of france and offe
   - Automatic confirmation or cancellation of a request (following the captain's approval)
   - Recap of a contact request
 
-![screenshot email]([http://url/to/img.png](https://i.ibb.co/cNsVrKn/Screenshot-2024-01-12-at-18-02-33.png))
+![screenshot email](https://ibb.co/cNsVrKn)
 
 - To the captain :
 
