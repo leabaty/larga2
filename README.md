@@ -6,7 +6,7 @@ I made this project for a friend who owns a boat in the south of france and offe
 
 - A simple landing page
 - An information page with an interactive map
-- A dynamic booking form 
+- A dynamic booking form
 - A contact form
 
 ### Booking form :
@@ -30,7 +30,7 @@ I made this project for a friend who owns a boat in the south of france and offe
   - Automatic confirmation or cancellation of a request (following the captain's approval)
   - Recap of a contact request
 
-![screenshot email](email-example.png)
+![screenshot email](readme-images/email-example.png)
 
 - To the captain :
 
