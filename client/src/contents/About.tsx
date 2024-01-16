@@ -9,7 +9,7 @@ const lang = new LocalizedStrings({
     boatTitle: 'Larga II',
     boatDesc: [
       'The Larga II is a Jeanneau Attalia 32-foot sailboat. It is a livable sailboat of 9.60 meters that can accommodate up to 6 people.',
-      'It is typically rigged with a mainsail of 195 sqf and a genoa of 195 sqf. It also has a spinnaker, a staysail, and a storm jib for rough weather.',
+      'It is typically rigged with a mainsail of 195 sqf and a genoa of 580 sqf. It also has a spinnaker, a staysail, and a storm jib for rough weather.',
     ],
     skipperTitle: 'Denis',
     skipperDesc: [
@@ -24,7 +24,7 @@ const lang = new LocalizedStrings({
     boatTitle: 'Larga II',
     boatDesc: [
       "Le Larga II est un Jeanneau Attalia 32 pieds. C'est un voilier habitable de 9,60 m qui peut embarquer jusqu'à 6 personnes.",
-      "Il est habituellement gréé d'une GV de 18 m2 et d'un génois de 18 m2. Il dispose également d'un spi, d'une trinquette et d'un tourmentin pour les gros temps.",
+      "Il est habituellement gréé d'une GV de 18 m2 et d'un génois de 54 m2. Il dispose également d'un spi, d'une trinquette et d'un tourmentin pour les gros temps.",
     ],
     skipperTitle: 'Denis',
     skipperDesc: [
