@@ -10,6 +10,7 @@ import { Calendar } from 'ApiTypes/calendar';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { usePost } from '../../utils/usePost';
+import { CircularProgress } from '@mui/material';
 
 export default function BookingForm() {
   const maxBoatPax = 4;
@@ -33,6 +34,7 @@ export default function BookingForm() {
   });
 
   const [agreeTerms, setAgreeTerms] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   const [calendarItems, setCalendarItems] = useState<Calendar>([]);
@@ -176,17 +178,23 @@ export default function BookingForm() {
     }
   };
 
-  // save data in DB + send emails
-  const sendRequest = usePost('/booking/request', formValues);
-  const sendRecap = usePost('/booking/recap', formValues);
+  const sendRequest = usePost('/booking/request', formValues, setLoading); // to the passenger
+  const sendRecap = usePost('/booking/recap', formValues, setLoading); // to the captain + storage
 
   const saveSendBooking = async () => {
     try {
+      setLoading(true);
       await sendRequest();
       await sendRecap();
+      setLoading(false);
+      setSubmitted(true);
     } catch (error) {
       console.error('Bookingform Failed to submit:', error);
-      throw error;
+      setLoading(false);
+      setErrors({
+        ...errors,
+        formSubmission: content.error.submit,
+      });
     }
   };
 
@@ -287,9 +295,10 @@ export default function BookingForm() {
           />
           {errors.terms && <p>⚠️ {errors.terms}</p>}
 
-          <button className='btn form-btn-submit' onClick={handleSubmit}>
-            {content.submitBooking}
+          <button className='btn form-btn-submit' onClick={handleSubmit} disabled={loading}>
+            {loading ? <CircularProgress sx={{ color: '#fff' }} /> : content.submitBooking}
           </button>
+
           {errors.formSubmission && <p> ⚠️ {errors.formSubmission}</p>}
         </>
       ) : (
