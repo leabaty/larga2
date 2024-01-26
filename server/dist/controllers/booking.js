@@ -24,13 +24,7 @@ const locale_1 = require("date-fns/locale");
 const booking_1 = __importDefault(require("../models/booking"));
 // misc
 const data_1 = require("../data");
-/**When getting a booking :
- * Database : Date gets 11h added to counteract browser TZ + is stored
- * RequestEmail :  Date gets 11h added to counteract browser TZ + is sent
- * RecapEmail :  Date gets 11h added to counteract browser TZ, more info is fetched about the booking date, and it's sent
- * DateRecap :  More info is fetched about the booking date, and it's sent automatically day before
- * */
-//get the ID of the last saved item id with the same lastname for managing confirmations
+//gets the ID of the last saved item id with the same lastname for managing confirmations
 const getBookingId = (lastName) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const bookings = yield booking_1.default.find({ lastName });
@@ -49,7 +43,7 @@ const getDateInfo = (date) => __awaiter(void 0, void 0, void 0, function* () {
         const bookings = yield booking_1.default.find();
         const filteredBookings = bookings.filter((booking) => {
             const bookingStartOfDay = (0, date_fns_1.startOfDay)(booking.selectedDate);
-            // TODO understand why the f*ck startOfDayDate is the old, not corrected date vs bookingStartOfDay
+            // TODO startOfDayDate is the old, not corrected date vs bookingStartOfDay
             return (0, date_fns_1.isSameDay)(bookingStartOfDay, startOfDayDate);
         });
         const paxCounter = filteredBookings.reduce((sum, booking) => sum + booking.counter, 0);
@@ -231,12 +225,22 @@ const sendRequest = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     yield sendEmail(req, res, 'bookingRequest', 'Votre demande de sortie voile', data_1.senderEmail, req.body.email);
 });
 exports.sendRequest = sendRequest;
+// export const sendRecap = async (req: Request, res: Response) => {
+//   await saveBooking(req, res);
+//   await sendEmail(req, res, 'bookingRecap', `Nouvelle demande : ${req.body.firstName} ${req.body.lastName}`, senderEmail, senderEmail);
+// };
 const sendRecap = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    yield saveBooking(req, res);
-    yield sendEmail(req, res, 'bookingRecap', `Nouvelle demande : ${req.body.firstName} ${req.body.lastName}`, data_1.senderEmail, data_1.senderEmail);
+    try {
+        yield saveBooking(req);
+        yield sendEmail(req, res, 'bookingRecap', `Nouvelle demande : ${req.body.firstName} ${req.body.lastName}`, data_1.senderEmail, data_1.senderEmail);
+    }
+    catch (error) {
+        console.error('Error in sendRecap:', error);
+        res.status(500).send('Internal Server Error');
+    }
 });
 exports.sendRecap = sendRecap;
-const saveBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const saveBooking = (req) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { firstName, lastName, email, phone, additionalPax, counter, selectedDate } = req.body;
         const correctedDate = counteractBrowserTZ(selectedDate);
@@ -255,11 +259,9 @@ const saveBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }));
         booking.additionalPax = additionalPaxArray;
         yield booking.save();
-        res.status(201).json({ message: 'Booking created successfully' });
     }
     catch (error) {
         console.error('Error creating booking:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
     }
 });
 // sending the daily recap email

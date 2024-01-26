@@ -241,11 +241,16 @@ export const sendRequest = async (req: Request, res: Response) => {
 };
 
 export const sendRecap = async (req: Request, res: Response) => {
-  await saveBooking(req, res);
-  await sendEmail(req, res, 'bookingRecap', `Nouvelle demande : ${req.body.firstName} ${req.body.lastName}`, senderEmail, senderEmail);
+  try {
+    await saveBooking(req);
+    await sendEmail(req, res, 'bookingRecap', `Nouvelle demande : ${req.body.firstName} ${req.body.lastName}`, senderEmail, senderEmail);
+  } catch (error) {
+    console.error('Error in sendRecap:', error);
+    res.status(500).send('Internal Server Error');
+  }
 };
 
-const saveBooking = async (req: Request, res: Response) => {
+const saveBooking = async (req: Request) => {
   try {
     const { firstName, lastName, email, phone, additionalPax, counter, selectedDate } = req.body;
 
@@ -269,11 +274,8 @@ const saveBooking = async (req: Request, res: Response) => {
     booking.additionalPax = additionalPaxArray;
 
     await booking.save();
-
-    res.status(201).json({ message: 'Booking created successfully' });
   } catch (error) {
     console.error('Error creating booking:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
