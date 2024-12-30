@@ -23,5 +23,5 @@ export const content = {
   contactEmail: 'sorties.larga2@gmail.com',
   developerName: 'Léa Baty',
   developerEmail: 'leabaty.dev@gmail.com',
-  hostingData: 'OVH | Netlify | Fly.io',
+  hostingData: 'OVH | Netlify | Vercel',
 };
