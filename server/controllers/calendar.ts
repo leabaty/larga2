@@ -51,6 +51,10 @@ export const getCalendarData = async (req: Request, res: Response) => {
     const additionalDateObjects = excludePeriods(excludedPeriods);
     updateCalendarItems(additionalDateObjects, calendarItems);
 
+    // exclude today and the next day
+    const exclude48hDateObjects = exclude48h();
+    updateCalendarItems(exclude48hDateObjects, calendarItems);
+
     res.status(200).json(calendarItems);
   } catch (error) {
     console.error('Error getting calendar data:', error);
@@ -67,7 +71,7 @@ const excludeDays = (startDate: Date, endDate: Date): Calendar => {
 
   for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
     const dayOfWeek = date.getDay();
-    const currentDate = new Date(date); // Create a new Date object
+    const currentDate = new Date(date);
 
     if (days.includes(dayOfWeek)) {
       const calendarItem: CalendarItem = { date: currentDate, paxCounter: 6, enabled: false };
@@ -89,6 +93,20 @@ const excludePeriods = (days: string[]): Calendar => {
     const calendarItem: CalendarItem = { date, paxCounter: 0, enabled: false };
     dateObjects.push(calendarItem);
   });
+
+  return dateObjects;
+};
+
+// exclude today and the next day
+const exclude48h = (): Calendar => {
+  const currentDate = new Date();
+  const nextDate = new Date(currentDate);
+  nextDate.setDate(currentDate.getDate() + 1);
+
+  const dateObjects: Calendar = [
+    { date: currentDate, paxCounter: 6, enabled: false },
+    { date: nextDate, paxCounter: 6, enabled: false },
+  ];
 
   return dateObjects;
 };

@@ -20,5 +20,10 @@
       height: 100vh;
       object-fit: cover;
     }
+
+    &-text {
+      top: 30vh;
+      color: var(--beige);
+    }
   }
 }

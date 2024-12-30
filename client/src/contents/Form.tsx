@@ -29,11 +29,12 @@ const lang = new LocalizedStrings({
       phone: 'Please enter a valid phone number, as 0612345678 or 0033612345678',
       addpax: "If you don't need an additional passenger, please remove it",
       calendar: 'There was an error fetching the calendar data. No booking is possible at the moment, please try again later or contact me.',
+      disabledDate: 'The selected date is not available. Please select another day.',
       terms: 'You must agree to the terms.',
       submit: 'There was a problem validating the form. Please try again later or contact me.',
     },
     terms:
-      "I understand that my booking request is subject to availability and will be confirmed within 48 hours. I will be asked to contribute 10€ to the ship's float on the day of the outing. For my safety and that of the crew, all outings will be based on the day's weather report. Depending on weather conditions, the captain may postpone the trip or propose a non-stop trip.",
+      "I understand that my booking request is subject to availability and will be confirmed within 48 hours. I will be asked to contribute 10€ per participant to the ship's float on the day of the outing. For my safety and that of the crew, all outings will be based on the day's weather report. Depending on weather conditions, the captain may postpone the trip or propose a non-stop trip.",
   },
 
   fr: {
@@ -65,11 +66,12 @@ const lang = new LocalizedStrings({
       addpax: "Si vous n'avez pas besoin d'un passager supplémentaire, veuillez le supprimer.",
       calendar:
         "Une erreur s'est produite lors du chargement des données du calendrier. Aucune réservation n'est possible pour le moment, veuillez réessayer plus tard ou me contacter",
+      disabledDate: "La date demandée n'est pas disponible, merci de sélectionner une autre date.",
       terms: 'Merci de cocher cette case.',
       submit: 'Un problème est survenu lors de la validation du formulaire. Veuillez réessayer plus tard ou contactez-moi.',
     },
     terms:
-      "Je comprends que ma demande de réservation est sujette aux disponibilités et me sera confirmée d'ici 48h. Une participation à la caisse de bord de 10€ me sera demandée le jour de la sortie. Pour ma sécurité et celle de l'équipage, toutes les sorties seront basées sur le bulletin météo du jour. Selon les conditions météorologiques, le capitaine peut reporter la navigation ou proposer une navigation sans escale.",
+      "Je comprends que ma demande de réservation est sujette aux disponibilités et me sera confirmée d'ici 48h. Une participation à la caisse de bord de 10€ par personne me sera demandée le jour de la sortie. Pour ma sécurité et celle de l'équipage, toutes les sorties seront basées sur le bulletin météo du jour. Selon les conditions météorologiques, le capitaine peut reporter la navigation ou proposer une navigation sans escale.",
   },
 });
 
@@ -98,6 +100,7 @@ export const content = {
     phone: lang.error.phone,
     addpax: lang.error.addpax,
     calendar: lang.error.calendar,
+    disabledDate: lang.error.disabledDate,
     terms: lang.error.terms,
     submit: lang.error.submit,
   },

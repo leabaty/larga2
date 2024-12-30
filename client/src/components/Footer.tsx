@@ -14,7 +14,7 @@ export default function Footer() {
         <Link className='footer-link' to='/privacy-policy'>
           {lang.privacyPolicy}
         </Link>
-        <a className='footer-link' href='lebaty.com' target='_blank'>
+        <a className='footer-link' href='https://www.leabaty.com' target='_blank'>
           © 2023 Léa Baty
         </a>
       </div>

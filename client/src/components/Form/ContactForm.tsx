@@ -5,6 +5,7 @@ import '../../styles/Form.scss';
 import { content } from '../../contents/Form';
 import { TextAreaField } from './formComponents/FormTextArea';
 import { usePost } from '../../utils/usePost';
+import { CircularProgress } from '@mui/material';
 
 export default function ContactForm() {
   const [formValues, setFormValues] = useState<FormContactValues>({
@@ -23,6 +24,7 @@ export default function ContactForm() {
     message: '',
   });
 
+  const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   const { firstName, lastName, email, phone, message } = formValues;
@@ -44,8 +46,8 @@ export default function ContactForm() {
   };
 
   // save data in DB + send email recaps
-  const saveData = usePost('/contact/create', formValues);
-  const sendRecap = usePost('/contact/recap', formValues);
+  const saveData = usePost('/contact/create', formValues, setLoading);
+  const sendRecap = usePost('/contact/recap', formValues, setLoading);
 
   const saveSendContact = async () => {
     try {
@@ -128,9 +130,10 @@ export default function ContactForm() {
             onChange={handleInputChange}
           />
 
-          <button className='btn form-btn-submit' onClick={handleSubmit}>
-            {content.submitContact}
+          <button className='btn form-btn-submit' onClick={handleSubmit} disabled={loading}>
+            {loading ? <CircularProgress sx={{ color: '#fff' }} /> : content.submitContact}
           </button>
+
           {errors.formSubmission && <p> ⚠️ {errors.formSubmission}</p>}
         </>
       ) : (

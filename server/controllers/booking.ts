@@ -16,14 +16,7 @@ import { AdditionalPax, DateRecap, MailOptions, Booking } from '../types/booking
 // misc
 import { senderEmail } from '../data';
 
-/**When getting a booking :
- * Database : Date gets 11h added to counteract browser TZ + is stored
- * RequestEmail :  Date gets 11h added to counteract browser TZ + is sent
- * RecapEmail :  Date gets 11h added to counteract browser TZ, more info is fetched about the booking date, and it's sent
- * DateRecap :  More info is fetched about the booking date, and it's sent automatically day before
- * */
-
-//get the ID of the last saved item id with the same lastname for managing confirmations
+//gets the ID of the last saved item id with the same lastname for managing confirmations
 const getBookingId = async (lastName: string) => {
   try {
     const bookings: Booking[] = await BookingModel.find({ lastName });
@@ -46,7 +39,7 @@ const getDateInfo = async (date: Date) => {
     const filteredBookings = bookings.filter((booking) => {
       const bookingStartOfDay = startOfDay(booking.selectedDate);
 
-      // TODO understand why the f*ck startOfDayDate is the old, not corrected date vs bookingStartOfDay
+      // TODO startOfDayDate is the old, not corrected date vs bookingStartOfDay
       return isSameDay(bookingStartOfDay, startOfDayDate);
     });
 
@@ -248,11 +241,16 @@ export const sendRequest = async (req: Request, res: Response) => {
 };
 
 export const sendRecap = async (req: Request, res: Response) => {
-  await saveBooking(req, res);
-  await sendEmail(req, res, 'bookingRecap', `Nouvelle demande : ${req.body.firstName} ${req.body.lastName}`, senderEmail, senderEmail);
+  try {
+    await saveBooking(req);
+    await sendEmail(req, res, 'bookingRecap', `Nouvelle demande : ${req.body.firstName} ${req.body.lastName}`, senderEmail, senderEmail);
+  } catch (error) {
+    console.error('Error in sendRecap:', error);
+    res.status(500).send('Internal Server Error');
+  }
 };
 
-const saveBooking = async (req: Request, res: Response) => {
+const saveBooking = async (req: Request) => {
   try {
     const { firstName, lastName, email, phone, additionalPax, counter, selectedDate } = req.body;
 
@@ -276,11 +274,8 @@ const saveBooking = async (req: Request, res: Response) => {
     booking.additionalPax = additionalPaxArray;
 
     await booking.save();
-
-    res.status(201).json({ message: 'Booking created successfully' });
   } catch (error) {
     console.error('Error creating booking:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
@@ -319,4 +314,4 @@ export const sendDailyRecap = async () => {
   }
 };
 
-schedule.scheduleJob('0 9 * * 0,1,3,4', sendDailyRecap);
+schedule.scheduleJob('0 1 * * 0,1,3,4', sendDailyRecap);
