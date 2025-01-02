@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 import nodemailer from 'nodemailer';
 import hbs from 'nodemailer-express-handlebars';
 import schedule from 'node-schedule';
-
+import path from 'path';
 // date management
 import { format, startOfDay, isSameDay, addDays } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -107,14 +107,16 @@ const sendDateRecap = async (date: Date) => {
 
     const dateRecapTemplate = dateInfo && dateInfo.paxCounter > 0 ? 'dateRecap' : 'dateRecapEmpty';
 
-    var options = {
+    const viewsPath = path.join(process.cwd(), 'views', 'email');
+
+    const options = {
       viewEngine: {
         extname: '.hbs',
-        layoutsDir: 'views/email/',
+        layoutsDir: viewsPath,
         defaultLayout: dateRecapTemplate,
-        partialsDir: 'views/email/',
+        partialsDir: viewsPath,
       },
-      viewPath: 'views/email',
+      viewPath: viewsPath,
       extName: '.hbs',
     };
 
@@ -155,7 +157,14 @@ const sendDateRecap = async (date: Date) => {
   }
 };
 
-const sendEmail = async (req: Request, res: Response, template: string, subject: string, from: string, to: string) => {
+const sendEmail = async (
+  req: Request,
+  res: Response,
+  template: string,
+  subject: string,
+  from: string,
+  to: string
+) => {
   try {
     const { firstName, lastName, email, phone, counter, additionalPax, selectedDate } = req.body;
 
@@ -184,7 +193,9 @@ const sendEmail = async (req: Request, res: Response, template: string, subject:
 
     // make some data human-readable for emails
     const formattedDate = format(correctedDate, 'EEEE d MMMM yyyy', { locale: fr });
-    const formattedAddPax = additionalPax.map((pax: AdditionalPax) => `${pax.firstName} ${pax.lastName}`).join(', ');
+    const formattedAddPax = additionalPax
+      .map((pax: AdditionalPax) => `${pax.firstName} ${pax.lastName}`)
+      .join(', ');
 
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -194,14 +205,16 @@ const sendEmail = async (req: Request, res: Response, template: string, subject:
       },
     });
 
-    var options = {
+    const viewsPath = path.join(process.cwd(), 'views', 'email');
+
+    const options = {
       viewEngine: {
         extname: '.hbs',
-        layoutsDir: 'views/email/',
+        layoutsDir: viewsPath,
         defaultLayout: template,
-        partialsDir: 'views/email/',
+        partialsDir: viewsPath,
       },
-      viewPath: 'views/email',
+      viewPath: viewsPath,
       extName: '.hbs',
     };
 
@@ -237,13 +250,27 @@ const sendEmail = async (req: Request, res: Response, template: string, subject:
 };
 
 export const sendRequest = async (req: Request, res: Response) => {
-  await sendEmail(req, res, 'bookingRequest', 'Votre demande de sortie voile', senderEmail, req.body.email);
+  await sendEmail(
+    req,
+    res,
+    'bookingRequest',
+    'Votre demande de sortie voile',
+    senderEmail,
+    req.body.email
+  );
 };
 
 export const sendRecap = async (req: Request, res: Response) => {
   try {
     await saveBooking(req);
-    await sendEmail(req, res, 'bookingRecap', `Nouvelle demande : ${req.body.firstName} ${req.body.lastName}`, senderEmail, senderEmail);
+    await sendEmail(
+      req,
+      res,
+      'bookingRecap',
+      `Nouvelle demande : ${req.body.firstName} ${req.body.lastName}`,
+      senderEmail,
+      senderEmail
+    );
   } catch (error) {
     console.error('Error in sendRecap:', error);
     res.status(500).send('Internal Server Error');

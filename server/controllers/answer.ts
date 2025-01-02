@@ -1,14 +1,14 @@
 import { Request, Response } from 'express';
-
 import { senderEmail } from '../data';
-
-// email sending
-import nodemailer from 'nodemailer';
-import hbs from 'nodemailer-express-handlebars';
 
 // date management
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
+
+// email sending
+import nodemailer from 'nodemailer';
+import hbs from 'nodemailer-express-handlebars';
+import path from 'path';
 
 // types & models
 import BookingModel from '../models/booking';
@@ -70,7 +70,9 @@ const sendEmail = async (req: Request, res: Response, template: string, subject:
 
     // make some data human-readable
     const formattedDate = format(selectedDate, 'EEEE d MMMM yyyy', { locale: fr });
-    const formattedAddPax = additionalPax.map((pax: AdditionalPax) => `${pax.firstName} ${pax.lastName}`).join(', ');
+    const formattedAddPax = additionalPax
+      .map((pax: AdditionalPax) => `${pax.firstName} ${pax.lastName}`)
+      .join(', ');
 
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -80,14 +82,16 @@ const sendEmail = async (req: Request, res: Response, template: string, subject:
       },
     });
 
-    var options = {
+    const viewsPath = path.join(process.cwd(), 'views', 'email');
+
+    const options = {
       viewEngine: {
         extname: '.hbs',
-        layoutsDir: 'views/email/',
+        layoutsDir: viewsPath,
         defaultLayout: template,
-        partialsDir: 'views/email/',
+        partialsDir: viewsPath,
       },
-      viewPath: 'views/email',
+      viewPath: viewsPath,
       extName: '.hbs',
     };
 

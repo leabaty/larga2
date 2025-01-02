@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -19,10 +10,10 @@ const booking_1 = __importDefault(require("../models/booking"));
 const data_1 = require("../data");
 /** getCalendarData constructs and sends a whole year worth of dates and their information
  to the front in order to show unavailable dates in the calendar, and their paxCounter.*/
-const getCalendarData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getCalendarData = async (req, res) => {
     const maxPax = 4; // boat is 6 pax max, 1 skipper + 1 (always) free spot
     try {
-        const bookings = yield booking_1.default.find();
+        const bookings = await booking_1.default.find();
         // paxCounter : go through the booking dates and add up the counter sums
         const dateMap = new Map();
         bookings.forEach((booking) => {
@@ -58,7 +49,7 @@ const getCalendarData = (req, res) => __awaiter(void 0, void 0, void 0, function
         console.error('Error getting calendar data:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
-});
+};
 exports.getCalendarData = getCalendarData;
 // private functions
 // exclude given days : Wednesdays, Saturdays, Sundays

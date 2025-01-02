@@ -5,6 +5,7 @@ import Contact from '../models/contact';
 import { senderEmail } from '../data';
 import nodemailer from 'nodemailer';
 import hbs from 'nodemailer-express-handlebars';
+import path from 'path';
 
 export const saveContact = async (req: Request, res: Response) => {
   try {
@@ -40,14 +41,16 @@ export const sendContactRecap = async (req: Request, res: Response) => {
       },
     });
 
+    const viewsPath = path.join(process.cwd(), 'views', 'email');
+
     const options = {
       viewEngine: {
         extname: '.hbs',
-        layoutsDir: 'views/email/',
+        layoutsDir: viewsPath,
         defaultLayout: 'contactRecap',
-        partialsDir: 'views/email/',
+        partialsDir: viewsPath,
       },
-      viewPath: 'views/email',
+      viewPath: viewsPath,
       extName: '.hbs',
     };
 

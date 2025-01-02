@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -18,7 +9,8 @@ const contact_1 = __importDefault(require("../models/contact"));
 const data_1 = require("../data");
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const nodemailer_express_handlebars_1 = __importDefault(require("nodemailer-express-handlebars"));
-const saveContact = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const path_1 = __importDefault(require("path"));
+const saveContact = async (req, res) => {
     try {
         const { firstName, lastName, email, phone, message } = req.body;
         const contact = new contact_1.default({
@@ -29,16 +21,16 @@ const saveContact = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             message,
             requestDate: new Date(),
         });
-        yield contact.save();
+        await contact.save();
         res.status(201).json({ message: 'Contact created successfully' });
     }
     catch (error) {
         console.error('Error creating contact:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
-});
+};
 exports.saveContact = saveContact;
-const sendContactRecap = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const sendContactRecap = async (req, res) => {
     try {
         const { firstName, lastName, email, phone, message } = req.body;
         const transporter = nodemailer_1.default.createTransport({
@@ -48,14 +40,15 @@ const sendContactRecap = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 pass: process.env.GMAIL_PASS,
             },
         });
+        const viewsPath = path_1.default.join(process.cwd(), 'views', 'email');
         const options = {
             viewEngine: {
                 extname: '.hbs',
-                layoutsDir: 'views/email/',
+                layoutsDir: viewsPath,
                 defaultLayout: 'contactRecap',
-                partialsDir: 'views/email/',
+                partialsDir: viewsPath,
             },
-            viewPath: 'views/email',
+            viewPath: viewsPath,
             extName: '.hbs',
         };
         transporter.use('compile', (0, nodemailer_express_handlebars_1.default)(options));
@@ -72,12 +65,12 @@ const sendContactRecap = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 message,
             },
         };
-        yield transporter.sendMail(mailOptions);
+        await transporter.sendMail(mailOptions);
         res.status(200).send('Email sent successfully');
     }
     catch (err) {
         console.error('Error occurred in sendContactAnswer: ' + err);
         res.status(500).send('Internal Server Error, see console');
     }
-});
+};
 exports.sendContactRecap = sendContactRecap;
