@@ -6,6 +6,7 @@ const lang = new LocalizedStrings({
     bookingTitle: 'Booking',
     contactTitle: 'Contact',
     available: 'Available spots',
+    loadingCalendar: 'Loading calendar...',
     field: {
       firstname: 'First name',
       lastname: 'Last name',
@@ -19,7 +20,8 @@ const lang = new LocalizedStrings({
     },
     submit: {
       submitBooking: 'Submit Booking Request',
-      submittedBooking: 'Thank you for your request. I will get back to you within the next 48 hours to confirm.',
+      submittedBooking:
+        'Thank you for your request. I will get back to you within the next 48 hours to confirm.',
       submitContact: 'Send my message',
       submittedContact: 'Thank you for your message. I will get back to you as soon as possible.',
     },
@@ -28,7 +30,8 @@ const lang = new LocalizedStrings({
       email: 'Please enter a valid email, as xxxx@xxxx.xx',
       phone: 'Please enter a valid phone number, as 0612345678 or 0033612345678',
       addpax: "If you don't need an additional passenger, please remove it",
-      calendar: 'There was an error fetching the calendar data. No booking is possible at the moment, please try again later or contact me.',
+      calendar:
+        'There was an error fetching the calendar data. No booking is possible at the moment, please try again later or contact me.',
       disabledDate: 'The selected date is not available. Please select another day.',
       terms: 'You must agree to the terms.',
       submit: 'There was a problem validating the form. Please try again later or contact me.',
@@ -41,6 +44,7 @@ const lang = new LocalizedStrings({
     bookingTitle: 'Réservation',
     contactTitle: 'Contact',
     available: 'Places disponibles',
+    loadingCalendar: 'Chargement du calendrier...',
     field: {
       firstname: 'Prénom',
       lastname: 'Nom',
@@ -54,7 +58,8 @@ const lang = new LocalizedStrings({
     },
     submit: {
       submitBooking: 'Demande de réservation',
-      submittedBooking: 'Merci pour votre demande, je reviendrai vers vous dans les prochaines 48h afin de la confirmer.',
+      submittedBooking:
+        'Merci pour votre demande, je reviendrai vers vous dans les prochaines 48h afin de la confirmer.',
       submitContact: 'Envoyer mon message',
       submittedContact: 'Merci pour votre message, je reviendrai vers vous dès que possible.',
     },
@@ -68,7 +73,8 @@ const lang = new LocalizedStrings({
         "Une erreur s'est produite lors du chargement des données du calendrier. Aucune réservation n'est possible pour le moment, veuillez réessayer plus tard ou me contacter",
       disabledDate: "La date demandée n'est pas disponible, merci de sélectionner une autre date.",
       terms: 'Merci de cocher cette case.',
-      submit: 'Un problème est survenu lors de la validation du formulaire. Veuillez réessayer plus tard ou contactez-moi.',
+      submit:
+        'Un problème est survenu lors de la validation du formulaire. Veuillez réessayer plus tard ou contactez-moi.',
     },
     terms:
       "Je comprends que ma demande de réservation est sujette aux disponibilités et me sera confirmée d'ici 48h. Une participation à la caisse de bord de 10€ par personne me sera demandée le jour de la sortie. Pour ma sécurité et celle de l'équipage, toutes les sorties seront basées sur le bulletin météo du jour. Selon les conditions météorologiques, le capitaine peut reporter la navigation ou proposer une navigation sans escale.",
@@ -79,6 +85,7 @@ export const content = {
   bookingTitle: lang.bookingTitle,
   contactTitle: lang.contactTitle,
   available: lang.available,
+  loadingCalendar: lang.loadingCalendar,
   field: {
     firstname: lang.field.firstname,
     lastname: lang.field.lastname,

@@ -36,15 +36,20 @@ export default function BookingForm() {
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-
   const [calendarItems, setCalendarItems] = useState<Calendar>([]);
+  const [calendarLoading, setCalendarLoading] = useState(true);
+  const [calendarError, setCalendarError] = useState(false);
   const [availablePax, setavailablePax] = useState<number | null>(null);
   const [showAddPax, setShowAddPax] = useState(false);
 
   const { firstName, lastName, email, phone, additionalPax, counter, selectedDate } = formValues;
 
   const areDatesEqual = (date1: Date, date2: Date) => {
-    return date1.getDate() === date2.getDate() && date1.getMonth() === date2.getMonth() && date1.getFullYear() === date2.getFullYear();
+    return (
+      date1.getDate() === date2.getDate() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getFullYear() === date2.getFullYear()
+    );
   };
 
   const validateEmail = (email: string) => {
@@ -197,10 +202,11 @@ export default function BookingForm() {
       });
     }
   };
-
   useEffect(() => {
     const fetchCalendarData = async () => {
       try {
+        setCalendarLoading(true);
+        setCalendarError(false);
         const response = await fetch(`${process.env.REACT_APP_SERVER}/calendar`);
         const data = await response.json();
 
@@ -208,6 +214,9 @@ export default function BookingForm() {
       } catch (error) {
         console.error('Error fetching calendar data:', error);
         setCalendarItems([]);
+        setCalendarError(true);
+      } finally {
+        setCalendarLoading(false);
       }
     };
     fetchCalendarData();
@@ -215,7 +224,11 @@ export default function BookingForm() {
 
   useEffect(() => {
     const areDatesEqual = (date1: Date, date2: Date) => {
-      return date1.getDate() === date2.getDate() && date1.getMonth() === date2.getMonth() && date1.getFullYear() === date2.getFullYear();
+      return (
+        date1.getDate() === date2.getDate() &&
+        date1.getMonth() === date2.getMonth() &&
+        date1.getFullYear() === date2.getFullYear()
+      );
     };
 
     const updateAvailablePax = () => {
@@ -227,7 +240,9 @@ export default function BookingForm() {
         });
 
         if (selectedDateItem) {
-          const availableSpots = selectedDateItem.enabled ? maxBoatPax - selectedDateItem.paxCounter : 0;
+          const availableSpots = selectedDateItem.enabled
+            ? maxBoatPax - selectedDateItem.paxCounter
+            : 0;
           setavailablePax(availableSpots);
 
           // determine if there are enough spots to show the additional pax feature
@@ -260,23 +275,51 @@ export default function BookingForm() {
             error={errors.firstName}
             onChange={handleInputChange}
           />
-          <InputField name='lastName' placeholder={content.field.lastname} value={lastName} error={errors.lastName} onChange={handleInputChange} />
-          <InputField name='email' placeholder={content.field.email} type='email' value={email} error={errors.email} onChange={handleInputChange} />
-          <InputField name='phone' placeholder={content.field.phone} type='tel' value={phone} error={errors.phone} onChange={handleInputChange} />
+          <InputField
+            name='lastName'
+            placeholder={content.field.lastname}
+            value={lastName}
+            error={errors.lastName}
+            onChange={handleInputChange}
+          />
+          <InputField
+            name='email'
+            placeholder={content.field.email}
+            type='email'
+            value={email}
+            error={errors.email}
+            onChange={handleInputChange}
+          />
+          <InputField
+            name='phone'
+            placeholder={content.field.phone}
+            type='tel'
+            value={phone}
+            error={errors.phone}
+            onChange={handleInputChange}
+          />{' '}
           <div className='form-block'></div>
-
-          {calendarItems.length === 0 ? (
+          {calendarLoading ? (
+            <div className='form-text'>
+              <CircularProgress size={20} sx={{ color: '#fff', marginRight: '8px' }} />
+              {content.loadingCalendar}
+            </div>
+          ) : calendarError ? (
             <p className='form-text'>⚠️ {content.error.calendar}</p>
           ) : (
             <>
               {' '}
-              <DateField selectedDate={selectedDate} onChange={handleDateChange} error={errors.selectedDate} calendarItems={calendarItems} />
+              <DateField
+                selectedDate={selectedDate}
+                onChange={handleDateChange}
+                error={errors.selectedDate}
+                calendarItems={calendarItems}
+              />
               <p className='form-text'>
                 {content.available} : {availablePax !== null ? availablePax : 'Loading...'}
               </p>
             </>
           )}
-
           <AdditionalPaxFields
             additionalPax={additionalPax}
             counter={counter}
@@ -287,18 +330,22 @@ export default function BookingForm() {
             mainPassenger={{ firstName: firstName, lastName: lastName }}
             showAddPax={showAddPax}
           />
-
           <FormControlLabel
-            control={<Checkbox id='agreeTermsCheckbox' checked={agreeTerms} onChange={handleAgreeTermsChange} style={{ color: 'white' }} />}
+            control={
+              <Checkbox
+                id='agreeTermsCheckbox'
+                checked={agreeTerms}
+                onChange={handleAgreeTermsChange}
+                style={{ color: 'white' }}
+              />
+            }
             label={content.terms}
             className='form-text'
           />
           {errors.terms && <p>⚠️ {errors.terms}</p>}
-
           <button className='btn form-btn-submit' onClick={handleSubmit} disabled={loading}>
             {loading ? <CircularProgress sx={{ color: '#fff' }} /> : content.submitBooking}
           </button>
-
           {errors.formSubmission && <p> ⚠️ {errors.formSubmission}</p>}
         </>
       ) : (
