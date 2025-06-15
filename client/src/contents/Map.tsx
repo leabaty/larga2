@@ -15,5 +15,5 @@ export const content = {
   poi: lang.poi,
   icon,
   gpsMap: [43.32944, 5.15123],
-  gpsPoi: [43.32945, 5.1517],
+  gpsPoi: [43.328884, 5.151364],
 };
